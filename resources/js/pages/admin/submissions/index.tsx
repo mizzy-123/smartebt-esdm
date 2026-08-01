@@ -15,7 +15,7 @@ interface Paginated<T> {
 
 interface AdminSubmissionsIndexProps {
     submissions: Paginated<SubmissionListItem>;
-    filters: { status?: string; category?: string; search?: string };
+    filters: { status?: string; category?: string; entry_type?: string; search?: string };
 }
 
 export default function AdminSubmissionsIndex({ submissions, filters }: AdminSubmissionsIndexProps) {
@@ -32,8 +32,8 @@ export default function AdminSubmissionsIndex({ submissions, filters }: AdminSub
             <div className="p-6 lg:p-8">
                 <div className="mb-6 flex items-center justify-between gap-4">
                     <div>
-                        <h1 className="text-2xl font-bold text-foreground">Daftar Pengajuan</h1>
-                        <p className="text-sm text-muted-foreground">{submissions.meta?.total ?? 0} total pengajuan</p>
+                        <h1 className="text-2xl font-bold text-foreground">Verifikasi Data</h1>
+                        <p className="text-sm text-muted-foreground">{submissions.meta?.total ?? 0} total data</p>
                     </div>
                 </div>
 
@@ -45,7 +45,7 @@ export default function AdminSubmissionsIndex({ submissions, filters }: AdminSub
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                             onKeyDown={e => e.key === 'Enter' && applyFilter({ search })}
-                            placeholder="Cari nama pemohon..."
+                            placeholder="Cari nama / lokasi..."
                             className="pl-9"
                         />
                     </div>
@@ -60,15 +60,24 @@ export default function AdminSubmissionsIndex({ submissions, filters }: AdminSub
                             <SelectItem value="sudah_intervensi">Terverifikasi</SelectItem>
                         </SelectContent>
                     </Select>
+                    <Select value={filters.entry_type ?? ''} onValueChange={v => applyFilter({ entry_type: v || undefined })}>
+                        <SelectTrigger className="w-52">
+                            <SelectValue placeholder="Semua Jenis" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="">Semua Jenis</SelectItem>
+                            <SelectItem value="potensi">Info Potensi Lokal</SelectItem>
+                            <SelectItem value="terbangun">Infrastruktur Terbangun</SelectItem>
+                        </SelectContent>
+                    </Select>
                     <Select value={filters.category ?? ''} onValueChange={v => applyFilter({ category: v || undefined })}>
                         <SelectTrigger className="w-52">
                             <SelectValue placeholder="Semua Kategori" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="">Semua Kategori</SelectItem>
-                            <SelectItem value="peternakan_ebt">Peternakan EBT</SelectItem>
-                            <SelectItem value="plts_rooftop">PLTS Rooftop</SelectItem>
-                            <SelectItem value="plts_perikanan">PLTS Perikanan</SelectItem>
+                            <SelectItem value="biogas">Biogas</SelectItem>
+                            <SelectItem value="plts">PLTS</SelectItem>
                             <SelectItem value="pats">PATS</SelectItem>
                         </SelectContent>
                     </Select>
@@ -81,7 +90,8 @@ export default function AdminSubmissionsIndex({ submissions, filters }: AdminSub
                             <thead>
                                 <tr className="border-b border-border bg-muted/50">
                                     <th className="px-5 py-3 text-left font-medium text-muted-foreground">#</th>
-                                    <th className="px-5 py-3 text-left font-medium text-muted-foreground">Pemohon</th>
+                                    <th className="px-5 py-3 text-left font-medium text-muted-foreground">Nama / Lokasi</th>
+                                    <th className="px-5 py-3 text-left font-medium text-muted-foreground">Jenis</th>
                                     <th className="px-5 py-3 text-left font-medium text-muted-foreground">Kategori</th>
                                     <th className="px-5 py-3 text-left font-medium text-muted-foreground">Status</th>
                                     <th className="px-5 py-3 text-left font-medium text-muted-foreground">Tanggal</th>
@@ -91,8 +101,8 @@ export default function AdminSubmissionsIndex({ submissions, filters }: AdminSub
                             <tbody className="divide-y divide-border">
                                 {submissions.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={6} className="px-5 py-12 text-center text-muted-foreground">
-                                            Tidak ada pengajuan ditemukan
+                                        <td colSpan={7} className="px-5 py-12 text-center text-muted-foreground">
+                                            Tidak ada data ditemukan
                                         </td>
                                     </tr>
                                 )}
@@ -100,9 +110,10 @@ export default function AdminSubmissionsIndex({ submissions, filters }: AdminSub
                                     <tr key={sub.id} className="transition hover:bg-muted/30">
                                         <td className="px-5 py-4 text-muted-foreground text-xs">{sub.id}</td>
                                         <td className="px-5 py-4">
-                                            <p className="font-medium text-foreground">{sub.nama_pemohon}</p>
+                                            <p className="font-medium text-foreground">{sub.display_name ?? sub.nama_pemohon}</p>
                                             <p className="text-xs text-muted-foreground">{sub.user?.email}</p>
                                         </td>
+                                        <td className="px-5 py-4 text-xs text-muted-foreground">{sub.entryTypeLabel ?? '-'}</td>
                                         <td className="px-5 py-4 text-foreground">{sub.categoryLabel}</td>
                                         <td className="px-5 py-4">
                                             <div className="flex items-center gap-1.5">
@@ -168,6 +179,6 @@ export default function AdminSubmissionsIndex({ submissions, filters }: AdminSub
 AdminSubmissionsIndex.layout = {
     breadcrumbs: [
         { title: 'Admin', href: '/admin/dashboard' },
-        { title: 'Daftar Pengajuan', href: '/admin/submissions' },
+        { title: 'Verifikasi Data', href: '/admin/submissions' },
     ],
 };

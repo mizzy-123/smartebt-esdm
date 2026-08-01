@@ -1,0 +1,1053 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Tests\Feature\SmartEbtCoreTest" file="tests\Feature\SmartEbtCoreTest.php" tests="13" assertions="6" errors="9" failures="3" skipped="0" time="3.836256">
+    <testcase name="landing page is public" file="tests\Feature\SmartEbtCoreTest.php::landing page is public" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="1" time="2.058235">
+      <failure type="PHPUnit\Framework\ExpectationFailedException">landing page is publicExpected response status code [200] but received 500.
+Failed asserting that 500 is identical to 200.&#13;
+&#13;
+The following exception occurred during the last request:
+
+PDOException: could not find driver in C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+Stack trace:
+#0 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(67): PDO::connect('sqlite::memory:', NULL, Object(SensitiveParameterValue), Array)
+#1 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(44): Illuminate\Database\Connectors\Connector-&gt;createPdoConnection('sqlite::memory:', NULL, Object(SensitiveParameterValue), Array)
+#2 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php(21): Illuminate\Database\Connectors\Connector-&gt;createConnection('sqlite::memory:', Array, Array)
+#3 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php(259): Illuminate\Database\Connectors\SQLiteConnector-&gt;connect(Array)
+#4 [internal function]: Illuminate\Database\Connectors\ConnectionFactory-&gt;{closure:Illuminate\Database\Connectors\ConnectionFactory::createPdoResolverWithoutHosts():259}()
+#5 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(1297): call_user_func(Object(Closure))
+#6 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(1335): Illuminate\Database\Connection-&gt;getPdo()
+#7 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(542): Illuminate\Database\Connection-&gt;getReadPdo()
+#8 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(435): Illuminate\Database\Connection-&gt;getPdoForSelect(true)
+#9 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(846): Illuminate\Database\Connection-&gt;{closure:Illuminate\Database\Connection::select():426}('select "id", "t...', Array)
+#10 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(813): Illuminate\Database\Connection-&gt;runQueryCallback('select "id", "t...', Array, Object(Closure))
+#11 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(426): Illuminate\Database\Connection-&gt;run('select "id", "t...', Array, Object(Closure))
+#12 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3573): Illuminate\Database\Connection-&gt;select('select "id", "t...', Array, true, Array)
+#13 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3557): Illuminate\Database\Query\Builder-&gt;runSelect()
+#14 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(908): Illuminate\Database\Query\Builder-&gt;get(Array)
+#15 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(890): Illuminate\Database\Eloquent\Builder-&gt;getModels(Array)
+#16 C:\laragon\www\smart-ebt-esdm\app\Http\Controllers\LandingController.php(18): Illuminate\Database\Eloquent\Builder-&gt;get(Array)
+#17 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\ControllerDispatcher.php(46): App\Http\Controllers\LandingController-&gt;index()
+#18 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(275): Illuminate\Routing\ControllerDispatcher-&gt;dispatch(Object(Illuminate\Routing\Route), Object(App\Http\Controllers\LandingController), 'index')
+#19 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(215): Illuminate\Routing\Route-&gt;runController()
+#20 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(822): Illuminate\Routing\Route-&gt;run()
+#21 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Routing\Router-&gt;{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))
+#22 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets.php(32): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#23 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#24 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware.php(138): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#25 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#26 C:\laragon\www\smart-ebt-esdm\app\Http\Middleware\HandleAppearance.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#27 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): App\Http\Middleware\HandleAppearance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#28 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Middleware\SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#29 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#30 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestForgery.php(104): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#31 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestForgery-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#32 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\View\Middleware\ShareErrorsFromSession.php(48): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#33 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\View\Middleware\ShareErrorsFromSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#34 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(120): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#35 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(63): Illuminate\Session\Middleware\StartSession-&gt;handleStatefulRequest(Object(Illuminate\Http\Request), Object(Illuminate\Session\Store), Object(Closure))
+#36 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Session\Middleware\StartSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#37 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#38 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#39 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\EncryptCookies.php(74): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#40 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#41 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#42 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(821): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#43 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(800): Illuminate\Routing\Router-&gt;runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#44 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(764): Illuminate\Routing\Router-&gt;runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#45 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(753): Illuminate\Routing\Router-&gt;dispatchToRoute(Object(Illuminate\Http\Request))
+#46 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(200): Illuminate\Routing\Router-&gt;dispatch(Object(Illuminate\Http\Request))
+#47 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Foundation\Http\Kernel-&gt;{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#48 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware\EnsureGetOnRedirect.php(19): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#49 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware\EnsureGetOnRedirect-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#50 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#51 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#52 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#53 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#54 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#55 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#56 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#57 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#58 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#59 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#60 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php(61): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#61 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\HandleCors-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#62 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php(58): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#63 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#64 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#65 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#66 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePathEncoding.php(28): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#67 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#68 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#69 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#70 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel-&gt;sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#71 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(638): Illuminate\Foundation\Http\Kernel-&gt;handle(Object(Illuminate\Http\Request))
+#72 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(368): Illuminate\Foundation\Testing\TestCase-&gt;call('GET', 'https://2324-24...', Array, Array, Array, Array)
+#73 C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php(12): Illuminate\Foundation\Testing\TestCase-&gt;get('https://2324-24...')
+#74 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseMethodFactory.php(177): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php:11}()
+#75 [internal function]: P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Factories\TestCaseMethodFactory::getClosure():167}()
+#76 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): call_user_func_array(Object(Closure), Array)
+#77 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Support\ExceptionTrace.php(26): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Concerns\Testable::__callClosure():581}()
+#78 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): Pest\Support\ExceptionTrace::ensure(Object(Closure))
+#79 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(403): P\Tests\Feature\SmartEbtCoreTest-&gt;__callClosure(Object(Closure), Array)
+#80 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseFactory.php(178) : eval()'d code(17): P\Tests\Feature\SmartEbtCoreTest-&gt;__runTest(Object(Closure))
+#81 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1318): P\Tests\Feature\SmartEbtCoreTest-&gt;__pest_evaluable_landing_page_is_public()
+#82 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1355): PHPUnit\Framework\TestCase-&gt;invokeTestMethod('__pest_evaluabl...', Array)
+#83 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(521): PHPUnit\Framework\TestCase-&gt;runTest()
+#84 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestRunner\TestRunner.php(99): PHPUnit\Framework\TestCase-&gt;runBare()
+#85 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(361): PHPUnit\Framework\TestRunner-&gt;run(Object(P\Tests\Feature\SmartEbtCoreTest))
+#86 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestCase-&gt;run()
+#87 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(64): PHPUnit\Framework\TestSuite-&gt;run()
+#88 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\Application.php(229): PHPUnit\TextUI\TestRunner-&gt;run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))
+#89 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Kernel.php(117): PHPUnit\TextUI\Application-&gt;run(Array)
+#90 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(207): Pest\Kernel-&gt;handle(Array, Array)
+#91 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(215): {closure:C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest:21}()
+#92 {main}
+
+Next Illuminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: select "id", "title", "description", "original_name", "created_at" from "downloads" where "is_active" = 1 order by "sort_order" asc, "title" asc) in C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php:857
+Stack trace:
+#0 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(813): Illuminate\Database\Connection-&gt;runQueryCallback('select "id", "t...', Array, Object(Closure))
+#1 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(426): Illuminate\Database\Connection-&gt;run('select "id", "t...', Array, Object(Closure))
+#2 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3573): Illuminate\Database\Connection-&gt;select('select "id", "t...', Array, true, Array)
+#3 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3557): Illuminate\Database\Query\Builder-&gt;runSelect()
+#4 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(908): Illuminate\Database\Query\Builder-&gt;get(Array)
+#5 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(890): Illuminate\Database\Eloquent\Builder-&gt;getModels(Array)
+#6 C:\laragon\www\smart-ebt-esdm\app\Http\Controllers\LandingController.php(18): Illuminate\Database\Eloquent\Builder-&gt;get(Array)
+#7 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\ControllerDispatcher.php(46): App\Http\Controllers\LandingController-&gt;index()
+#8 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(275): Illuminate\Routing\ControllerDispatcher-&gt;dispatch(Object(Illuminate\Routing\Route), Object(App\Http\Controllers\LandingController), 'index')
+#9 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(215): Illuminate\Routing\Route-&gt;runController()
+#10 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(822): Illuminate\Routing\Route-&gt;run()
+#11 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Routing\Router-&gt;{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))
+#12 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets.php(32): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#13 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#14 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware.php(138): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#15 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#16 C:\laragon\www\smart-ebt-esdm\app\Http\Middleware\HandleAppearance.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#17 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): App\Http\Middleware\HandleAppearance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#18 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Middleware\SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#19 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#20 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestForgery.php(104): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#21 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestForgery-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#22 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\View\Middleware\ShareErrorsFromSession.php(48): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#23 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\View\Middleware\ShareErrorsFromSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#24 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(120): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#25 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(63): Illuminate\Session\Middleware\StartSession-&gt;handleStatefulRequest(Object(Illuminate\Http\Request), Object(Illuminate\Session\Store), Object(Closure))
+#26 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Session\Middleware\StartSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#27 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#28 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#29 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\EncryptCookies.php(74): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#30 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#31 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#32 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(821): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#33 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(800): Illuminate\Routing\Router-&gt;runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#34 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(764): Illuminate\Routing\Router-&gt;runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#35 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(753): Illuminate\Routing\Router-&gt;dispatchToRoute(Object(Illuminate\Http\Request))
+#36 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(200): Illuminate\Routing\Router-&gt;dispatch(Object(Illuminate\Http\Request))
+#37 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Foundation\Http\Kernel-&gt;{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#38 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware\EnsureGetOnRedirect.php(19): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#39 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware\EnsureGetOnRedirect-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#40 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#41 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#42 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#43 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#44 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#45 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#46 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#47 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#48 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#49 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#50 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php(61): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#51 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\HandleCors-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#52 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php(58): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#53 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#54 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#55 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#56 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePathEncoding.php(28): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#57 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#58 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#59 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#60 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel-&gt;sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#61 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(638): Illuminate\Foundation\Http\Kernel-&gt;handle(Object(Illuminate\Http\Request))
+#62 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(368): Illuminate\Foundation\Testing\TestCase-&gt;call('GET', 'https://2324-24...', Array, Array, Array, Array)
+#63 C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php(12): Illuminate\Foundation\Testing\TestCase-&gt;get('https://2324-24...')
+#64 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseMethodFactory.php(177): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php:11}()
+#65 [internal function]: P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Factories\TestCaseMethodFactory::getClosure():167}()
+#66 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): call_user_func_array(Object(Closure), Array)
+#67 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Support\ExceptionTrace.php(26): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Concerns\Testable::__callClosure():581}()
+#68 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): Pest\Support\ExceptionTrace::ensure(Object(Closure))
+#69 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(403): P\Tests\Feature\SmartEbtCoreTest-&gt;__callClosure(Object(Closure), Array)
+#70 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseFactory.php(178) : eval()'d code(17): P\Tests\Feature\SmartEbtCoreTest-&gt;__runTest(Object(Closure))
+#71 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1318): P\Tests\Feature\SmartEbtCoreTest-&gt;__pest_evaluable_landing_page_is_public()
+#72 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1355): PHPUnit\Framework\TestCase-&gt;invokeTestMethod('__pest_evaluabl...', Array)
+#73 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(521): PHPUnit\Framework\TestCase-&gt;runTest()
+#74 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestRunner\TestRunner.php(99): PHPUnit\Framework\TestCase-&gt;runBare()
+#75 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(361): PHPUnit\Framework\TestRunner-&gt;run(Object(P\Tests\Feature\SmartEbtCoreTest))
+#76 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestCase-&gt;run()
+#77 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(64): PHPUnit\Framework\TestSuite-&gt;run()
+#78 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\Application.php(229): PHPUnit\TextUI\TestRunner-&gt;run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))
+#79 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Kernel.php(117): PHPUnit\TextUI\Application-&gt;run(Array)
+#80 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(207): Pest\Kernel-&gt;handle(Array, Array)
+#81 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(215): {closure:C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest:21}()
+#82 {main}
+
+----------------------------------------------------------------------------------
+
+could not find driver (Connection: sqlite, Database: :memory:, SQL: select "id", "title", "description", "original_name", "created_at" from "downloads" where "is_active" = 1 order by "sort_order" asc, "title" asc)&#13;
+&#13;
+at vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+at vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:176
+at vendor\laravel\framework\src\Illuminate\Testing\Concerns\AssertsStatusCodes.php:16
+at tests\Feature\SmartEbtCoreTest.php:13</failure>
+    </testcase>
+    <testcase name="map data endpoint returns json" file="tests\Feature\SmartEbtCoreTest.php::map data endpoint returns json" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="1" time="0.022852">
+      <failure type="PHPUnit\Framework\ExpectationFailedException">map data endpoint returns jsonExpected response status code [200] but received 500.
+Failed asserting that 500 is identical to 200.&#13;
+&#13;
+The following exception occurred during the last request:
+
+PDOException: could not find driver in C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+Stack trace:
+#0 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(67): PDO::connect('sqlite::memory:', NULL, Object(SensitiveParameterValue), Array)
+#1 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(44): Illuminate\Database\Connectors\Connector-&gt;createPdoConnection('sqlite::memory:', NULL, Object(SensitiveParameterValue), Array)
+#2 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php(21): Illuminate\Database\Connectors\Connector-&gt;createConnection('sqlite::memory:', Array, Array)
+#3 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php(259): Illuminate\Database\Connectors\SQLiteConnector-&gt;connect(Array)
+#4 [internal function]: Illuminate\Database\Connectors\ConnectionFactory-&gt;{closure:Illuminate\Database\Connectors\ConnectionFactory::createPdoResolverWithoutHosts():259}()
+#5 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(1297): call_user_func(Object(Closure))
+#6 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(1335): Illuminate\Database\Connection-&gt;getPdo()
+#7 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(542): Illuminate\Database\Connection-&gt;getReadPdo()
+#8 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(435): Illuminate\Database\Connection-&gt;getPdoForSelect(true)
+#9 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(846): Illuminate\Database\Connection-&gt;{closure:Illuminate\Database\Connection::select():426}('select "id", "e...', Array)
+#10 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(813): Illuminate\Database\Connection-&gt;runQueryCallback('select "id", "e...', Array, Object(Closure))
+#11 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(426): Illuminate\Database\Connection-&gt;run('select "id", "e...', Array, Object(Closure))
+#12 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3573): Illuminate\Database\Connection-&gt;select('select "id", "e...', Array, true, Array)
+#13 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3557): Illuminate\Database\Query\Builder-&gt;runSelect()
+#14 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(908): Illuminate\Database\Query\Builder-&gt;get(Array)
+#15 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(890): Illuminate\Database\Eloquent\Builder-&gt;getModels(Array)
+#16 C:\laragon\www\smart-ebt-esdm\app\Http\Controllers\LandingController.php(47): Illuminate\Database\Eloquent\Builder-&gt;get(Array)
+#17 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\ControllerDispatcher.php(46): App\Http\Controllers\LandingController-&gt;mapData()
+#18 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(275): Illuminate\Routing\ControllerDispatcher-&gt;dispatch(Object(Illuminate\Routing\Route), Object(App\Http\Controllers\LandingController), 'mapData')
+#19 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(215): Illuminate\Routing\Route-&gt;runController()
+#20 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(822): Illuminate\Routing\Route-&gt;run()
+#21 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Routing\Router-&gt;{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))
+#22 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets.php(32): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#23 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#24 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware.php(138): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#25 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#26 C:\laragon\www\smart-ebt-esdm\app\Http\Middleware\HandleAppearance.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#27 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): App\Http\Middleware\HandleAppearance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#28 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Middleware\SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#29 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#30 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestForgery.php(104): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#31 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestForgery-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#32 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\View\Middleware\ShareErrorsFromSession.php(48): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#33 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\View\Middleware\ShareErrorsFromSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#34 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(120): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#35 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(63): Illuminate\Session\Middleware\StartSession-&gt;handleStatefulRequest(Object(Illuminate\Http\Request), Object(Illuminate\Session\Store), Object(Closure))
+#36 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Session\Middleware\StartSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#37 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#38 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#39 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\EncryptCookies.php(74): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#40 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#41 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#42 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(821): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#43 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(800): Illuminate\Routing\Router-&gt;runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#44 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(764): Illuminate\Routing\Router-&gt;runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#45 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(753): Illuminate\Routing\Router-&gt;dispatchToRoute(Object(Illuminate\Http\Request))
+#46 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(200): Illuminate\Routing\Router-&gt;dispatch(Object(Illuminate\Http\Request))
+#47 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Foundation\Http\Kernel-&gt;{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#48 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware\EnsureGetOnRedirect.php(19): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#49 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware\EnsureGetOnRedirect-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#50 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#51 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#52 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#53 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#54 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#55 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#56 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#57 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#58 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#59 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#60 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php(61): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#61 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\HandleCors-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#62 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php(58): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#63 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#64 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#65 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#66 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePathEncoding.php(28): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#67 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#68 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#69 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#70 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel-&gt;sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#71 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(638): Illuminate\Foundation\Http\Kernel-&gt;handle(Object(Illuminate\Http\Request))
+#72 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(604): Illuminate\Foundation\Testing\TestCase-&gt;call('GET', 'https://2324-24...', Array, Array, Array, Array, '[]')
+#73 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(381): Illuminate\Foundation\Testing\TestCase-&gt;json('GET', 'https://2324-24...', Array, Array, 0)
+#74 C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php(18): Illuminate\Foundation\Testing\TestCase-&gt;getJson('https://2324-24...')
+#75 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseMethodFactory.php(177): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php:17}()
+#76 [internal function]: P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Factories\TestCaseMethodFactory::getClosure():167}()
+#77 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): call_user_func_array(Object(Closure), Array)
+#78 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Support\ExceptionTrace.php(26): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Concerns\Testable::__callClosure():581}()
+#79 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): Pest\Support\ExceptionTrace::ensure(Object(Closure))
+#80 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(403): P\Tests\Feature\SmartEbtCoreTest-&gt;__callClosure(Object(Closure), Array)
+#81 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseFactory.php(178) : eval()'d code(26): P\Tests\Feature\SmartEbtCoreTest-&gt;__runTest(Object(Closure))
+#82 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1318): P\Tests\Feature\SmartEbtCoreTest-&gt;__pest_evaluable_map_data_endpoint_returns_json()
+#83 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1355): PHPUnit\Framework\TestCase-&gt;invokeTestMethod('__pest_evaluabl...', Array)
+#84 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(521): PHPUnit\Framework\TestCase-&gt;runTest()
+#85 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestRunner\TestRunner.php(99): PHPUnit\Framework\TestCase-&gt;runBare()
+#86 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(361): PHPUnit\Framework\TestRunner-&gt;run(Object(P\Tests\Feature\SmartEbtCoreTest))
+#87 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestCase-&gt;run()
+#88 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(64): PHPUnit\Framework\TestSuite-&gt;run()
+#89 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\Application.php(229): PHPUnit\TextUI\TestRunner-&gt;run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))
+#90 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Kernel.php(117): PHPUnit\TextUI\Application-&gt;run(Array)
+#91 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(207): Pest\Kernel-&gt;handle(Array, Array)
+#92 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(215): {closure:C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest:21}()
+#93 {main}
+
+Next Illuminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: select "id", "entry_type", "category", "lokasi", "deskripsi_titik", "latitude", "longitude", "bauran_energi", "kapasitas" from "submissions" where "status" = sudah_intervensi and "latitude" is not null and "longitude" is not null) in C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php:857
+Stack trace:
+#0 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(813): Illuminate\Database\Connection-&gt;runQueryCallback('select "id", "e...', Array, Object(Closure))
+#1 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(426): Illuminate\Database\Connection-&gt;run('select "id", "e...', Array, Object(Closure))
+#2 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3573): Illuminate\Database\Connection-&gt;select('select "id", "e...', Array, true, Array)
+#3 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3557): Illuminate\Database\Query\Builder-&gt;runSelect()
+#4 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(908): Illuminate\Database\Query\Builder-&gt;get(Array)
+#5 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(890): Illuminate\Database\Eloquent\Builder-&gt;getModels(Array)
+#6 C:\laragon\www\smart-ebt-esdm\app\Http\Controllers\LandingController.php(47): Illuminate\Database\Eloquent\Builder-&gt;get(Array)
+#7 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\ControllerDispatcher.php(46): App\Http\Controllers\LandingController-&gt;mapData()
+#8 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(275): Illuminate\Routing\ControllerDispatcher-&gt;dispatch(Object(Illuminate\Routing\Route), Object(App\Http\Controllers\LandingController), 'mapData')
+#9 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(215): Illuminate\Routing\Route-&gt;runController()
+#10 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(822): Illuminate\Routing\Route-&gt;run()
+#11 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Routing\Router-&gt;{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))
+#12 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets.php(32): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#13 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#14 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware.php(138): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#15 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#16 C:\laragon\www\smart-ebt-esdm\app\Http\Middleware\HandleAppearance.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#17 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): App\Http\Middleware\HandleAppearance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#18 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Middleware\SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#19 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#20 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestForgery.php(104): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#21 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestForgery-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#22 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\View\Middleware\ShareErrorsFromSession.php(48): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#23 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\View\Middleware\ShareErrorsFromSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#24 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(120): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#25 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(63): Illuminate\Session\Middleware\StartSession-&gt;handleStatefulRequest(Object(Illuminate\Http\Request), Object(Illuminate\Session\Store), Object(Closure))
+#26 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Session\Middleware\StartSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#27 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#28 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#29 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\EncryptCookies.php(74): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#30 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#31 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#32 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(821): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#33 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(800): Illuminate\Routing\Router-&gt;runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#34 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(764): Illuminate\Routing\Router-&gt;runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#35 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(753): Illuminate\Routing\Router-&gt;dispatchToRoute(Object(Illuminate\Http\Request))
+#36 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(200): Illuminate\Routing\Router-&gt;dispatch(Object(Illuminate\Http\Request))
+#37 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Foundation\Http\Kernel-&gt;{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#38 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware\EnsureGetOnRedirect.php(19): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#39 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware\EnsureGetOnRedirect-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#40 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#41 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#42 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#43 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#44 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#45 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#46 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#47 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#48 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#49 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#50 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php(61): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#51 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\HandleCors-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#52 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php(58): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#53 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#54 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#55 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#56 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePathEncoding.php(28): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#57 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#58 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#59 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#60 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel-&gt;sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#61 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(638): Illuminate\Foundation\Http\Kernel-&gt;handle(Object(Illuminate\Http\Request))
+#62 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(604): Illuminate\Foundation\Testing\TestCase-&gt;call('GET', 'https://2324-24...', Array, Array, Array, Array, '[]')
+#63 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(381): Illuminate\Foundation\Testing\TestCase-&gt;json('GET', 'https://2324-24...', Array, Array, 0)
+#64 C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php(18): Illuminate\Foundation\Testing\TestCase-&gt;getJson('https://2324-24...')
+#65 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseMethodFactory.php(177): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php:17}()
+#66 [internal function]: P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Factories\TestCaseMethodFactory::getClosure():167}()
+#67 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): call_user_func_array(Object(Closure), Array)
+#68 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Support\ExceptionTrace.php(26): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Concerns\Testable::__callClosure():581}()
+#69 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): Pest\Support\ExceptionTrace::ensure(Object(Closure))
+#70 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(403): P\Tests\Feature\SmartEbtCoreTest-&gt;__callClosure(Object(Closure), Array)
+#71 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseFactory.php(178) : eval()'d code(26): P\Tests\Feature\SmartEbtCoreTest-&gt;__runTest(Object(Closure))
+#72 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1318): P\Tests\Feature\SmartEbtCoreTest-&gt;__pest_evaluable_map_data_endpoint_returns_json()
+#73 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1355): PHPUnit\Framework\TestCase-&gt;invokeTestMethod('__pest_evaluabl...', Array)
+#74 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(521): PHPUnit\Framework\TestCase-&gt;runTest()
+#75 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestRunner\TestRunner.php(99): PHPUnit\Framework\TestCase-&gt;runBare()
+#76 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(361): PHPUnit\Framework\TestRunner-&gt;run(Object(P\Tests\Feature\SmartEbtCoreTest))
+#77 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestCase-&gt;run()
+#78 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(64): PHPUnit\Framework\TestSuite-&gt;run()
+#79 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\Application.php(229): PHPUnit\TextUI\TestRunner-&gt;run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))
+#80 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Kernel.php(117): PHPUnit\TextUI\Application-&gt;run(Array)
+#81 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(207): Pest\Kernel-&gt;handle(Array, Array)
+#82 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(215): {closure:C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest:21}()
+#83 {main}
+
+----------------------------------------------------------------------------------
+
+could not find driver (Connection: sqlite, Database: :memory:, SQL: select "id", "entry_type", "category", "lokasi", "deskripsi_titik", "latitude", "longitude", "bauran_energi", "kapasitas" from "submissions" where "status" = sudah_intervensi and "latitude" is not null and "longitude" is not null)&#13;
+&#13;
+at vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+at vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:176
+at vendor\laravel\framework\src\Illuminate\Testing\Concerns\AssertsStatusCodes.php:16
+at tests\Feature\SmartEbtCoreTest.php:19</failure>
+    </testcase>
+    <testcase name="admin is redirected to admin dashboard after login" file="tests\Feature\SmartEbtCoreTest.php::admin is redirected to admin dashboard after login" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="0" time="0.036963">
+      <error type="Illuminate\Database\QueryException">admin is redirected to admin dashboard after loginIlluminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("name", "username", "email", "email_verified_at", "password", "role", "remember_token", "two_factor_secret", "two_factor_recovery_codes", "two_factor_confirmed_at", "updated_at", "created_at") values (Dr. Jamel Klein, admin_227, admin-login-6a6db3af76da0@smart-ebt.go.id, 2026-08-01 08:51:59, $2y$04$ldLN9I3eWQc5HOe2gfiFyue1kLzJFj4xDr4QJIJ7Sz0sRQQOm/.Va, admin, cfNbcGPfdg, ?, ?, ?, 2026-08-01 08:51:59, 2026-08-01 08:51:59))&#13;
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:324
+at tests\Feature\SmartEbtCoreTest.php:24
+Caused by
+PDOException: could not find driver
+
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:324
+at tests\Feature\SmartEbtCoreTest.php:24</error>
+    </testcase>
+    <testcase name="user is redirected to user dashboard after login" file="tests\Feature\SmartEbtCoreTest.php::user is redirected to user dashboard after login" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="0" time="0.027143">
+      <error type="Illuminate\Database\QueryException">user is redirected to user dashboard after loginIlluminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("name", "username", "email", "email_verified_at", "password", "role", "remember_token", "two_factor_secret", "two_factor_recovery_codes", "two_factor_confirmed_at", "updated_at", "created_at") values (Mercedes Block, kylie30, user-login-6a6db3af7d68a@example.com, 2026-08-01 08:51:59, $2y$04$pV3.vmKvUrKZ6bwVDrMks.f8haDRvWpan6gG5tXRGKO5uLij7Ka7a, user, SWKpjjLo9D, ?, ?, ?, 2026-08-01 08:51:59, 2026-08-01 08:51:59))&#13;
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:324
+at tests\Feature\SmartEbtCoreTest.php:36
+Caused by
+PDOException: could not find driver
+
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:324
+at tests\Feature\SmartEbtCoreTest.php:36</error>
+    </testcase>
+    <testcase name="non admin cannot access admin dashboard" file="tests\Feature\SmartEbtCoreTest.php::non admin cannot access admin dashboard" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="0" time="0.025471">
+      <error type="Illuminate\Database\QueryException">non admin cannot access admin dashboardIlluminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("name", "username", "email", "email_verified_at", "password", "role", "remember_token", "two_factor_secret", "two_factor_recovery_codes", "two_factor_confirmed_at", "updated_at", "created_at") values (Jonathon Rutherford DDS, cordia85, deja66@example.org, 2026-08-01 08:51:59, $2y$04$FvnWFWKPRiYr4FTkK.NAn.IWuiF5DP7aRnfyWyJlwejkCVTFCr/TC, user, aqZ4KCpxOo, ?, ?, ?, 2026-08-01 08:51:59, 2026-08-01 08:51:59))&#13;
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:48
+Caused by
+PDOException: could not find driver
+
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:48</error>
+    </testcase>
+    <testcase name="admin can access admin dashboard" file="tests\Feature\SmartEbtCoreTest.php::admin can access admin dashboard" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="0" time="0.027152">
+      <error type="Illuminate\Database\QueryException">admin can access admin dashboardIlluminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("name", "username", "email", "email_verified_at", "password", "role", "remember_token", "two_factor_secret", "two_factor_recovery_codes", "two_factor_confirmed_at", "updated_at", "created_at") values (Pansy Schneider, admin_996, kaley.cummerata@example.net, 2026-08-01 08:51:59, $2y$04$FvnWFWKPRiYr4FTkK.NAn.IWuiF5DP7aRnfyWyJlwejkCVTFCr/TC, admin, ejPJc6k1KY, ?, ?, ?, 2026-08-01 08:51:59, 2026-08-01 08:51:59))&#13;
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:56
+Caused by
+PDOException: could not find driver
+
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:56</error>
+    </testcase>
+    <testcase name="create form accepts potensi and terbangun types" file="tests\Feature\SmartEbtCoreTest.php::create form accepts potensi and terbangun types" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="0" time="0.024655">
+      <error type="Illuminate\Database\QueryException">create form accepts potensi and terbangun typesIlluminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("name", "username", "email", "email_verified_at", "password", "role", "remember_token", "two_factor_secret", "two_factor_recovery_codes", "two_factor_confirmed_at", "updated_at", "created_at") values (Dr. Tyrese Schimmel DVM, daniel.priscilla, nolan.khalil@example.com, 2026-08-01 08:51:59, $2y$04$FvnWFWKPRiYr4FTkK.NAn.IWuiF5DP7aRnfyWyJlwejkCVTFCr/TC, user, TmcGDoS3Xv, ?, ?, ?, 2026-08-01 08:51:59, 2026-08-01 08:51:59))&#13;
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:65
+Caused by
+PDOException: could not find driver
+
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:65</error>
+    </testcase>
+    <testcase name="user can store potensi with minimal fields" file="tests\Feature\SmartEbtCoreTest.php::user can store potensi with minimal fields" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="0" time="0.024294">
+      <error type="Illuminate\Database\QueryException">user can store potensi with minimal fieldsIlluminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("name", "username", "email", "email_verified_at", "password", "role", "remember_token", "two_factor_secret", "two_factor_recovery_codes", "two_factor_confirmed_at", "updated_at", "created_at") values (Jesus Quitzon, cleo94, buckridge.leilani@example.com, 2026-08-01 08:51:59, $2y$04$FvnWFWKPRiYr4FTkK.NAn.IWuiF5DP7aRnfyWyJlwejkCVTFCr/TC, user, gEqCpjvAtc, ?, ?, ?, 2026-08-01 08:51:59, 2026-08-01 08:51:59))&#13;
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:83
+Caused by
+PDOException: could not find driver
+
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:83</error>
+    </testcase>
+    <testcase name="admin can store terbangun plts with auto bauran energi" file="tests\Feature\SmartEbtCoreTest.php::admin can store terbangun plts with auto bauran energi" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="0" time="0.022958">
+      <error type="Illuminate\Database\QueryException">admin can store terbangun plts with auto bauran energiIlluminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("name", "username", "email", "email_verified_at", "password", "role", "remember_token", "two_factor_secret", "two_factor_recovery_codes", "two_factor_confirmed_at", "updated_at", "created_at") values (Mr. Clyde Cruickshank, admin_647, maggio.jakob@example.org, 2026-08-01 08:51:59, $2y$04$FvnWFWKPRiYr4FTkK.NAn.IWuiF5DP7aRnfyWyJlwejkCVTFCr/TC, admin, uLRXC9FOGW, ?, ?, ?, 2026-08-01 08:51:59, 2026-08-01 08:51:59))&#13;
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:100
+Caused by
+PDOException: could not find driver
+
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:100</error>
+    </testcase>
+    <testcase name="map data only includes verified submissions with coordinates" file="tests\Feature\SmartEbtCoreTest.php::map data only includes verified submissions with coordinates" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="0" time="0.023764">
+      <error type="Illuminate\Database\QueryException">map data only includes verified submissions with coordinatesIlluminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("name", "username", "email", "email_verified_at", "password", "role", "remember_token", "two_factor_secret", "two_factor_recovery_codes", "two_factor_confirmed_at", "updated_at", "created_at") values (Armando Koch, hollie.tromp, imosciski@example.org, 2026-08-01 08:51:59, $2y$04$FvnWFWKPRiYr4FTkK.NAn.IWuiF5DP7aRnfyWyJlwejkCVTFCr/TC, user, aeH72X4b12, ?, ?, ?, 2026-08-01 08:51:59, 2026-08-01 08:51:59))&#13;
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:125
+Caused by
+PDOException: could not find driver
+
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:125</error>
+    </testcase>
+    <testcase name="user can view own submission but not others" file="tests\Feature\SmartEbtCoreTest.php::user can view own submission but not others" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="0" time="0.025777">
+      <error type="Illuminate\Database\QueryException">user can view own submission but not othersIlluminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("name", "username", "email", "email_verified_at", "password", "role", "remember_token", "two_factor_secret", "two_factor_recovery_codes", "two_factor_confirmed_at", "updated_at", "created_at") values (Jazmyne Zboncak III, nmetz, mraz.margaretta@example.org, 2026-08-01 08:51:59, $2y$04$FvnWFWKPRiYr4FTkK.NAn.IWuiF5DP7aRnfyWyJlwejkCVTFCr/TC, user, FBDcwYVndF, ?, ?, ?, 2026-08-01 08:51:59, 2026-08-01 08:51:59))&#13;
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:161
+Caused by
+PDOException: could not find driver
+
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php:21
+at vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php:259
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:1297
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:595
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:846
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:813
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:590
+at vendor\laravel\framework\src\Illuminate\Database\Connection.php:554
+at vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+at vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4257
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2271
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1662
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1578
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1382
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:379
+at vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:275
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:374
+at vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:330
+at tests\Feature\SmartEbtCoreTest.php:161</error>
+    </testcase>
+    <testcase name="registration always creates user role" file="tests\Feature\SmartEbtCoreTest.php::registration always creates user role" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="1" time="1.500605">
+      <failure type="PHPUnit\Framework\ExpectationFailedException">registration always creates user roleExpected response status code [201, 301, 302, 303, 307, 308] but received 500.
+Failed asserting that false is true.&#13;
+&#13;
+The following exception occurred during the last request:
+
+PDOException: could not find driver in C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+Stack trace:
+#0 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(67): PDO::connect('sqlite::memory:', NULL, Object(SensitiveParameterValue), Array)
+#1 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(44): Illuminate\Database\Connectors\Connector-&gt;createPdoConnection('sqlite::memory:', NULL, Object(SensitiveParameterValue), Array)
+#2 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\SQLiteConnector.php(21): Illuminate\Database\Connectors\Connector-&gt;createConnection('sqlite::memory:', Array, Array)
+#3 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php(259): Illuminate\Database\Connectors\SQLiteConnector-&gt;connect(Array)
+#4 [internal function]: Illuminate\Database\Connectors\ConnectionFactory-&gt;{closure:Illuminate\Database\Connectors\ConnectionFactory::createPdoResolverWithoutHosts():259}()
+#5 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(1297): call_user_func(Object(Closure))
+#6 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(542): Illuminate\Database\Connection-&gt;getPdo()
+#7 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(435): Illuminate\Database\Connection-&gt;getPdoForSelect(false)
+#8 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(846): Illuminate\Database\Connection-&gt;{closure:Illuminate\Database\Connection::select():426}('select count(*)...', Array)
+#9 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(813): Illuminate\Database\Connection-&gt;runQueryCallback('select count(*)...', Array, Object(Closure))
+#10 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(426): Illuminate\Database\Connection-&gt;run('select count(*)...', Array, Object(Closure))
+#11 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3573): Illuminate\Database\Connection-&gt;select('select count(*)...', Array, false, Array)
+#12 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3557): Illuminate\Database\Query\Builder-&gt;runSelect()
+#13 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(4073): Illuminate\Database\Query\Builder-&gt;get(Array)
+#14 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(4001): Illuminate\Database\Query\Builder-&gt;aggregate('count', Array)
+#15 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\DatabasePresenceVerifier.php(53): Illuminate\Database\Query\Builder-&gt;count()
+#16 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\Concerns\ValidatesAttributes.php(1097): Illuminate\Validation\DatabasePresenceVerifier-&gt;getCount('users', 'username', 'pemohon6a6db3af...', NULL, 'id', Array)
+#17 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\Validator.php(728): Illuminate\Validation\Validator-&gt;validateUnique('username', 'pemohon6a6db3af...', Array, Object(Illuminate\Validation\Validator))
+#18 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\Validator.php(481): Illuminate\Validation\Validator-&gt;validateAttribute('username', 'Unique')
+#19 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\Validator.php(516): Illuminate\Validation\Validator-&gt;passes()
+#20 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\Validator.php(598): Illuminate\Validation\Validator-&gt;fails()
+#21 C:\laragon\www\smart-ebt-esdm\app\Actions\Fortify\CreateNewUser.php(25): Illuminate\Validation\Validator-&gt;validate()
+#22 C:\laragon\www\smart-ebt-esdm\vendor\laravel\fortify\src\Http\Controllers\RegisteredUserController.php(62): App\Actions\Fortify\CreateNewUser-&gt;create(Array)
+#23 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Controller.php(54): Laravel\Fortify\Http\Controllers\RegisteredUserController-&gt;store(Object(Illuminate\Http\Request), Object(App\Actions\Fortify\CreateNewUser))
+#24 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\ControllerDispatcher.php(43): Illuminate\Routing\Controller-&gt;callAction('store', Array)
+#25 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(275): Illuminate\Routing\ControllerDispatcher-&gt;dispatch(Object(Illuminate\Routing\Route), Object(Laravel\Fortify\Http\Controllers\RegisteredUserController), 'store')
+#26 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(215): Illuminate\Routing\Route-&gt;runController()
+#27 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(822): Illuminate\Routing\Route-&gt;run()
+#28 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Routing\Router-&gt;{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))
+#29 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Auth\Middleware\RedirectIfAuthenticated.php(47): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#30 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Auth\Middleware\RedirectIfAuthenticated-&gt;handle(Object(Illuminate\Http\Request), Object(Closure), 'web')
+#31 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets.php(32): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#32 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#33 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware.php(138): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#34 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#35 C:\laragon\www\smart-ebt-esdm\app\Http\Middleware\HandleAppearance.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#36 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): App\Http\Middleware\HandleAppearance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#37 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Middleware\SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#38 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#39 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestForgery.php(104): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#40 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestForgery-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#41 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\View\Middleware\ShareErrorsFromSession.php(48): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#42 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\View\Middleware\ShareErrorsFromSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#43 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(120): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#44 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(63): Illuminate\Session\Middleware\StartSession-&gt;handleStatefulRequest(Object(Illuminate\Http\Request), Object(Illuminate\Session\Store), Object(Closure))
+#45 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Session\Middleware\StartSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#46 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#47 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#48 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\EncryptCookies.php(74): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#49 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#50 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#51 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(821): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#52 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(800): Illuminate\Routing\Router-&gt;runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#53 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(764): Illuminate\Routing\Router-&gt;runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#54 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(753): Illuminate\Routing\Router-&gt;dispatchToRoute(Object(Illuminate\Http\Request))
+#55 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(200): Illuminate\Routing\Router-&gt;dispatch(Object(Illuminate\Http\Request))
+#56 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Foundation\Http\Kernel-&gt;{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#57 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware\EnsureGetOnRedirect.php(19): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#58 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware\EnsureGetOnRedirect-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#59 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#60 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#61 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#62 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#63 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#64 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#65 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#66 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#67 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#68 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#69 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php(61): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#70 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\HandleCors-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#71 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php(58): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#72 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#73 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#74 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#75 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePathEncoding.php(28): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#76 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#77 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#78 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#79 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel-&gt;sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#80 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(638): Illuminate\Foundation\Http\Kernel-&gt;handle(Object(Illuminate\Http\Request))
+#81 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(397): Illuminate\Foundation\Testing\TestCase-&gt;call('POST', 'https://2324-24...', Array, Array, Array, Array)
+#82 C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php(188): Illuminate\Foundation\Testing\TestCase-&gt;post('https://2324-24...', Array)
+#83 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseMethodFactory.php(177): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php:184}()
+#84 [internal function]: P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Factories\TestCaseMethodFactory::getClosure():167}()
+#85 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): call_user_func_array(Object(Closure), Array)
+#86 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Support\ExceptionTrace.php(26): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Concerns\Testable::__callClosure():581}()
+#87 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): Pest\Support\ExceptionTrace::ensure(Object(Closure))
+#88 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(403): P\Tests\Feature\SmartEbtCoreTest-&gt;__callClosure(Object(Closure), Array)
+#89 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseFactory.php(178) : eval()'d code(116): P\Tests\Feature\SmartEbtCoreTest-&gt;__runTest(Object(Closure))
+#90 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1318): P\Tests\Feature\SmartEbtCoreTest-&gt;__pest_evaluable_registration_always_creates_user_role()
+#91 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1355): PHPUnit\Framework\TestCase-&gt;invokeTestMethod('__pest_evaluabl...', Array)
+#92 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(521): PHPUnit\Framework\TestCase-&gt;runTest()
+#93 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestRunner\TestRunner.php(99): PHPUnit\Framework\TestCase-&gt;runBare()
+#94 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(361): PHPUnit\Framework\TestRunner-&gt;run(Object(P\Tests\Feature\SmartEbtCoreTest))
+#95 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestCase-&gt;run()
+#96 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(64): PHPUnit\Framework\TestSuite-&gt;run()
+#97 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\Application.php(229): PHPUnit\TextUI\TestRunner-&gt;run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))
+#98 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Kernel.php(117): PHPUnit\TextUI\Application-&gt;run(Array)
+#99 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(207): Pest\Kernel-&gt;handle(Array, Array)
+#100 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(215): {closure:C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest:21}()
+#101 {main}
+
+Next Illuminate\Database\QueryException: could not find driver (Connection: sqlite, Database: :memory:, SQL: select count(*) as "aggregate" from "users" where "username" = pemohon6a6db3afaea0b) in C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php:857
+Stack trace:
+#0 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(813): Illuminate\Database\Connection-&gt;runQueryCallback('select count(*)...', Array, Object(Closure))
+#1 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Connection.php(426): Illuminate\Database\Connection-&gt;run('select count(*)...', Array, Object(Closure))
+#2 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3573): Illuminate\Database\Connection-&gt;select('select count(*)...', Array, false, Array)
+#3 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3557): Illuminate\Database\Query\Builder-&gt;runSelect()
+#4 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(4073): Illuminate\Database\Query\Builder-&gt;get(Array)
+#5 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(4001): Illuminate\Database\Query\Builder-&gt;aggregate('count', Array)
+#6 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\DatabasePresenceVerifier.php(53): Illuminate\Database\Query\Builder-&gt;count()
+#7 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\Concerns\ValidatesAttributes.php(1097): Illuminate\Validation\DatabasePresenceVerifier-&gt;getCount('users', 'username', 'pemohon6a6db3af...', NULL, 'id', Array)
+#8 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\Validator.php(728): Illuminate\Validation\Validator-&gt;validateUnique('username', 'pemohon6a6db3af...', Array, Object(Illuminate\Validation\Validator))
+#9 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\Validator.php(481): Illuminate\Validation\Validator-&gt;validateAttribute('username', 'Unique')
+#10 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\Validator.php(516): Illuminate\Validation\Validator-&gt;passes()
+#11 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Validation\Validator.php(598): Illuminate\Validation\Validator-&gt;fails()
+#12 C:\laragon\www\smart-ebt-esdm\app\Actions\Fortify\CreateNewUser.php(25): Illuminate\Validation\Validator-&gt;validate()
+#13 C:\laragon\www\smart-ebt-esdm\vendor\laravel\fortify\src\Http\Controllers\RegisteredUserController.php(62): App\Actions\Fortify\CreateNewUser-&gt;create(Array)
+#14 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Controller.php(54): Laravel\Fortify\Http\Controllers\RegisteredUserController-&gt;store(Object(Illuminate\Http\Request), Object(App\Actions\Fortify\CreateNewUser))
+#15 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\ControllerDispatcher.php(43): Illuminate\Routing\Controller-&gt;callAction('store', Array)
+#16 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(275): Illuminate\Routing\ControllerDispatcher-&gt;dispatch(Object(Illuminate\Routing\Route), Object(Laravel\Fortify\Http\Controllers\RegisteredUserController), 'store')
+#17 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Route.php(215): Illuminate\Routing\Route-&gt;runController()
+#18 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(822): Illuminate\Routing\Route-&gt;run()
+#19 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Routing\Router-&gt;{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))
+#20 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Auth\Middleware\RedirectIfAuthenticated.php(47): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#21 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Auth\Middleware\RedirectIfAuthenticated-&gt;handle(Object(Illuminate\Http\Request), Object(Closure), 'web')
+#22 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets.php(32): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#23 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#24 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware.php(138): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#25 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#26 C:\laragon\www\smart-ebt-esdm\app\Http\Middleware\HandleAppearance.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#27 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): App\Http\Middleware\HandleAppearance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#28 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Middleware\SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#29 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#30 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestForgery.php(104): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#31 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestForgery-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#32 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\View\Middleware\ShareErrorsFromSession.php(48): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#33 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\View\Middleware\ShareErrorsFromSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#34 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(120): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#35 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Session\Middleware\StartSession.php(63): Illuminate\Session\Middleware\StartSession-&gt;handleStatefulRequest(Object(Illuminate\Http\Request), Object(Illuminate\Session\Store), Object(Closure))
+#36 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Session\Middleware\StartSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#37 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#38 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#39 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\EncryptCookies.php(74): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#40 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#41 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#42 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(821): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#43 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(800): Illuminate\Routing\Router-&gt;runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#44 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(764): Illuminate\Routing\Router-&gt;runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#45 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Routing\Router.php(753): Illuminate\Routing\Router-&gt;dispatchToRoute(Object(Illuminate\Http\Request))
+#46 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(200): Illuminate\Routing\Router-&gt;dispatch(Object(Illuminate\Http\Request))
+#47 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Foundation\Http\Kernel-&gt;{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#48 C:\laragon\www\smart-ebt-esdm\vendor\inertiajs\inertia-laravel\src\Middleware\EnsureGetOnRedirect.php(19): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#49 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Inertia\Middleware\EnsureGetOnRedirect-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#50 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#51 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#52 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#53 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#54 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#55 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#56 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#57 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#58 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#59 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#60 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php(61): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#61 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\HandleCors-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#62 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php(58): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#63 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#64 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#65 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#66 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePathEncoding.php(28): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#67 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#68 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#69 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#70 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel-&gt;sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#71 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(638): Illuminate\Foundation\Http\Kernel-&gt;handle(Object(Illuminate\Http\Request))
+#72 C:\laragon\www\smart-ebt-esdm\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(397): Illuminate\Foundation\Testing\TestCase-&gt;call('POST', 'https://2324-24...', Array, Array, Array, Array)
+#73 C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php(188): Illuminate\Foundation\Testing\TestCase-&gt;post('https://2324-24...', Array)
+#74 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseMethodFactory.php(177): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:C:\laragon\www\smart-ebt-esdm\tests\Feature\SmartEbtCoreTest.php:184}()
+#75 [internal function]: P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Factories\TestCaseMethodFactory::getClosure():167}()
+#76 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): call_user_func_array(Object(Closure), Array)
+#77 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Support\ExceptionTrace.php(26): P\Tests\Feature\SmartEbtCoreTest-&gt;{closure:Pest\Concerns\Testable::__callClosure():581}()
+#78 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(581): Pest\Support\ExceptionTrace::ensure(Object(Closure))
+#79 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Concerns\Testable.php(403): P\Tests\Feature\SmartEbtCoreTest-&gt;__callClosure(Object(Closure), Array)
+#80 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Factories\TestCaseFactory.php(178) : eval()'d code(116): P\Tests\Feature\SmartEbtCoreTest-&gt;__runTest(Object(Closure))
+#81 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1318): P\Tests\Feature\SmartEbtCoreTest-&gt;__pest_evaluable_registration_always_creates_user_role()
+#82 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(1355): PHPUnit\Framework\TestCase-&gt;invokeTestMethod('__pest_evaluabl...', Array)
+#83 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(521): PHPUnit\Framework\TestCase-&gt;runTest()
+#84 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestRunner\TestRunner.php(99): PHPUnit\Framework\TestCase-&gt;runBare()
+#85 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestCase.php(361): PHPUnit\Framework\TestRunner-&gt;run(Object(P\Tests\Feature\SmartEbtCoreTest))
+#86 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestCase-&gt;run()
+#87 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(64): PHPUnit\Framework\TestSuite-&gt;run()
+#88 C:\laragon\www\smart-ebt-esdm\vendor\phpunit\phpunit\src\TextUI\Application.php(229): PHPUnit\TextUI\TestRunner-&gt;run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))
+#89 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\src\Kernel.php(117): PHPUnit\TextUI\Application-&gt;run(Array)
+#90 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(207): Pest\Kernel-&gt;handle(Array, Array)
+#91 C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest(215): {closure:C:\laragon\www\smart-ebt-esdm\vendor\pestphp\pest\bin\pest:21}()
+#92 {main}
+
+----------------------------------------------------------------------------------
+
+could not find driver (Connection: sqlite, Database: :memory:, SQL: select count(*) as "aggregate" from "users" where "username" = pemohon6a6db3afaea0b)&#13;
+&#13;
+at vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+at vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:201
+at tests\Feature\SmartEbtCoreTest.php:194</failure>
+    </testcase>
+    <testcase name="bauran energi formulas match specification" file="tests\Feature\SmartEbtCoreTest.php::bauran energi formulas match specification" class="Tests\Feature\SmartEbtCoreTest" classname="Tests.Feature.SmartEbtCoreTest" assertions="3" time="0.016388"/>
+  </testsuite>
+</testsuites>

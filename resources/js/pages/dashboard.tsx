@@ -1,39 +1,51 @@
 import type { SubmissionListItem } from '@/types/submission';
+import type { Auth } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Head, Link, usePage } from '@inertiajs/react';
-import { AlertCircle, CheckCircle, Clock, FileText, Plus } from 'lucide-react';
+import { Head, Link, setLayoutProps, usePage } from '@inertiajs/react';
+import { AlertCircle, Building2, CheckCircle, Clock, FileText, Leaf, Plus } from 'lucide-react';
 
 interface DashboardProps {
     submissions: SubmissionListItem[];
 }
 
 export default function Dashboard({ submissions }: DashboardProps) {
-    const { auth } = usePage().props as { auth: { user: { name: string } } };
+    const { auth } = usePage().props as { auth: Auth };
+    const isAdmin = auth.user?.role === 'admin';
+
+    setLayoutProps({
+        breadcrumbs: [{ title: isAdmin ? 'Data Saya' : 'Dashboard', href: '/dashboard' }],
+    });
 
     return (
         <>
-            <Head title="Dashboard" />
+            <Head title={isAdmin ? 'Data Saya' : 'Dashboard'} />
             <div className="p-6 lg:p-8">
-                {/* Header */}
-                <div className="mb-8 flex items-start justify-between gap-4">
+                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div>
                         <h1 className="text-2xl font-bold text-foreground">
-                            Selamat datang, {auth.user.name}
+                            {isAdmin ? 'Data Saya' : `Selamat datang, ${auth.user?.name}`}
                         </h1>
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Kelola pengajuan bantuan EBT Anda di sini
+                            Kelola Info Potensi Lokal EBT dan Infrastruktur Terbangun Anda
                         </p>
                     </div>
-                    <Link href="/submissions/create">
-                        <Button className="gap-2 bg-primary hover:bg-primary/90 shadow-sm">
-                            <Plus className="h-4 w-4" />
-                            Buat Pengajuan
-                        </Button>
-                    </Link>
+                    <div className="flex flex-wrap gap-2">
+                        <Link href="/submissions/create?type=potensi">
+                            <Button variant="outline" className="gap-2">
+                                <Leaf className="h-4 w-4" />
+                                Info Potensi
+                            </Button>
+                        </Link>
+                        <Link href="/submissions/create?type=terbangun">
+                            <Button className="gap-2 bg-primary shadow-sm hover:bg-primary/90">
+                                <Building2 className="h-4 w-4" />
+                                Infrastruktur Terbangun
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
 
-                {/* Stats row */}
                 <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
                     <div className="rounded-xl border border-border bg-white p-5 shadow-sm">
                         <div className="flex items-center gap-3">
@@ -42,7 +54,7 @@ export default function Dashboard({ submissions }: DashboardProps) {
                             </div>
                             <div>
                                 <p className="text-2xl font-bold text-foreground">{submissions.length}</p>
-                                <p className="text-xs text-muted-foreground">Total Pengajuan</p>
+                                <p className="text-xs text-muted-foreground">Total Data</p>
                             </div>
                         </div>
                     </div>
@@ -74,32 +86,32 @@ export default function Dashboard({ submissions }: DashboardProps) {
                     </div>
                 </div>
 
-                {/* Submissions Table */}
                 {submissions.length === 0 ? (
                     <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-white py-16 text-center">
                         <FileText className="mb-4 h-12 w-12 text-muted-foreground/40" />
-                        <h3 className="mb-2 font-semibold text-foreground">Belum ada pengajuan</h3>
+                        <h3 className="mb-2 font-semibold text-foreground">Belum ada data</h3>
                         <p className="mb-6 max-w-sm text-sm text-muted-foreground">
-                            Mulai ajukan bantuan program EBT untuk organisasi atau usaha Anda.
+                            Mulai input Info Potensi Lokal EBT atau Infrastruktur Terbangun.
                         </p>
-                        <Link href="/submissions/create">
+                        <Link href="/submissions/create?type=potensi">
                             <Button className="gap-2 bg-primary">
                                 <Plus className="h-4 w-4" />
-                                Buat Pengajuan Pertama
+                                Input Potensi Pertama
                             </Button>
                         </Link>
                     </div>
                 ) : (
                     <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
                         <div className="border-b border-border px-6 py-4">
-                            <h2 className="font-semibold text-foreground">Daftar Pengajuan</h2>
+                            <h2 className="font-semibold text-foreground">Daftar Data Saya</h2>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
                                     <tr className="border-b border-border bg-muted/50">
+                                        <th className="px-6 py-3 text-left font-medium text-muted-foreground">Jenis</th>
                                         <th className="px-6 py-3 text-left font-medium text-muted-foreground">Kategori</th>
-                                        <th className="px-6 py-3 text-left font-medium text-muted-foreground">Nama Pemohon</th>
+                                        <th className="px-6 py-3 text-left font-medium text-muted-foreground">Nama / Lokasi</th>
                                         <th className="px-6 py-3 text-left font-medium text-muted-foreground">Status</th>
                                         <th className="px-6 py-3 text-left font-medium text-muted-foreground">Tanggal</th>
                                         <th className="px-6 py-3 text-right font-medium text-muted-foreground">Aksi</th>
@@ -108,10 +120,15 @@ export default function Dashboard({ submissions }: DashboardProps) {
                                 <tbody className="divide-y divide-border">
                                     {submissions.map((submission) => (
                                         <tr key={submission.id} className="transition hover:bg-muted/30">
+                                            <td className="px-6 py-4 text-muted-foreground">
+                                                {submission.entryTypeLabel ?? '-'}
+                                            </td>
                                             <td className="px-6 py-4">
                                                 <span className="font-medium text-foreground">{submission.categoryLabel}</span>
                                             </td>
-                                            <td className="px-6 py-4 text-muted-foreground">{submission.nama_pemohon}</td>
+                                            <td className="px-6 py-4 text-muted-foreground">
+                                                {submission.display_name ?? submission.nama_pemohon}
+                                            </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-2">
                                                     {submission.status === 'sudah_intervensi' ? (
@@ -126,7 +143,7 @@ export default function Dashboard({ submissions }: DashboardProps) {
                                                         </Badge>
                                                     )}
                                                     {submission.hasRejected && (
-                                                        <Badge className="bg-red-100 text-red-700 hover:bg-red-100" title="Ada field yang ditolak">
+                                                        <Badge className="bg-red-100 text-red-700 hover:bg-red-100">
                                                             <AlertCircle className="mr-1 h-3 w-3" />
                                                             Perlu Revisi
                                                         </Badge>
@@ -159,7 +176,3 @@ export default function Dashboard({ submissions }: DashboardProps) {
         </>
     );
 }
-
-Dashboard.layout = {
-    breadcrumbs: [{ title: 'Dashboard', href: '/dashboard' }],
-};

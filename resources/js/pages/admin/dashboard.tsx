@@ -1,6 +1,8 @@
 import type { AdminStats, ChartCategory } from '@/types/submission';
 import StatChart from '@/components/admin/stat-chart';
-import { CheckCircle, Clock, FileText, TrendingUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Link } from '@inertiajs/react';
+import { CheckCircle, Clock, FileText, Plus, TrendingUp } from 'lucide-react';
 
 interface AdminDashboardProps {
     stats: AdminStats;
@@ -11,9 +13,25 @@ interface AdminDashboardProps {
 export default function AdminDashboard({ stats, perKategori, perKategoriBelum }: AdminDashboardProps) {
     return (
         <div className="p-6 lg:p-8">
-            <div className="mb-8">
-                <h1 className="text-2xl font-bold text-foreground">Dashboard Admin</h1>
-                <p className="mt-1 text-sm text-muted-foreground">Ringkasan pengajuan bantuan EBT</p>
+            <div className="mb-8 flex items-start justify-between gap-4">
+                <div>
+                    <h1 className="text-2xl font-bold text-foreground">Dashboard Admin</h1>
+                    <p className="mt-1 text-sm text-muted-foreground">Ringkasan data potensi & infrastruktur EBT</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                    <Link href="/submissions/create?type=potensi">
+                        <Button variant="outline" className="gap-2">
+                            <Plus className="h-4 w-4" />
+                            Info Potensi
+                        </Button>
+                    </Link>
+                    <Link href="/submissions/create?type=terbangun">
+                        <Button className="gap-2 bg-primary shadow-sm hover:bg-primary/90">
+                            <Plus className="h-4 w-4" />
+                            Infrastruktur Terbangun
+                        </Button>
+                    </Link>
+                </div>
             </div>
 
             {/* Stats Cards */}

@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EntryType;
 use App\Enums\FieldReviewStatus;
 use App\Enums\SubmissionCategory;
-use App\Http\Requests\StorePatsRequest;
-use App\Http\Requests\StorePeternakanRequest;
-use App\Http\Requests\StorePltsPerikananRequest;
-use App\Http\Requests\StorePltsRooftopRequest;
-use App\Http\Requests\StoreSubmissionBaseRequest;
+use App\Http\Requests\StoreEbtEntryRequest;
+use App\Http\Requests\UpdateEbtEntryRequest;
 use App\Models\Submission;
-use App\Models\SubmissionFile;
+use App\Support\BauranEnergiCalculator;
 use App\Support\SubmissionFieldRegistry;
 use App\Support\SubmissionPresenter;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,63 +19,83 @@ use Inertia\Response;
 
 class SubmissionController extends Controller
 {
-    private const BASE_FILE_FIELDS = [
-        'surat_permohonan_proposal_path',
-        'dokumen_kepengurusan_path',
-        'dokumen_sk_kemenkumham_path',
-        'surat_keterangan_desa_path',
-    ];
-
-    public function create(): Response
+    public function create(Request $request): Response
     {
+        $type = EntryType::tryFrom($request->query('type', EntryType::Potensi->value))
+            ?? EntryType::Potensi;
+
         return Inertia::render('user/submissions/create', [
-            'categories' => collect(SubmissionCategory::cases())->map(fn ($category) => [
+            'entryType' => $type->value,
+            'entryTypeLabel' => $type->label(),
+            'categories' => collect(SubmissionCategory::terbangunCases())->map(fn (SubmissionCategory $category) => [
                 'value' => $category->value,
                 'label' => $category->label(),
                 'description' => $category->description(),
                 'icon' => $category->icon(),
+                'kapasitasUnit' => $category->kapasitasUnit(),
             ]),
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreEbtEntryRequest $request): RedirectResponse
     {
-        $category = SubmissionCategory::from($request->input('category'));
+        $data = $request->validated();
+        $entryType = EntryType::from($data['entry_type']);
+        $category = isset($data['category'])
+            ? SubmissionCategory::from($data['category'])
+            : null;
 
-        $baseData = app(StoreSubmissionBaseRequest::class)->validated();
+        if ($entryType === EntryType::Terbangun && $category === null) {
+            $category = SubmissionCategory::Plts;
+        }
 
-        $detailData = match ($category) {
-            SubmissionCategory::PeternakanEbt => app(StorePeternakanRequest::class)->validated(),
-            SubmissionCategory::PltsRooftop => app(StorePltsRooftopRequest::class)->validated(),
-            SubmissionCategory::PltsPerikanan => app(StorePltsPerikananRequest::class)->validated(),
-            SubmissionCategory::Pats => app(StorePatsRequest::class)->validated(),
-        };
-
-        $submission = DB::transaction(function () use ($request, $category, $baseData, $detailData) {
-            $submission = Submission::create([
-                ...collect($baseData)->except(self::BASE_FILE_FIELDS)->all(),
-                'user_id' => $request->user()->id,
-                'field_reviews' => SubmissionFieldRegistry::initializeReviews($category),
-            ]);
-
-            foreach (self::BASE_FILE_FIELDS as $field) {
-                if ($request->hasFile($field)) {
-                    $path = $request->file($field)->store(
-                        "submissions/{$submission->id}",
-                        'public'
-                    );
-                    $submission->update([$field => $path]);
-                }
+        $submission = DB::transaction(function () use ($request, $data, $entryType, $category) {
+            $bauran = null;
+            if ($entryType === EntryType::Terbangun && $category !== null) {
+                $bauran = BauranEnergiCalculator::calculate($category, $data['kapasitas'] ?? null);
             }
 
-            $this->createDetailRecord($submission, $category, $detailData, $request);
+            $submission = Submission::create([
+                'user_id' => $request->user()->id,
+                'entry_type' => $entryType,
+                'category' => $category?->value,
+                'lokasi' => $data['lokasi'] ?? null,
+                'desa' => $data['desa'] ?? null,
+                'kecamatan' => $data['kecamatan'] ?? null,
+                'kabupaten' => $data['kabupaten'] ?? null,
+                'nama_pengelola' => $data['nama_pengelola'] ?? null,
+                'kontak_person' => $data['kontak_person'] ?? null,
+                'no_wa' => $data['no_wa'] ?? null,
+                'nama_pemilik' => $data['nama_pemilik'] ?? null,
+                'penanggung_jawab' => $data['penanggung_jawab'] ?? null,
+                'kapasitas' => $data['kapasitas'] ?? null,
+                'sumber_pendanaan' => $data['sumber_pendanaan'] ?? null,
+                'sumber_pendanaan_detail' => $data['sumber_pendanaan_detail'] ?? null,
+                'tahun_pembangunan' => $data['tahun_pembangunan'] ?? null,
+                'bauran_energi' => $bauran,
+                'latitude' => $data['latitude'] ?? null,
+                'longitude' => $data['longitude'] ?? null,
+                'deskripsi_titik' => $data['deskripsi_titik'] ?? null,
+                'field_reviews' => SubmissionFieldRegistry::initializeReviews(
+                    $category?->value ?? 'plts',
+                    $entryType
+                ),
+            ]);
+
+            if ($request->hasFile('foto_kondisi')) {
+                $path = $request->file('foto_kondisi')->store(
+                    "submissions/{$submission->id}",
+                    'public'
+                );
+                $submission->update(['foto_kondisi_path' => $path]);
+            }
 
             return $submission;
         });
 
         return redirect()
             ->route('submissions.show', $submission)
-            ->with('success', 'Pengajuan berhasil dikirim. Tim kami akan meninjau dokumen Anda.');
+            ->with('success', $entryType->label().' berhasil dikirim. Menunggu verifikasi admin.');
     }
 
     public function show(Submission $submission): Response
@@ -89,7 +106,10 @@ class SubmissionController extends Controller
 
         return Inertia::render('user/submissions/show', [
             'submission' => SubmissionPresenter::toArray($submission),
-            'fields' => SubmissionFieldRegistry::fieldsFor($submission->category),
+            'fields' => SubmissionFieldRegistry::fieldsFor(
+                $submission->category?->value ?? 'plts',
+                $submission->entry_type
+            ),
         ]);
     }
 
@@ -107,12 +127,20 @@ class SubmissionController extends Controller
 
         return Inertia::render('user/submissions/edit', [
             'submission' => SubmissionPresenter::toArray($submission),
-            'fields' => SubmissionFieldRegistry::fieldsFor($submission->category),
+            'fields' => SubmissionFieldRegistry::fieldsFor(
+                $submission->category?->value ?? 'plts',
+                $submission->entry_type
+            ),
             'rejectedFields' => $submission->rejectedFieldKeys(),
+            'categories' => collect(SubmissionCategory::terbangunCases())->map(fn (SubmissionCategory $category) => [
+                'value' => $category->value,
+                'label' => $category->label(),
+                'kapasitasUnit' => $category->kapasitasUnit(),
+            ]),
         ]);
     }
 
-    public function update(Request $request, Submission $submission): RedirectResponse
+    public function update(UpdateEbtEntryRequest $request, Submission $submission): RedirectResponse
     {
         $this->authorize('update', $submission);
 
@@ -122,45 +150,22 @@ class SubmissionController extends Controller
             return redirect()->route('submissions.show', $submission);
         }
 
+        $data = $request->validated();
         $reviews = $submission->field_reviews ?? [];
-        $detail = $submission->detail;
 
-        DB::transaction(function () use ($request, $submission, $rejectedKeys, &$reviews, $detail) {
-            foreach ($rejectedKeys as $key) {
-                $updated = false;
+        DB::transaction(function () use ($request, $submission, $rejectedKeys, $data, &$reviews) {
+            $updatable = [
+                'lokasi', 'desa', 'kecamatan', 'kabupaten',
+                'nama_pengelola', 'kontak_person', 'no_wa',
+                'nama_pemilik', 'penanggung_jawab', 'kapasitas',
+                'sumber_pendanaan', 'sumber_pendanaan_detail', 'tahun_pembangunan',
+                'latitude', 'longitude', 'deskripsi_titik', 'category',
+            ];
 
-                if ($key === 'tagihan_listrik' && $request->hasFile('tagihan_listrik')) {
-                    $submission->files()->where('field_key', 'tagihan_listrik')->delete();
-
-                    foreach ($request->file('tagihan_listrik') as $index => $file) {
-                        $path = $file->store("submissions/{$submission->id}/tagihan", 'public');
-                        SubmissionFile::create([
-                            'submission_id' => $submission->id,
-                            'field_key' => 'tagihan_listrik',
-                            'file_path' => $path,
-                            'original_name' => $file->getClientOriginalName(),
-                            'periode' => $request->input("periode.{$index}"),
-                        ]);
-                    }
-
-                    $updated = true;
-                } elseif ($request->hasFile($key) && in_array($key, self::BASE_FILE_FIELDS, true)) {
-                    $path = $request->file($key)->store("submissions/{$submission->id}", 'public');
-                    $submission->update([$key => $path]);
-                    $updated = true;
-                } elseif ($request->filled($key) || $request->has($key)) {
-                    $value = $request->input($key);
-
-                    if ($this->isBaseField($submission, $key)) {
-                        $submission->update([$key => $value]);
-                        $updated = true;
-                    } elseif ($detail instanceof Model && $this->isFillable($detail, $key)) {
-                        $detail->update([$key => $value]);
-                        $updated = true;
-                    }
-                }
-
-                if ($updated) {
+            $payload = [];
+            foreach ($updatable as $key) {
+                if (in_array($key, $rejectedKeys, true) && array_key_exists($key, $data)) {
+                    $payload[$key] = $data[$key];
                     $reviews[$key] = [
                         'status' => FieldReviewStatus::Pending->value,
                         'reason' => null,
@@ -168,54 +173,40 @@ class SubmissionController extends Controller
                 }
             }
 
-            $submission->update(['field_reviews' => $reviews]);
+            if (in_array('foto_kondisi_path', $rejectedKeys, true) && $request->hasFile('foto_kondisi')) {
+                $path = $request->file('foto_kondisi')->store(
+                    "submissions/{$submission->id}",
+                    'public'
+                );
+                $payload['foto_kondisi_path'] = $path;
+                $reviews['foto_kondisi_path'] = [
+                    'status' => FieldReviewStatus::Pending->value,
+                    'reason' => null,
+                ];
+            }
+
+            if (in_array('kapasitas', $rejectedKeys, true) || in_array('category', $rejectedKeys, true) || isset($payload['kapasitas']) || isset($payload['category'])) {
+                $category = isset($payload['category'])
+                    ? SubmissionCategory::from($payload['category'])
+                    : $submission->category;
+                $kapasitas = $payload['kapasitas'] ?? $submission->kapasitas;
+                if ($submission->entry_type === EntryType::Terbangun && $category) {
+                    $payload['bauran_energi'] = BauranEnergiCalculator::calculate($category, $kapasitas);
+                    if (isset($reviews['bauran_energi'])) {
+                        $reviews['bauran_energi'] = [
+                            'status' => FieldReviewStatus::Pending->value,
+                            'reason' => null,
+                        ];
+                    }
+                }
+            }
+
+            $payload['field_reviews'] = $reviews;
+            $submission->update($payload);
         });
 
         return redirect()
             ->route('submissions.show', $submission)
             ->with('success', 'Revisi berhasil dikirim. Silakan tunggu verifikasi admin.');
-    }
-
-    private function createDetailRecord(Submission $submission, SubmissionCategory $category, array $data, Request $request): void
-    {
-        match ($category) {
-            SubmissionCategory::PeternakanEbt => $submission->peternakan()->create($data),
-            SubmissionCategory::PltsRooftop => $this->createPltsRecord($submission, $submission->pltsRooftop(), $data, $request),
-            SubmissionCategory::PltsPerikanan => $this->createPltsRecord($submission, $submission->pltsPerikanan(), $data, $request),
-            SubmissionCategory::Pats => $submission->pats()->create($data),
-        };
-    }
-
-    /**
-     * @param  \Illuminate\Database\Eloquent\Relations\HasOne<*, *, *>  $relation
-     */
-    private function createPltsRecord(Submission $submission, $relation, array $data, Request $request): void
-    {
-        unset($data['tagihan_listrik']);
-        $relation->create($data);
-
-        if ($request->hasFile('tagihan_listrik')) {
-            foreach ($request->file('tagihan_listrik') as $index => $file) {
-                $path = $file->store("submissions/{$submission->id}/tagihan", 'public');
-                SubmissionFile::create([
-                    'submission_id' => $submission->id,
-                    'field_key' => 'tagihan_listrik',
-                    'file_path' => $path,
-                    'original_name' => $file->getClientOriginalName(),
-                    'periode' => $request->input("periode.{$index}"),
-                ]);
-            }
-        }
-    }
-
-    private function isBaseField(Submission $submission, string $key): bool
-    {
-        return array_key_exists($key, $submission->getAttributes())
-            || in_array($key, $submission->getFillable(), true);
-    }
-
-    private function isFillable(Model $model, string $key): bool
-    {
-        return in_array($key, $model->getFillable(), true);
     }
 }

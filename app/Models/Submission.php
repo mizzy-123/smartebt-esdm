@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\EntryType;
+use App\Enums\FieldReviewStatus;
 use App\Enums\SubmissionCategory;
 use App\Enums\SubmissionStatus;
-use App\Enums\FieldReviewStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,12 +16,28 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $user_id
- * @property SubmissionCategory $category
+ * @property EntryType $entry_type
+ * @property SubmissionCategory|null $category
  * @property SubmissionStatus $status
- * @property string $nama_pemohon
- * @property string $nomor_identitas
- * @property string $alamat_organisasi
- * @property string $nama_ketua
+ * @property string|null $lokasi
+ * @property string|null $desa
+ * @property string|null $kecamatan
+ * @property string|null $kabupaten
+ * @property string|null $nama_pengelola
+ * @property string|null $kontak_person
+ * @property string|null $no_wa
+ * @property string|null $foto_kondisi_path
+ * @property string|null $nama_pemilik
+ * @property string|null $penanggung_jawab
+ * @property float|null $kapasitas
+ * @property string|null $sumber_pendanaan
+ * @property string|null $sumber_pendanaan_detail
+ * @property int|null $tahun_pembangunan
+ * @property float|null $bauran_energi
+ * @property string|null $nama_pemohon
+ * @property string|null $nomor_identitas
+ * @property string|null $alamat_organisasi
+ * @property string|null $nama_ketua
  * @property string|null $surat_permohonan_proposal_path
  * @property string|null $dokumen_kepengurusan_path
  * @property string|null $dokumen_sk_kemenkumham_path
@@ -34,7 +51,11 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  */
 #[Fillable([
-    'user_id', 'category', 'status',
+    'user_id', 'entry_type', 'category', 'status',
+    'lokasi', 'desa', 'kecamatan', 'kabupaten',
+    'nama_pengelola', 'kontak_person', 'no_wa', 'foto_kondisi_path',
+    'nama_pemilik', 'penanggung_jawab', 'kapasitas',
+    'sumber_pendanaan', 'sumber_pendanaan_detail', 'tahun_pembangunan', 'bauran_energi',
     'nama_pemohon', 'nomor_identitas', 'alamat_organisasi', 'nama_ketua',
     'surat_permohonan_proposal_path', 'dokumen_kepengurusan_path',
     'dokumen_sk_kemenkumham_path', 'surat_keterangan_desa_path',
@@ -46,12 +67,16 @@ class Submission extends Model
     protected function casts(): array
     {
         return [
-            'category'                       => SubmissionCategory::class,
-            'status'                         => SubmissionStatus::class,
+            'entry_type' => EntryType::class,
+            'category' => SubmissionCategory::class,
+            'status' => SubmissionStatus::class,
             'kesediaan_ganti_kwh_pascabayar' => 'boolean',
-            'latitude'                        => 'decimal:7',
-            'longitude'                       => 'decimal:7',
-            'field_reviews'                   => 'array',
+            'kapasitas' => 'decimal:2',
+            'bauran_energi' => 'decimal:6',
+            'tahun_pembangunan' => 'integer',
+            'latitude' => 'decimal:7',
+            'longitude' => 'decimal:7',
+            'field_reviews' => 'array',
         ];
     }
 
@@ -85,18 +110,27 @@ class Submission extends Model
         return $this->hasOne(SubmissionPats::class);
     }
 
-    /** Get the detail relation for this submission's category. */
-    public function detail(): HasOne
+    /** Get the detail relation for legacy category submissions. */
+    public function legacyDetail(): mixed
     {
-        return match($this->category) {
-            SubmissionCategory::PeternakanEbt  => $this->peternakan(),
-            SubmissionCategory::PltsRooftop    => $this->pltsRooftop(),
-            SubmissionCategory::PltsPerikanan  => $this->pltsPerikanan(),
-            SubmissionCategory::Pats           => $this->pats(),
+        return match ($this->category) {
+            SubmissionCategory::PeternakanEbt => $this->peternakan,
+            SubmissionCategory::PltsRooftop => $this->pltsRooftop,
+            SubmissionCategory::PltsPerikanan => $this->pltsPerikanan,
+            SubmissionCategory::Pats => $this->pats,
+            default => null,
         };
     }
 
-    /** Check if any field in field_reviews has status 'rejected'. */
+    public function displayName(): string
+    {
+        return $this->nama_pengelola
+            ?? $this->nama_pemilik
+            ?? $this->nama_pemohon
+            ?? $this->lokasi
+            ?? ('Data #'.$this->id);
+    }
+
     public function hasRejectedFields(): bool
     {
         $reviews = $this->field_reviews ?? [];
@@ -105,21 +139,21 @@ class Submission extends Model
                 return true;
             }
         }
+
         return false;
     }
 
-    /** Get all rejected field keys. */
     public function rejectedFieldKeys(): array
     {
         $reviews = $this->field_reviews ?? [];
-        return array_keys(array_filter($reviews, fn($r) => ($r['status'] ?? '') === FieldReviewStatus::Rejected->value));
+
+        return array_keys(array_filter($reviews, fn ($r) => ($r['status'] ?? '') === FieldReviewStatus::Rejected->value));
     }
 
-    /** Check if all fields are approved. */
     public function allFieldsApproved(): bool
     {
         $reviews = $this->field_reviews ?? [];
-        if (empty($reviews)) {
+        if ($reviews === []) {
             return false;
         }
         foreach ($reviews as $review) {
@@ -127,6 +161,7 @@ class Submission extends Model
                 return false;
             }
         }
+
         return true;
     }
 }

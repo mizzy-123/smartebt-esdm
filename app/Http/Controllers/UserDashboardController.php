@@ -13,17 +13,24 @@ class UserDashboardController extends Controller
         $submissions = $request->user()
             ->submissions()
             ->latest()
-            ->get(['id', 'category', 'status', 'nama_pemohon', 'field_reviews', 'created_at']);
+            ->get([
+                'id', 'entry_type', 'category', 'status',
+                'nama_pemohon', 'nama_pengelola', 'nama_pemilik', 'lokasi',
+                'field_reviews', 'created_at',
+            ]);
 
         $data = $submissions->map(fn ($s) => [
-            'id'             => $s->id,
-            'category'       => $s->category->value,
-            'categoryLabel'  => $s->category->label(),
-            'status'         => $s->status->value,
-            'statusLabel'    => $s->status->label(),
-            'nama_pemohon'   => $s->nama_pemohon,
-            'hasRejected'    => $s->hasRejectedFields(),
-            'created_at'     => $s->created_at->format('d M Y'),
+            'id' => $s->id,
+            'entry_type' => $s->entry_type?->value,
+            'entryTypeLabel' => $s->entry_type?->label(),
+            'category' => $s->category?->value,
+            'categoryLabel' => $s->category?->label() ?? 'Potensi Lokal EBT',
+            'status' => $s->status->value,
+            'statusLabel' => $s->status->label(),
+            'nama_pemohon' => $s->displayName(),
+            'display_name' => $s->displayName(),
+            'hasRejected' => $s->hasRejectedFields(),
+            'created_at' => $s->created_at->format('d M Y'),
         ]);
 
         return Inertia::render('dashboard', [

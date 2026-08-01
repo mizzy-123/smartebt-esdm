@@ -10,22 +10,28 @@ interface LandingProps {
     stats: {
         total: number;
         sudah_intervensi: number;
+        potensi?: number;
+        terbangun?: number;
         per_kategori: Record<string, number>;
     };
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
+    biogas: 'Biogas',
+    plts: 'PLTS',
+    pats: 'Pompa Air (PATS)',
     peternakan_ebt: 'Peternakan EBT',
     plts_rooftop: 'PLTS Rooftop',
     plts_perikanan: 'PLTS Perikanan',
-    pats: 'Pompa Air (PATS)',
 };
 
 const CATEGORY_ICONS: Record<string, string> = {
+    biogas: '🔥',
+    plts: '☀️',
+    pats: '💧',
     peternakan_ebt: '🐄',
     plts_rooftop: '🏠',
     plts_perikanan: '🐟',
-    pats: '💧',
 };
 
 export default function Landing({ downloads, stats }: LandingProps) {
@@ -78,15 +84,14 @@ export default function Landing({ downloads, stats }: LandingProps) {
                         </span>
                     </h1>
                     <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-blue-100">
-                        SMART-EBT adalah sistem digital untuk mengelola pengajuan bantuan program transisi EBT dari masyarakat
-                        dan organisasi ke pemerintah — dengan verifikasi berjenjang yang transparan.
+                    SMART EBT adalah sistem digital untuk memberikan informasi mengenai Potensi Infrastruktur EBT baik yang belum terbangun maupun yang sudah terbangun/existing.
                     </p>
                     <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                         <Link
                             href="/register"
                             className="group flex items-center gap-2 rounded-xl bg-[#FDB813] px-8 py-3.5 font-bold text-[#0A2463] shadow-lg transition hover:bg-[#fec937] hover:shadow-xl"
                         >
-                            Ajukan Sekarang
+                            Input Potensi EBT
                             <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                         </Link>
                         <Link
@@ -105,18 +110,20 @@ export default function Landing({ downloads, stats }: LandingProps) {
                     <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
                         <div className="text-center">
                             <div className="text-3xl font-bold text-[#FDB813]">{stats.total}</div>
-                            <div className="mt-1 text-sm text-blue-200">Total Pengajuan</div>
+                            <div className="mt-1 text-sm text-blue-200">Total Data</div>
                         </div>
                         <div className="text-center">
                             <div className="text-3xl font-bold text-[#28A745]">{stats.sudah_intervensi}</div>
                             <div className="mt-1 text-sm text-blue-200">Terverifikasi</div>
                         </div>
-                        {Object.entries(stats.per_kategori ?? {}).slice(0, 2).map(([cat, count]) => (
-                            <div key={cat} className="text-center">
-                                <div className="text-3xl font-bold text-white">{count as number}</div>
-                                <div className="mt-1 text-sm text-blue-200">{CATEGORY_LABELS[cat] ?? cat}</div>
-                            </div>
-                        ))}
+                        <div className="text-center">
+                            <div className="text-3xl font-bold text-white">{stats.potensi ?? 0}</div>
+                            <div className="mt-1 text-sm text-blue-200">Info Potensi</div>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-3xl font-bold text-white">{stats.terbangun ?? 0}</div>
+                            <div className="mt-1 text-sm text-blue-200">Terbangun</div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -125,16 +132,17 @@ export default function Landing({ downloads, stats }: LandingProps) {
             <section className="mx-auto max-w-7xl px-6 py-20">
                 <div className="mb-12 text-center">
                     <h2 className="mb-3 text-3xl font-bold text-[#0A2463]">
-                        Rencana Potensi Lokal Energi Baru Terbarukan
+                        Potensi & Infrastruktur EBT
                     </h2>
-                    <p className="text-muted-foreground">4 kategori program yang dapat diajukan oleh masyarakat dan organisasi</p>
+                    <p className="text-muted-foreground">
+                        Input Info Potensi Lokal EBT atau Infrastruktur Terbangun (Biogas, PLTS, PATS)
+                    </p>
                 </div>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {[
-                        { cat: 'peternakan_ebt', desc: 'Digester Biogas, PLTS, BSG untuk kebutuhan peternakan Anda' },
-                        { cat: 'plts_rooftop', desc: 'Panel surya atap untuk bangunan permanen & sementara' },
-                        { cat: 'plts_perikanan', desc: 'Panel surya atap untuk fasilitas perikanan budidaya' },
-                        { cat: 'pats', desc: 'Pompa air berbasis tenaga surya untuk irigasi & pertanian' },
+                        { cat: 'biogas', desc: 'Infrastruktur biogas / digester yang sudah terbangun, lengkap dengan perhitungan bauran energi' },
+                        { cat: 'plts', desc: 'Pembangkit listrik tenaga surya terbangun dengan kapasitas kWp dan bauran energi otomatis' },
+                        { cat: 'pats', desc: 'Pompa air tenaga surya terbangun dengan kapasitas PK dan bauran energi otomatis' },
                     ].map(({ cat, desc }) => (
                         <div
                             key={cat}
@@ -156,18 +164,20 @@ export default function Landing({ downloads, stats }: LandingProps) {
                             <MapPin className="h-5 w-5" />
                             <span className="font-semibold text-sm uppercase tracking-wide">Peta Sebaran</span>
                         </div>
-                        <h2 className="mb-3 text-3xl font-bold text-[#0A2463]">Titik Potensi EBT di Indonesia</h2>
-                        <p className="text-muted-foreground">Lokasi pengajuan yang telah diverifikasi dan disetujui</p>
+                        <h2 className="mb-3 text-3xl font-bold text-[#0A2463]">Titik Potensi EBT di Jawa Tengah</h2>
+                        <p className="text-muted-foreground">Lokasi yang telah diverifikasi admin dan disetujui</p>
                     </div>
 
                     {/* Legend */}
                     <div className="mb-4 flex flex-wrap justify-center gap-4">
-                        {Object.entries(CATEGORY_LABELS).map(([cat, label]) => (
+                        {[
+                            ['biogas', '#1B8B41'],
+                            ['plts', '#0A2463'],
+                            ['pats', '#FDB813'],
+                        ].map(([cat, color]) => (
                             <div key={cat} className="flex items-center gap-1.5">
-                                <div className="h-3 w-3 rounded-full border-2 border-white shadow-sm" style={{
-                                    background: { peternakan_ebt: '#1B8B41', plts_rooftop: '#0A2463', plts_perikanan: '#0077b6', pats: '#FDB813' }[cat as string] ?? '#666'
-                                }} />
-                                <span className="text-xs text-muted-foreground">{label}</span>
+                                <div className="h-3 w-3 rounded-full border-2 border-white shadow-sm" style={{ background: color }} />
+                                <span className="text-xs text-muted-foreground">{CATEGORY_LABELS[cat]}</span>
                             </div>
                         ))}
                     </div>
