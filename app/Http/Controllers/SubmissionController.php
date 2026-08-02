@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\EntryType;
 use App\Enums\FieldReviewStatus;
 use App\Enums\SubmissionCategory;
+use App\Enums\SubmissionStatus;
 use App\Http\Requests\StoreEbtEntryRequest;
 use App\Http\Requests\StorePatsRequest;
 use App\Http\Requests\StorePeternakanRequest;
@@ -107,12 +108,6 @@ class SubmissionController extends Controller
     {
         $this->authorize('update', $submission);
 
-        if (! $submission->hasRejectedFields()) {
-            return redirect()
-                ->route('submissions.show', $submission)
-                ->with('info', 'Tidak ada field yang perlu direvisi.');
-        }
-
         $submission->load(['files', 'peternakan', 'pltsRooftop', 'pltsPerikanan', 'pats']);
 
         if ($submission->isEbtSimpleEntry()) {
@@ -127,6 +122,8 @@ class SubmissionController extends Controller
                 'categories' => collect($categoryCases)->map(fn (SubmissionCategory $category) => [
                     'value' => $category->value,
                     'label' => $category->label(),
+                    'description' => $category->description(),
+                    'icon' => $category->icon(),
                     'kapasitasUnit' => $category->kapasitasUnit(),
                 ]),
                 'kabupatenOptions' => $this->kabupatenOptions(),
@@ -253,16 +250,10 @@ class SubmissionController extends Controller
 
     private function updateEbtEntry(UpdateEbtEntryRequest $request, Submission $submission): RedirectResponse
     {
-        $rejectedKeys = $submission->rejectedFieldKeys();
-
-        if ($rejectedKeys === []) {
-            return redirect()->route('submissions.show', $submission);
-        }
-
         $data = $request->validated();
-        $reviews = $submission->field_reviews ?? [];
+        $wasVerified = $submission->status === SubmissionStatus::SudahIntervensi;
 
-        DB::transaction(function () use ($request, $submission, $rejectedKeys, $data, &$reviews) {
+        DB::transaction(function () use ($request, $submission, $data, $wasVerified) {
             $updatable = [
                 'lokasi', 'desa', 'kecamatan', 'kabupaten',
                 'nama_pengelola', 'kontak_person', 'no_wa',
@@ -273,70 +264,66 @@ class SubmissionController extends Controller
 
             $payload = [];
             foreach ($updatable as $key) {
-                if (in_array($key, $rejectedKeys, true) && array_key_exists($key, $data)) {
+                if (array_key_exists($key, $data)) {
                     $payload[$key] = $data[$key];
-                    $reviews[$key] = [
-                        'status' => FieldReviewStatus::Pending->value,
-                        'reason' => null,
-                    ];
                 }
             }
 
-            if (in_array('foto_kondisi_path', $rejectedKeys, true) && $request->hasFile('foto_kondisi')) {
-                $path = $request->file('foto_kondisi')->store(
+            if ($request->hasFile('foto_kondisi')) {
+                $payload['foto_kondisi_path'] = $request->file('foto_kondisi')->store(
                     "submissions/{$submission->id}",
                     'public'
                 );
-                $payload['foto_kondisi_path'] = $path;
-                $reviews['foto_kondisi_path'] = [
-                    'status' => FieldReviewStatus::Pending->value,
-                    'reason' => null,
-                ];
             }
 
-            if (
-                in_array('kapasitas', $rejectedKeys, true)
-                || in_array('category', $rejectedKeys, true)
-                || isset($payload['kapasitas'])
-                || isset($payload['category'])
-            ) {
-                $category = isset($payload['category'])
-                    ? SubmissionCategory::from($payload['category'])
-                    : $submission->category;
-                $kapasitas = $payload['kapasitas'] ?? $submission->kapasitas;
-                if ($submission->entry_type === EntryType::Terbangun && $category) {
-                    $payload['bauran_energi'] = BauranEnergiCalculator::calculate($category, $kapasitas);
-                    if (isset($reviews['bauran_energi'])) {
-                        $reviews['bauran_energi'] = [
-                            'status' => FieldReviewStatus::Pending->value,
-                            'reason' => null,
-                        ];
-                    }
-                }
+            $category = isset($payload['category'])
+                ? SubmissionCategory::from($payload['category'])
+                : $submission->category;
+            $kapasitas = $payload['kapasitas'] ?? $submission->kapasitas;
+
+            if ($submission->entry_type === EntryType::Terbangun && $category) {
+                $payload['bauran_energi'] = BauranEnergiCalculator::calculate($category, $kapasitas);
             }
 
-            $payload['field_reviews'] = $reviews;
+            $payload['field_reviews'] = SubmissionFieldRegistry::initializeReviews(
+                $category,
+                $submission->entry_type
+            );
+
+            if ($wasVerified) {
+                $payload['status'] = SubmissionStatus::BelumIntervensi;
+            }
+
             $submission->update($payload);
         });
 
         return redirect()
             ->route('submissions.show', $submission)
-            ->with('success', 'Revisi berhasil dikirim. Silakan tunggu verifikasi admin.');
+            ->with(
+                'success',
+                $wasVerified
+                    ? 'Data berhasil diperbarui. Status kembali menunggu verifikasi admin.'
+                    : 'Data berhasil diperbarui.'
+            );
     }
 
     private function updatePengajuan(Request $request, Submission $submission): RedirectResponse
     {
         $rejectedKeys = $submission->rejectedFieldKeys();
-
-        if ($rejectedKeys === []) {
-            return redirect()->route('submissions.show', $submission);
-        }
+        $keysToUpdate = $rejectedKeys !== []
+            ? $rejectedKeys
+            : array_keys(SubmissionFieldRegistry::fieldsFor(
+                $submission->category,
+                $submission->entry_type
+            ));
 
         $reviews = $submission->field_reviews ?? [];
         $detail = $submission->legacyDetail();
+        $wasVerified = $submission->status === SubmissionStatus::SudahIntervensi;
+        $changed = false;
 
-        DB::transaction(function () use ($request, $submission, $rejectedKeys, &$reviews, $detail) {
-            foreach ($rejectedKeys as $key) {
+        DB::transaction(function () use ($request, $submission, $keysToUpdate, &$reviews, $detail, $wasVerified, &$changed) {
+            foreach ($keysToUpdate as $key) {
                 $updated = false;
 
                 if ($key === 'tagihan_listrik' && $request->hasFile('tagihan_listrik')) {
@@ -371,6 +358,7 @@ class SubmissionController extends Controller
                 }
 
                 if ($updated) {
+                    $changed = true;
                     $reviews[$key] = [
                         'status' => FieldReviewStatus::Pending->value,
                         'reason' => null,
@@ -378,12 +366,19 @@ class SubmissionController extends Controller
                 }
             }
 
-            $submission->update(['field_reviews' => $reviews]);
+            $payload = ['field_reviews' => $reviews];
+            if ($changed && $wasVerified) {
+                $payload['status'] = SubmissionStatus::BelumIntervensi;
+            }
+
+            $submission->update($payload);
         });
 
         return redirect()
             ->route('submissions.show', $submission)
-            ->with('success', 'Revisi berhasil dikirim. Silakan tunggu verifikasi admin.');
+            ->with('success', $wasVerified && $changed
+                ? 'Data berhasil diperbarui. Status kembali menunggu verifikasi admin.'
+                : 'Data berhasil diperbarui.');
     }
 
     private function createDetailRecord(Submission $submission, SubmissionCategory $category, array $data, Request $request): void

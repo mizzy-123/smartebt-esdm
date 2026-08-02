@@ -1,11 +1,15 @@
-import type { SubmissionListItem } from '@/types/submission';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { AlertCircle, Building2, CheckCircle, Clock, FileText, Leaf, Pencil, Plus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { create } from '@/routes/submissions';
+import {
+    create,
+    edit as editSubmission,
+    show as showSubmission,
+} from '@/routes/submissions';
 import { create as createPotensi } from '@/routes/submissions/potensi';
 import { create as createTerbangun } from '@/routes/submissions/terbangun';
-import { Head, Link, usePage } from '@inertiajs/react';
-import { AlertCircle, Building2, CheckCircle, Clock, FileText, Leaf, Plus } from 'lucide-react';
+import type { SubmissionListItem } from '@/types/submission';
 
 interface DashboardProps {
     submissions: SubmissionListItem[];
@@ -159,16 +163,15 @@ export default function Dashboard({ submissions }: DashboardProps) {
                                             <td className="px-6 py-4 text-muted-foreground">{submission.created_at}</td>
                                             <td className="px-6 py-4 text-right">
                                                 <div className="flex items-center justify-end gap-2">
-                                                    <Link href={`/submissions/${submission.id}`}>
+                                                    <Link href={showSubmission.url(submission.id)}>
                                                         <Button size="sm" variant="outline">Detail</Button>
                                                     </Link>
-                                                    {submission.hasRejected && (
-                                                        <Link href={`/submissions/${submission.id}/edit`}>
-                                                            <Button size="sm" className="bg-primary text-white hover:bg-primary/90">
-                                                                Revisi
-                                                            </Button>
-                                                        </Link>
-                                                    )}
+                                                    <Link href={editSubmission.url(submission.id)}>
+                                                        <Button size="sm" className="gap-1 bg-primary text-white hover:bg-primary/90">
+                                                            <Pencil className="h-3.5 w-3.5" />
+                                                            {submission.hasRejected ? 'Revisi' : 'Edit'}
+                                                        </Button>
+                                                    </Link>
                                                 </div>
                                             </td>
                                         </tr>

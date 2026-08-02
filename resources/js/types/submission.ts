@@ -41,6 +41,7 @@ export interface SubmissionListItem {
     nama_pemohon: string;
     display_name?: string;
     hasRejected: boolean;
+    canEdit?: boolean;
     created_at: string;
     user?: {
         name: string;

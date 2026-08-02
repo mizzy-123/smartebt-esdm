@@ -111,6 +111,75 @@ test('user can store potensi with minimal fields', function () {
     ]);
 });
 
+test('user can edit own potensi submission', function () {
+    $user = User::factory()->create();
+
+    $submission = Submission::create([
+        'user_id' => $user->id,
+        'entry_type' => 'potensi',
+        'category' => 'biogas',
+        'status' => SubmissionStatus::BelumIntervensi,
+        'lokasi' => 'Lokasi lama',
+        'latitude' => -7.1,
+        'longitude' => 110.1,
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews('biogas', 'potensi'),
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('submissions.edit', $submission))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('user/submissions/edit-ebt'));
+
+    $this->actingAs($user)
+        ->put(route('submissions.update', $submission), [
+            'entry_type' => 'potensi',
+            'category' => 'plts',
+            'lokasi' => 'Lokasi baru',
+            'latitude' => -7.25,
+            'longitude' => 110.43,
+        ])
+        ->assertRedirect(route('submissions.show', $submission));
+
+    $submission->refresh();
+
+    expect($submission->lokasi)->toBe('Lokasi baru')
+        ->and($submission->category->value)->toBe('plts')
+        ->and((float) $submission->latitude)->toBe(-7.25);
+});
+
+test('editing verified ebt entry resets status to pending', function () {
+    $user = User::factory()->create();
+
+    $submission = Submission::create([
+        'user_id' => $user->id,
+        'entry_type' => 'terbangun',
+        'category' => 'plts',
+        'status' => SubmissionStatus::SudahIntervensi,
+        'lokasi' => 'Lokasi verified',
+        'kapasitas' => 5,
+        'latitude' => -7.1,
+        'longitude' => 110.1,
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews('plts', 'terbangun'),
+    ]);
+
+    $this->actingAs($user)
+        ->put(route('submissions.update', $submission), [
+            'entry_type' => 'terbangun',
+            'category' => 'plts',
+            'lokasi' => 'Lokasi diperbaiki',
+            'kapasitas' => 8,
+            'latitude' => -7.2,
+            'longitude' => 110.2,
+        ])
+        ->assertRedirect();
+
+    $submission->refresh();
+
+    expect($submission->status)->toBe(SubmissionStatus::BelumIntervensi)
+        ->and($submission->lokasi)->toBe('Lokasi diperbaiki');
+});
+
 test('ebt entry requires latitude and longitude', function () {
     $user = User::factory()->create();
 

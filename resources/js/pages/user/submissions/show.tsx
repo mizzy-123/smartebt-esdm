@@ -61,13 +61,18 @@ export default function SubmissionsShow({ submission, fields }: ShowProps) {
                             #{submission.id} · {submission.categoryLabel} · {submission.display_name ?? submission.nama_pemohon} · {submission.created_at}
                         </p>
                     </div>
-                    {submission.hasRejected && (
-                        <Link href={`/submissions/${submission.id}/edit`}>
-                            <Button className="gap-2 bg-amber-500 hover:bg-amber-600">
-                                <Pencil className="h-4 w-4" /> Revisi
-                            </Button>
-                        </Link>
-                    )}
+                    <Link href={`/submissions/${submission.id}/edit`}>
+                        <Button
+                            className={
+                                submission.hasRejected
+                                    ? 'gap-2 bg-amber-500 hover:bg-amber-600'
+                                    : 'gap-2 bg-primary hover:bg-primary/90'
+                            }
+                        >
+                            <Pencil className="h-4 w-4" />
+                            {submission.hasRejected ? 'Revisi' : 'Edit Data'}
+                        </Button>
+                    </Link>
                 </div>
 
                 {isEbtSimple && (

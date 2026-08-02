@@ -30,6 +30,7 @@ class UserDashboardController extends Controller
             'nama_pemohon' => $s->displayName(),
             'display_name' => $s->displayName(),
             'hasRejected' => $s->hasRejectedFields(),
+            'canEdit' => true,
             'created_at' => $s->created_at->format('d M Y'),
         ]);
 

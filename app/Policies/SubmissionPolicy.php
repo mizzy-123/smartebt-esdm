@@ -19,6 +19,6 @@ class SubmissionPolicy
 
     public function update(User $user, Submission $submission): bool
     {
-        return $submission->user_id === $user->id && $submission->hasRejectedFields();
+        return $submission->user_id === $user->id;
     }
 }
