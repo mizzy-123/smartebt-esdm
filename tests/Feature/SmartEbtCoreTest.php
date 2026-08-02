@@ -217,6 +217,66 @@ test('admin can store terbangun plts with auto bauran energi', function () {
         ->and((float) $submission->bauran_energi)->toBe($expected);
 });
 
+test('public map detail is available for verified submissions with coordinates', function () {
+    $user = User::factory()->create([
+        'name' => 'Penginput Rahasia',
+        'email' => 'penginput-rahasia@example.com',
+    ]);
+
+    $verified = Submission::create([
+        'user_id' => $user->id,
+        'entry_type' => 'terbangun',
+        'category' => 'plts',
+        'status' => SubmissionStatus::SudahIntervensi,
+        'lokasi' => 'Lokasi publik',
+        'kabupaten' => 'KAB. SEMARANG',
+        'kecamatan' => 'Ungaran Barat',
+        'desa' => 'Lerep',
+        'deskripsi_titik' => 'PLTS desa',
+        'latitude' => -7.2,
+        'longitude' => 110.2,
+        'kapasitas' => 10,
+        'bauran_energi' => 1.23,
+        'nama_pengelola' => 'Budi Rahasia',
+        'kontak_person' => 'Siti Rahasia',
+        'no_wa' => '081234567890',
+        'nama_pemilik' => 'Pemilik Rahasia',
+        'penanggung_jawab' => 'PJ Rahasia',
+        'nama_pemohon' => 'Yayasan Rahasia',
+        'nomor_identitas' => '1234567890123456',
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews('plts', 'terbangun'),
+    ]);
+
+    $pending = Submission::create([
+        'user_id' => $user->id,
+        'entry_type' => 'potensi',
+        'status' => SubmissionStatus::BelumIntervensi,
+        'lokasi' => 'Belum verified',
+        'latitude' => -7.1,
+        'longitude' => 110.1,
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews(null, 'potensi'),
+    ]);
+
+    $this->get(route('map.show', $verified))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('map/show')
+            ->where('point.id', $verified->id)
+            ->where('point.category', 'plts')
+            ->where('point.kabupaten', 'KAB. SEMARANG')
+            ->missing('point.nama_pengelola')
+            ->missing('point.kontak_person')
+            ->missing('point.no_wa')
+            ->missing('point.nama_pemilik')
+            ->missing('point.penanggung_jawab')
+            ->missing('point.nama_pemohon')
+            ->missing('point.nomor_identitas')
+            ->missing('point.user')
+            ->missing('point.user_id'));
+
+    $this->get(route('map.show', $pending))->assertNotFound();
+});
+
 test('map data only includes verified submissions with coordinates', function () {
     $user = User::factory()->create();
 

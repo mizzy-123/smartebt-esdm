@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 // ─── Public Routes ───────────────────────────────────────────────────────────
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/map-data', [LandingController::class, 'mapData'])->name('map-data');
+Route::get('/peta/{submission}', [LandingController::class, 'showMapPoint'])->name('map.show');
 Route::get('/downloads/{download}', [DownloadController::class, 'download'])->name('downloads.download');
 
 // ─── User Auth Routes ─────────────────────────────────────────────────────────

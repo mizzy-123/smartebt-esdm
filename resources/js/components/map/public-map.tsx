@@ -3,10 +3,13 @@
 import type { MapPoint } from '@/types/submission';
 import type { Map as LeafletMap } from 'leaflet';
 import { useEffect, useRef } from 'react';
+import { show as mapShow } from '@/routes/map';
 
 interface PublicMapProps {
     points: MapPoint[];
     height?: string;
+    /** When true, popup includes a link to the public detail page. */
+    showDetailLink?: boolean;
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -29,7 +32,7 @@ function escapeHtml(value: string): string {
         .replaceAll("'", '&#39;');
 }
 
-export default function PublicMap({ points, height = '480px' }: PublicMapProps) {
+export default function PublicMap({ points, height = '480px', showDetailLink = true }: PublicMapProps) {
     const mapRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<LeafletMap | null>(null);
 
@@ -105,6 +108,11 @@ export default function PublicMap({ points, height = '480px' }: PublicMapProps) 
                     ? `<p style="margin:8px 0 0;font-size:12px;color:#555">${escapeHtml(metaParts.join(' · '))}</p>`
                     : '';
 
+                const detailUrl = escapeHtml(mapShow.url(point.id));
+                const detailHtml = showDetailLink
+                    ? `<p style="margin:12px 0 0"><a href="${detailUrl}" style="display:inline-block;padding:6px 12px;background:#0A2463;color:#fff;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none">Lihat detail</a></p>`
+                    : '';
+
                 marker.bindPopup(`
                     <div style="min-width:220px;font-family:sans-serif">
                         <div style="background:#0A2463;color:white;padding:8px 12px;margin:-13px -20px 10px;border-radius:12px 12px 0 0;font-weight:600;font-size:13px">
@@ -113,6 +121,7 @@ export default function PublicMap({ points, height = '480px' }: PublicMapProps) 
                         <p style="margin:0 0 6px;font-size:11px;font-weight:600;color:#1B8B41;text-transform:uppercase;letter-spacing:0.03em">${entryLabel}</p>
                         <p style="margin:0;font-size:13px;color:#333;line-height:1.5">${description}</p>
                         ${metaHtml}
+                        ${detailHtml}
                     </div>
                 `);
             });
@@ -135,7 +144,7 @@ export default function PublicMap({ points, height = '480px' }: PublicMapProps) 
                 mapInstanceRef.current = null;
             }
         };
-    }, [points]);
+    }, [points, showDetailLink]);
 
     return (
         <div

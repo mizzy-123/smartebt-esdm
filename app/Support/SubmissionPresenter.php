@@ -81,6 +81,39 @@ class SubmissionPresenter
         return $data;
     }
 
+    /**
+     * Public-safe payload for map detail pages (no personal/contact data).
+     *
+     * @return array<string, mixed>
+     */
+    public static function toPublicArray(Submission $submission): array
+    {
+        $entryType = $submission->entry_type ?? EntryType::Pengajuan;
+
+        return [
+            'id' => $submission->id,
+            'entry_type' => $entryType->value,
+            'entryTypeLabel' => $submission->entryTypeLabel(),
+            'berbadan_hukum' => $submission->isBerbadanHukum(),
+            'category' => $submission->category?->value,
+            'categoryLabel' => $submission->category?->label()
+                ?? ($entryType === EntryType::Potensi ? 'Potensi Lokal EBT' : '-'),
+            'kapasitasUnit' => $submission->category?->kapasitasUnit(),
+            'lokasi' => $submission->lokasi,
+            'desa' => $submission->desa,
+            'kecamatan' => $submission->kecamatan,
+            'kabupaten' => $submission->kabupaten,
+            'deskripsi_titik' => $submission->deskripsi_titik,
+            'kapasitas' => $submission->kapasitas !== null ? (float) $submission->kapasitas : null,
+            'bauran_energi' => $submission->bauran_energi !== null ? (float) $submission->bauran_energi : null,
+            'sumber_pendanaan' => $submission->sumber_pendanaan,
+            'tahun_pembangunan' => $submission->tahun_pembangunan,
+            'latitude' => $submission->latitude !== null ? (float) $submission->latitude : null,
+            'longitude' => $submission->longitude !== null ? (float) $submission->longitude : null,
+            'foto_kondisi_path' => self::fileUrl($submission->foto_kondisi_path),
+        ];
+    }
+
     private static function fileUrl(?string $path): ?string
     {
         return $path ? Storage::url($path) : null;

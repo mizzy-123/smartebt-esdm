@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SubmissionStatus;
 use App\Models\Download;
 use App\Models\Submission;
+use App\Support\SubmissionPresenter;
 use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -63,5 +65,19 @@ class LandingController extends Controller
             ]);
 
         return response()->json($points);
+    }
+
+    public function showMapPoint(Submission $submission): Response
+    {
+        abort_unless(
+            $submission->status === SubmissionStatus::SudahIntervensi
+                && $submission->latitude !== null
+                && $submission->longitude !== null,
+            404
+        );
+
+        return Inertia::render('map/show', [
+            'point' => SubmissionPresenter::toPublicArray($submission),
+        ]);
     }
 }
