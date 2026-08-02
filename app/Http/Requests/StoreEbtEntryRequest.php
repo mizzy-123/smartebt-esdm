@@ -6,7 +6,6 @@ use App\Enums\EntryType;
 use App\Enums\SubmissionCategory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
 class StoreEbtEntryRequest extends FormRequest
 {
@@ -45,8 +44,8 @@ class StoreEbtEntryRequest extends FormRequest
             'kontak_person' => ['nullable', 'string', 'max:255'],
             'no_wa' => ['nullable', 'string', 'max:30'],
             'foto_kondisi' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
-            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
-            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
+            'latitude' => ['required', 'numeric', 'between:-90,90'],
+            'longitude' => ['required', 'numeric', 'between:-180,180'],
             'deskripsi_titik' => ['nullable', 'string'],
             'nama_pemilik' => ['nullable', 'string', 'max:255'],
             'penanggung_jawab' => ['nullable', 'string', 'max:255'],
@@ -55,21 +54,6 @@ class StoreEbtEntryRequest extends FormRequest
             'sumber_pendanaan_detail' => ['nullable', 'string', 'max:255'],
             'tahun_pembangunan' => ['nullable', 'integer', 'min:1990', 'max:'.(date('Y') + 1)],
         ];
-    }
-
-    public function withValidator(Validator $validator): void
-    {
-        $validator->after(function (Validator $validator) {
-            $hasLokasi = filled($this->input('lokasi'));
-            $hasCoords = filled($this->input('latitude')) && filled($this->input('longitude'));
-
-            if (! $hasLokasi && ! $hasCoords) {
-                $validator->errors()->add(
-                    'lokasi',
-                    'Isi lokasi atau koordinat (latitude & longitude) agar data bisa disimpan.'
-                );
-            }
-        });
     }
 
     public function attributes(): array

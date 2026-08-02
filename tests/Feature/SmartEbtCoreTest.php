@@ -98,6 +98,8 @@ test('user can store potensi with minimal fields', function () {
             'entry_type' => 'potensi',
             'category' => 'pltmh',
             'lokasi' => 'Desa Contoh',
+            'latitude' => -7.25,
+            'longitude' => 110.43,
         ])
         ->assertRedirect();
 
@@ -107,6 +109,18 @@ test('user can store potensi with minimal fields', function () {
         'category' => 'pltmh',
         'lokasi' => 'Desa Contoh',
     ]);
+});
+
+test('ebt entry requires latitude and longitude', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('submissions.store'), [
+            'entry_type' => 'potensi',
+            'category' => 'biogas',
+            'lokasi' => 'Tanpa koordinat',
+        ])
+        ->assertSessionHasErrors(['latitude', 'longitude']);
 });
 
 test('admin can store terbangun plts with auto bauran energi', function () {
