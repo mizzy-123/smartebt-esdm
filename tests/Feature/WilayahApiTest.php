@@ -4,6 +4,7 @@ use App\Models\Provinsi;
 use App\Models\User;
 use App\Models\Wilayah;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 test('authenticated user can fetch cascading wilayah options for jawa tengah', function () {
     $wilayah = Wilayah::query()->create(['nama' => 'Test Wilayah']);
@@ -53,4 +54,27 @@ test('authenticated user can fetch cascading wilayah options for jawa tengah', f
 
 test('wilayah endpoints require authentication', function () {
     $this->getJson(route('wilayah.kabupaten'))->assertUnauthorized();
+});
+
+test('authenticated user can search locations via geocode proxy', function () {
+    Http::fake([
+        'nominatim.openstreetmap.org/*' => Http::response([
+            [
+                'display_name' => 'Simpang Lima, Semarang, Jawa Tengah',
+                'lat' => '-6.9932',
+                'lon' => '110.4203',
+            ],
+        ], 200),
+    ]);
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->getJson(route('wilayah.search', ['q' => 'Simpang Lima Semarang']))
+        ->assertOk()
+        ->assertJsonFragment([
+            'label' => 'Simpang Lima, Semarang, Jawa Tengah',
+            'latitude' => -6.9932,
+            'longitude' => 110.4203,
+        ]);
 });

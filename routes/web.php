@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/kabupaten', [WilayahController::class, 'kabupaten'])->name('kabupaten');
         Route::get('/kecamatan', [WilayahController::class, 'kecamatan'])->name('kecamatan');
         Route::get('/kelurahan', [WilayahController::class, 'kelurahan'])->name('kelurahan');
+        Route::get('/search', [WilayahController::class, 'search'])->name('search');
     });
 
     Route::get('/submissions/potensi/create', [SubmissionController::class, 'createPotensi'])
