@@ -74,14 +74,36 @@ export default function PublicMap({ points, height = '480px' }: PublicMapProps) 
 
                 const marker = L.marker([point.latitude, point.longitude], { icon }).addTo(map);
                 const label = escapeHtml(point.categoryLabel);
+                const entryLabel = escapeHtml(
+                    point.entry_type === 'potensi'
+                        ? 'Potensi (Belum Terbangun)'
+                        : point.entry_type === 'terbangun'
+                          ? 'Infrastruktur Terbangun'
+                          : (point.entryTypeLabel ?? 'Pengajuan'),
+                );
                 const description = escapeHtml(point.deskripsi ?? 'Tidak ada deskripsi.');
+                const metaParts: string[] = [];
+
+                if (point.kapasitas != null) {
+                    metaParts.push(`Kapasitas: ${point.kapasitas}`);
+                }
+
+                if (point.bauran_energi != null) {
+                    metaParts.push(`Bauran: ${point.bauran_energi}`);
+                }
+
+                const metaHtml = metaParts.length > 0
+                    ? `<p style="margin:8px 0 0;font-size:12px;color:#555">${escapeHtml(metaParts.join(' · '))}</p>`
+                    : '';
 
                 marker.bindPopup(`
-                    <div style="min-width:200px;font-family:sans-serif">
+                    <div style="min-width:220px;font-family:sans-serif">
                         <div style="background:#0A2463;color:white;padding:8px 12px;margin:-13px -20px 10px;border-radius:12px 12px 0 0;font-weight:600;font-size:13px">
                             ${label}
                         </div>
+                        <p style="margin:0 0 6px;font-size:11px;font-weight:600;color:#1B8B41;text-transform:uppercase;letter-spacing:0.03em">${entryLabel}</p>
                         <p style="margin:0;font-size:13px;color:#333;line-height:1.5">${description}</p>
+                        ${metaHtml}
                     </div>
                 `);
             });

@@ -1,7 +1,7 @@
-import type { Download, MapPoint } from '@/types/submission';
+import type { Download, EntryTypeValue, MapPoint } from '@/types/submission';
 import { Link } from '@inertiajs/react';
-import { ArrowRight, Download as DownloadIcon, FileText, MapPin, Zap } from 'lucide-react';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { ArrowRight, Building2, Download as DownloadIcon, FileText, Leaf, MapPin, Zap } from 'lucide-react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 
 const PublicMap = lazy(() => import('@/components/map/public-map'));
 
@@ -49,16 +49,22 @@ const CATEGORY_COLORS: Record<string, string> = {
     plts_perikanan: '#0077b6',
 };
 
-const MAP_LEGEND_CATEGORIES = [
-    'peternakan_ebt',
-    'plts_rooftop',
-    'plts_perikanan',
-    'biogas',
-    'plts',
-    'pats',
-    'pltmh',
-    'pltb',
-] as const;
+const MAP_LEGEND_BY_FILTER: Record<'all' | 'potensi' | 'terbangun', readonly string[]> = {
+    all: [
+        'peternakan_ebt',
+        'plts_rooftop',
+        'plts_perikanan',
+        'biogas',
+        'plts',
+        'pats',
+        'pltmh',
+        'pltb',
+    ],
+    potensi: ['biogas', 'plts', 'pats', 'pltmh', 'pltb'],
+    terbangun: ['biogas', 'plts', 'pats', 'pltmh', 'pltb'],
+};
+
+type MapFilter = 'all' | 'potensi' | 'terbangun';
 
 export default function Landing({ downloads, stats }: LandingProps) {
     return (
@@ -256,21 +262,10 @@ export default function Landing({ downloads, stats }: LandingProps) {
                             <MapPin className="h-5 w-5" />
                             <span className="font-semibold text-sm uppercase tracking-wide">Peta Sebaran</span>
                         </div>
-                        <h2 className="mb-3 text-3xl font-bold text-[#0A2463]">Titik Potensi EBT di Jawa Tengah</h2>
-                        <p className="text-muted-foreground">Lokasi yang telah diverifikasi admin dan disetujui</p>
-                    </div>
-
-                    {/* Legend */}
-                    <div className="mb-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
-                        {MAP_LEGEND_CATEGORIES.map((cat) => (
-                            <div key={cat} className="flex items-center gap-1.5">
-                                <div
-                                    className="h-3 w-3 rounded-full border-2 border-white shadow-sm"
-                                    style={{ background: CATEGORY_COLORS[cat] }}
-                                />
-                                <span className="text-xs text-muted-foreground">{CATEGORY_LABELS[cat]}</span>
-                            </div>
-                        ))}
+                        <h2 className="mb-3 text-3xl font-bold text-[#0A2463]">Sebaran EBT di Jawa Tengah</h2>
+                        <p className="text-muted-foreground">
+                            Tampilan potensi (belum terbangun) dan infrastruktur yang sudah terbangun
+                        </p>
                     </div>
 
                     <Suspense fallback={<div className="h-[480px] animate-pulse rounded-2xl bg-gray-100" />}>
@@ -343,6 +338,7 @@ function MapDataLoader() {
     const [points, setPoints] = useState<MapPoint[]>([]);
     const [loading, setLoading] = useState(true);
     const [failed, setFailed] = useState(false);
+    const [filter, setFilter] = useState<MapFilter>('all');
 
     useEffect(() => {
         const controller = new AbortController();
@@ -371,6 +367,57 @@ function MapDataLoader() {
         return () => controller.abort();
     }, []);
 
+    const counts = useMemo(() => {
+        const byType = (type: EntryTypeValue) =>
+            points.filter((point) => point.entry_type === type).length;
+
+        return {
+            all: points.length,
+            potensi: byType('potensi'),
+            terbangun: byType('terbangun'),
+        };
+    }, [points]);
+
+    const filteredPoints = useMemo(() => {
+        if (filter === 'all') {
+            return points;
+        }
+
+        return points.filter((point) => point.entry_type === filter);
+    }, [filter, points]);
+
+    const legendCategories = MAP_LEGEND_BY_FILTER[filter];
+
+    const filters: Array<{
+        value: MapFilter;
+        label: string;
+        description: string;
+        icon: typeof Leaf;
+        count: number;
+    }> = [
+        {
+            value: 'all',
+            label: 'Semua',
+            description: 'Gabungan seluruh titik terverifikasi',
+            icon: MapPin,
+            count: counts.all,
+        },
+        {
+            value: 'potensi',
+            label: 'Potensi',
+            description: 'Belum terbangun',
+            icon: Leaf,
+            count: counts.potensi,
+        },
+        {
+            value: 'terbangun',
+            label: 'Infrastruktur Terbangun',
+            description: 'Sudah terbangun',
+            icon: Building2,
+            count: counts.terbangun,
+        },
+    ];
+
     if (loading) {
         return <div className="h-[480px] animate-pulse rounded-2xl bg-gray-100" />;
     }
@@ -383,17 +430,80 @@ function MapDataLoader() {
         );
     }
 
-    if (points.length === 0) {
-        return (
-            <div className="flex h-[480px] flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-muted/40 text-center">
-                <MapPin className="h-8 w-8 text-muted-foreground/60" />
-                <p className="text-sm font-medium text-[#0A2463]">Belum ada titik yang diverifikasi</p>
-                <p className="max-w-sm text-xs text-muted-foreground">
-                    Lokasi yang sudah diverifikasi admin akan muncul di peta ini.
-                </p>
-            </div>
-        );
-    }
+    return (
+        <div className="space-y-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
+                {filters.map((item) => {
+                    const Icon = item.icon;
+                    const active = filter === item.value;
 
-    return <PublicMap points={points} height="480px" />;
+                    return (
+                        <button
+                            key={item.value}
+                            type="button"
+                            onClick={() => setFilter(item.value)}
+                            className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left transition ${
+                                active
+                                    ? 'border-[#0A2463] bg-[#0A2463] text-white shadow-md'
+                                    : 'border-border bg-white text-[#0A2463] hover:border-[#0A2463]/40 hover:bg-muted/40'
+                            }`}
+                        >
+                            <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-[#FDB813]' : 'text-[#1B8B41]'}`} />
+                            <span className="min-w-0">
+                                <span className="flex items-center gap-2">
+                                    <span className="text-sm font-semibold">{item.label}</span>
+                                    <span
+                                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                                            active ? 'bg-white/15 text-white' : 'bg-muted text-muted-foreground'
+                                        }`}
+                                    >
+                                        {item.count}
+                                    </span>
+                                </span>
+                                <span className={`mt-0.5 block text-xs ${active ? 'text-blue-100' : 'text-muted-foreground'}`}>
+                                    {item.description}
+                                </span>
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+                {legendCategories.map((cat) => (
+                    <div key={cat} className="flex items-center gap-1.5">
+                        <div
+                            className="h-3 w-3 rounded-full border-2 border-white shadow-sm"
+                            style={{ background: CATEGORY_COLORS[cat] }}
+                        />
+                        <span className="text-xs text-muted-foreground">{CATEGORY_LABELS[cat]}</span>
+                    </div>
+                ))}
+            </div>
+
+            {filteredPoints.length === 0 ? (
+                <div className="flex h-[480px] flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-muted/40 text-center">
+                    <MapPin className="h-8 w-8 text-muted-foreground/60" />
+                    <p className="text-sm font-medium text-[#0A2463]">
+                        {points.length === 0
+                            ? 'Belum ada titik yang diverifikasi'
+                            : `Belum ada titik untuk filter ${
+                                  filter === 'potensi'
+                                      ? 'Potensi'
+                                      : filter === 'terbangun'
+                                        ? 'Infrastruktur Terbangun'
+                                        : 'Semua'
+                              }`}
+                    </p>
+                    <p className="max-w-sm text-xs text-muted-foreground">
+                        {points.length === 0
+                            ? 'Lokasi yang sudah diverifikasi admin akan muncul di peta ini.'
+                            : 'Coba pilih filter lain untuk melihat sebaran yang tersedia.'}
+                    </p>
+                </div>
+            ) : (
+                <PublicMap points={filteredPoints} height="480px" />
+            )}
+        </div>
+    );
 }
