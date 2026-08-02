@@ -66,7 +66,7 @@ export default function AdminSubmissionsIndex({ submissions, filters }: AdminSub
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="">Semua Jenis</SelectItem>
-                            <SelectItem value="pengajuan">Pengajuan</SelectItem>
+                            <SelectItem value="potensi_berbadan_hukum">Potensi Berbadan Hukum</SelectItem>
                             <SelectItem value="potensi">Info Potensi Lokal</SelectItem>
                             <SelectItem value="terbangun">Infrastruktur Terbangun</SelectItem>
                         </SelectContent>

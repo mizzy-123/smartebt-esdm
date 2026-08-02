@@ -179,7 +179,7 @@ export default function SubmissionsCreate({ categories }: CreateProps) {
                 {/* Progress */}
                 <div className="mb-8">
                     <div className="mb-4 flex items-center justify-between">
-                        <h1 className="text-xl font-bold text-foreground">Buat Pengajuan EBT</h1>
+                        <h1 className="text-xl font-bold text-foreground">Potensi Berbadan Hukum</h1>
                         <span className="text-sm text-muted-foreground">Langkah {currentStep} dari 4</span>
                     </div>
                     <div className="flex gap-1">
@@ -207,7 +207,7 @@ export default function SubmissionsCreate({ categories }: CreateProps) {
                 {/* Step 1: Category */}
                 {step === 'category' && (
                     <div>
-                        <h2 className="mb-6 text-lg font-semibold">Pilih Kategori Pengajuan</h2>
+                        <h2 className="mb-6 text-lg font-semibold">Pilih Kategori Potensi</h2>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             {categories.map((cat) => (
                                 <button
@@ -244,7 +244,7 @@ export default function SubmissionsCreate({ categories }: CreateProps) {
                 {/* Step 2: Base Form */}
                 {step === 'base' && (
                     <div className="space-y-6">
-                        <h2 className="text-lg font-semibold">Informasi Dasar Pengajuan</h2>
+                        <h2 className="text-lg font-semibold">Informasi Dasar Organisasi</h2>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div className="space-y-1.5">
                                 <Label>Nama Pemohon <span className="text-destructive">*</span></Label>
@@ -758,7 +758,7 @@ export default function SubmissionsCreate({ categories }: CreateProps) {
                                 {processing ? (
                                     <><Loader2 className="h-4 w-4 animate-spin" /> Mengirim...</>
                                 ) : (
-                                    <>Kirim Pengajuan <ArrowRight className="h-4 w-4" /></>
+                                    <>Kirim Data <ArrowRight className="h-4 w-4" /></>
                                 )}
                             </Button>
                         </div>
@@ -771,6 +771,6 @@ export default function SubmissionsCreate({ categories }: CreateProps) {
 SubmissionsCreate.layout = {
     breadcrumbs: [
         { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Buat Pengajuan', href: '/submissions/create' },
+        { title: 'Potensi Berbadan Hukum', href: '/submissions/create' },
     ],
 };

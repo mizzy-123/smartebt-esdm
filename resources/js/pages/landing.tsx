@@ -1,6 +1,6 @@
-import type { Download, EntryTypeValue, MapPoint } from '@/types/submission';
+import type { Download, MapPoint, SubmissionCategoryValue } from '@/types/submission';
 import { Link } from '@inertiajs/react';
-import { ArrowRight, Building2, Download as DownloadIcon, FileText, Leaf, MapPin, Zap } from 'lucide-react';
+import { ArrowRight, Building2, Download as DownloadIcon, FileText, Leaf, MapPin, PlusCircle, RotateCcw, Zap } from 'lucide-react';
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 
 const PublicMap = lazy(() => import('@/components/map/public-map'));
@@ -49,22 +49,36 @@ const CATEGORY_COLORS: Record<string, string> = {
     plts_perikanan: '#0077b6',
 };
 
-const MAP_LEGEND_BY_FILTER: Record<'all' | 'potensi' | 'terbangun', readonly string[]> = {
-    all: [
-        'peternakan_ebt',
-        'plts_rooftop',
-        'plts_perikanan',
-        'biogas',
-        'plts',
-        'pats',
-        'pltmh',
-        'pltb',
-    ],
-    potensi: ['biogas', 'plts', 'pats', 'pltmh', 'pltb'],
-    terbangun: ['biogas', 'plts', 'pats', 'pltmh', 'pltb'],
-};
+const EBT_TYPE_OPTIONS: SubmissionCategoryValue[] = [
+    'biogas',
+    'plts',
+    'pats',
+    'pltmh',
+    'pltb',
+    'peternakan_ebt',
+    'plts_rooftop',
+    'plts_perikanan',
+];
 
-type MapFilter = 'all' | 'potensi' | 'terbangun';
+type StatusFilter = 'all' | 'potensi' | 'potensi_berbadan_hukum' | 'terbangun';
+type CategoryFilter = 'all' | SubmissionCategoryValue;
+
+function matchesStatusFilter(point: MapPoint, statusFilter: StatusFilter): boolean {
+    if (statusFilter === 'all') {
+        return true;
+    }
+
+    if (statusFilter === 'terbangun') {
+        return point.entry_type === 'terbangun';
+    }
+
+    if (statusFilter === 'potensi_berbadan_hukum') {
+        return point.entry_type === 'potensi' && Boolean(point.berbadan_hukum);
+    }
+
+    // potensi lokal (bukan berbadan hukum)
+    return point.entry_type === 'potensi' && !point.berbadan_hukum;
+}
 
 export default function Landing({ downloads, stats }: LandingProps) {
     return (
@@ -168,14 +182,14 @@ export default function Landing({ downloads, stats }: LandingProps) {
                         Tiga Jenis Input Data EBT
                     </h2>
                     <p className="text-muted-foreground">
-                        Pengajuan bantuan, info potensi lokal, dan infrastruktur yang sudah terbangun
+                        Potensi berbadan hukum, info potensi lokal, dan infrastruktur yang sudah terbangun
                     </p>
                 </div>
                 <div className="mb-14 grid grid-cols-1 gap-6 lg:grid-cols-3">
                     {[
                         {
-                            title: 'Buat Pengajuan',
-                            desc: 'Form lengkap bantuan program EBT untuk masyarakat dan organisasi, dengan dokumen pendukung.',
+                            title: 'Potensi Berbadan Hukum',
+                            desc: 'Input potensi EBT dari organisasi berbadan hukum, lengkap dokumen dan verifikasi berjenjang.',
                         },
                         {
                             title: 'Info Potensi Lokal EBT',
@@ -197,8 +211,8 @@ export default function Landing({ downloads, stats }: LandingProps) {
                 </div>
 
                 <div className="mb-8 text-center">
-                    <h3 className="mb-2 text-xl font-bold text-[#0A2463]">Kategori Buat Pengajuan</h3>
-                    <p className="text-sm text-muted-foreground">Program bantuan yang dapat diajukan melalui menu Buat Pengajuan</p>
+                    <h3 className="mb-2 text-xl font-bold text-[#0A2463]">Kategori Potensi Berbadan Hukum</h3>
+                    <p className="text-sm text-muted-foreground">Jenis potensi yang diinput melalui menu Potensi Berbadan Hukum</p>
                 </div>
                 <div className="mb-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                     {[
@@ -264,7 +278,7 @@ export default function Landing({ downloads, stats }: LandingProps) {
                         </div>
                         <h2 className="mb-3 text-3xl font-bold text-[#0A2463]">Sebaran EBT di Jawa Tengah</h2>
                         <p className="text-muted-foreground">
-                            Tampilan potensi (belum terbangun) dan infrastruktur yang sudah terbangun
+                            Filter berdasarkan jenis EBT, potensi/terbangun, dan kabupaten/kota
                         </p>
                     </div>
 
@@ -338,7 +352,9 @@ function MapDataLoader() {
     const [points, setPoints] = useState<MapPoint[]>([]);
     const [loading, setLoading] = useState(true);
     const [failed, setFailed] = useState(false);
-    const [filter, setFilter] = useState<MapFilter>('all');
+    const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+    const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
+    const [kabupatenFilter, setKabupatenFilter] = useState('all');
 
     useEffect(() => {
         const controller = new AbortController();
@@ -367,29 +383,100 @@ function MapDataLoader() {
         return () => controller.abort();
     }, []);
 
-    const counts = useMemo(() => {
-        const byType = (type: EntryTypeValue) =>
-            points.filter((point) => point.entry_type === type).length;
+    const kabupatenOptions = useMemo(() => {
+        const values = new Set<string>();
 
-        return {
-            all: points.length,
-            potensi: byType('potensi'),
-            terbangun: byType('terbangun'),
-        };
+        points.forEach((point) => {
+            if (point.kabupaten?.trim()) {
+                values.add(point.kabupaten.trim());
+            }
+        });
+
+        return Array.from(values).sort((a, b) => a.localeCompare(b, 'id'));
+    }, [points]);
+
+    const availableCategories = useMemo(() => {
+        const present = new Set(
+            points
+                .map((point) => point.category)
+                .filter((category): category is SubmissionCategoryValue => Boolean(category)),
+        );
+
+        return EBT_TYPE_OPTIONS.filter((category) => present.has(category));
     }, [points]);
 
     const filteredPoints = useMemo(() => {
-        if (filter === 'all') {
-            return points;
-        }
+        return points.filter((point) => {
+            if (!matchesStatusFilter(point, statusFilter)) {
+                return false;
+            }
 
-        return points.filter((point) => point.entry_type === filter);
-    }, [filter, points]);
+            if (categoryFilter !== 'all' && point.category !== categoryFilter) {
+                return false;
+            }
 
-    const legendCategories = MAP_LEGEND_BY_FILTER[filter];
+            if (
+                kabupatenFilter !== 'all' &&
+                (point.kabupaten?.trim() ?? '') !== kabupatenFilter
+            ) {
+                return false;
+            }
 
-    const filters: Array<{
-        value: MapFilter;
+            return true;
+        });
+    }, [points, statusFilter, categoryFilter, kabupatenFilter]);
+
+    const statusCounts = useMemo(() => {
+        const matchesCategoryAndKabupaten = (point: MapPoint) => {
+            if (categoryFilter !== 'all' && point.category !== categoryFilter) {
+                return false;
+            }
+
+            if (
+                kabupatenFilter !== 'all' &&
+                (point.kabupaten?.trim() ?? '') !== kabupatenFilter
+            ) {
+                return false;
+            }
+
+            return true;
+        };
+
+        const countBy = (status: StatusFilter) =>
+            points.filter(
+                (point) =>
+                    matchesStatusFilter(point, status) && matchesCategoryAndKabupaten(point),
+            ).length;
+
+        return {
+            all: countBy('all'),
+            potensi: countBy('potensi'),
+            potensi_berbadan_hukum: countBy('potensi_berbadan_hukum'),
+            terbangun: countBy('terbangun'),
+        };
+    }, [points, categoryFilter, kabupatenFilter]);
+
+    const legendCategories = useMemo(() => {
+        const present = new Set(
+            filteredPoints
+                .map((point) => point.category)
+                .filter((category): category is SubmissionCategoryValue => Boolean(category)),
+        );
+
+        return EBT_TYPE_OPTIONS.filter((category) => present.has(category));
+    }, [filteredPoints]);
+
+    const hasActiveFilters =
+        statusFilter !== 'all' || categoryFilter !== 'all' || kabupatenFilter !== 'all';
+
+    const resetFilters = () => {
+        setStatusFilter('all');
+        setCategoryFilter('all');
+        setKabupatenFilter('all');
+    };
+
+    const statusOptions: Array<{
+        value: StatusFilter;
         label: string;
         description: string;
         icon: typeof Leaf;
@@ -398,23 +485,30 @@ function MapDataLoader() {
         {
             value: 'all',
             label: 'Semua',
-            description: 'Gabungan seluruh titik terverifikasi',
+            description: 'Semua titik terverifikasi',
             icon: MapPin,
-            count: counts.all,
+            count: statusCounts.all,
         },
         {
             value: 'potensi',
             label: 'Potensi',
-            description: 'Belum terbangun',
+            description: 'Potensi lokal (belum terbangun)',
             icon: Leaf,
-            count: counts.potensi,
+            count: statusCounts.potensi,
+        },
+        {
+            value: 'potensi_berbadan_hukum',
+            label: 'Potensi Berbadan Hukum',
+            description: 'Organisasi berbadan hukum',
+            icon: PlusCircle,
+            count: statusCounts.potensi_berbadan_hukum,
         },
         {
             value: 'terbangun',
             label: 'Infrastruktur Terbangun',
             description: 'Sudah terbangun',
             icon: Building2,
-            count: counts.terbangun,
+            count: statusCounts.terbangun,
         },
     ];
 
@@ -431,55 +525,145 @@ function MapDataLoader() {
     }
 
     return (
-        <div className="space-y-4">
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
-                {filters.map((item) => {
-                    const Icon = item.icon;
-                    const active = filter === item.value;
-
-                    return (
+        <div className="space-y-5">
+            <div className="rounded-2xl border border-border bg-[#F8FAFC] p-4 sm:p-5">
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <p className="text-sm font-semibold text-[#0A2463]">Filter Peta</p>
+                        <p className="text-xs text-muted-foreground">
+                            filter: jenis EBT, potensi/terbangun, dan kabupaten/kota
+                        </p>
+                    </div>
+                    {hasActiveFilters && (
                         <button
-                            key={item.value}
                             type="button"
-                            onClick={() => setFilter(item.value)}
-                            className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left transition ${
-                                active
-                                    ? 'border-[#0A2463] bg-[#0A2463] text-white shadow-md'
-                                    : 'border-border bg-white text-[#0A2463] hover:border-[#0A2463]/40 hover:bg-muted/40'
-                            }`}
+                            onClick={resetFilters}
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-white px-3 py-1.5 text-xs font-medium text-[#0A2463] transition hover:bg-muted"
                         >
-                            <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-[#FDB813]' : 'text-[#1B8B41]'}`} />
-                            <span className="min-w-0">
-                                <span className="flex items-center gap-2">
-                                    <span className="text-sm font-semibold">{item.label}</span>
-                                    <span
-                                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                                            active ? 'bg-white/15 text-white' : 'bg-muted text-muted-foreground'
+                            <RotateCcw className="h-3.5 w-3.5" />
+                            Reset filter
+                        </button>
+                    )}
+                </div>
+
+                <div className="space-y-4">
+                    <div>
+                        <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                            1. Jenis EBT
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                            <FilterChip
+                                active={categoryFilter === 'all'}
+                                onClick={() => setCategoryFilter('all')}
+                                label="Semua jenis"
+                            />
+                            {(availableCategories.length > 0 ? availableCategories : EBT_TYPE_OPTIONS.slice(0, 5)).map(
+                                (category) => (
+                                    <FilterChip
+                                        key={category}
+                                        active={categoryFilter === category}
+                                        onClick={() => setCategoryFilter(category)}
+                                        label={`${CATEGORY_ICONS[category] ?? ''} ${CATEGORY_LABELS[category]}`.trim()}
+                                        color={CATEGORY_COLORS[category]}
+                                    />
+                                ),
+                            )}
+                        </div>
+                    </div>
+
+                    <div>
+                        <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                            2. Jenis Data
+                        </p>
+                        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+                            {statusOptions.map((item) => {
+                                const Icon = item.icon;
+                                const active = statusFilter === item.value;
+
+                                return (
+                                    <button
+                                        key={item.value}
+                                        type="button"
+                                        onClick={() => setStatusFilter(item.value)}
+                                        className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left transition ${
+                                            active
+                                                ? 'border-[#0A2463] bg-[#0A2463] text-white shadow-md'
+                                                : 'border-border bg-white text-[#0A2463] hover:border-[#0A2463]/40'
                                         }`}
                                     >
-                                        {item.count}
-                                    </span>
-                                </span>
-                                <span className={`mt-0.5 block text-xs ${active ? 'text-blue-100' : 'text-muted-foreground'}`}>
-                                    {item.description}
-                                </span>
-                            </span>
-                        </button>
-                    );
-                })}
+                                        <Icon
+                                            className={`h-5 w-5 shrink-0 ${active ? 'text-[#FDB813]' : 'text-[#1B8B41]'}`}
+                                        />
+                                        <span className="min-w-0">
+                                            <span className="flex items-center gap-2">
+                                                <span className="text-sm font-semibold">{item.label}</span>
+                                                <span
+                                                    className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                                                        active
+                                                            ? 'bg-white/15 text-white'
+                                                            : 'bg-muted text-muted-foreground'
+                                                    }`}
+                                                >
+                                                    {item.count}
+                                                </span>
+                                            </span>
+                                            <span
+                                                className={`mt-0.5 block text-xs ${
+                                                    active ? 'text-blue-100' : 'text-muted-foreground'
+                                                }`}
+                                            >
+                                                {item.description}
+                                            </span>
+                                        </span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <div>
+                        <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                            3. Kabupaten / Kota
+                        </p>
+                        <select
+                            value={kabupatenFilter}
+                            onChange={(e) => setKabupatenFilter(e.target.value)}
+                            className="h-10 w-full max-w-md rounded-lg border border-border bg-white px-3 text-sm text-[#0A2463] outline-none transition focus:border-[#0A2463] focus:ring-2 focus:ring-[#0A2463]/20"
+                        >
+                            <option value="all">Semua kabupaten/kota</option>
+                            {kabupatenOptions.map((kabupaten) => (
+                                <option key={kabupaten} value={kabupaten}>
+                                    {kabupaten}
+                                </option>
+                            ))}
+                        </select>
+                        {kabupatenOptions.length === 0 && (
+                            <p className="mt-1.5 text-xs text-muted-foreground">
+                                Belum ada data kabupaten pada titik terverifikasi.
+                            </p>
+                        )}
+                    </div>
+                </div>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-                {legendCategories.map((cat) => (
-                    <div key={cat} className="flex items-center gap-1.5">
-                        <div
-                            className="h-3 w-3 rounded-full border-2 border-white shadow-sm"
-                            style={{ background: CATEGORY_COLORS[cat] }}
-                        />
-                        <span className="text-xs text-muted-foreground">{CATEGORY_LABELS[cat]}</span>
-                    </div>
-                ))}
-            </div>
+            {legendCategories.length > 0 && (
+                <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+                    {legendCategories.map((cat) => (
+                        <div key={cat} className="flex items-center gap-1.5">
+                            <div
+                                className="h-3 w-3 rounded-full border-2 border-white shadow-sm"
+                                style={{ background: CATEGORY_COLORS[cat] }}
+                            />
+                            <span className="text-xs text-muted-foreground">{CATEGORY_LABELS[cat]}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            <p className="text-center text-xs text-muted-foreground">
+                Menampilkan <span className="font-semibold text-[#0A2463]">{filteredPoints.length}</span> dari{' '}
+                {points.length} titik terverifikasi
+            </p>
 
             {filteredPoints.length === 0 ? (
                 <div className="flex h-[480px] flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-muted/40 text-center">
@@ -487,23 +671,49 @@ function MapDataLoader() {
                     <p className="text-sm font-medium text-[#0A2463]">
                         {points.length === 0
                             ? 'Belum ada titik yang diverifikasi'
-                            : `Belum ada titik untuk filter ${
-                                  filter === 'potensi'
-                                      ? 'Potensi'
-                                      : filter === 'terbangun'
-                                        ? 'Infrastruktur Terbangun'
-                                        : 'Semua'
-                              }`}
+                            : 'Tidak ada titik untuk kombinasi filter ini'}
                     </p>
                     <p className="max-w-sm text-xs text-muted-foreground">
                         {points.length === 0
                             ? 'Lokasi yang sudah diverifikasi admin akan muncul di peta ini.'
-                            : 'Coba pilih filter lain untuk melihat sebaran yang tersedia.'}
+                            : 'Ubah atau reset filter untuk melihat sebaran lain.'}
                     </p>
                 </div>
             ) : (
                 <PublicMap points={filteredPoints} height="480px" />
             )}
         </div>
+    );
+}
+
+function FilterChip({
+    active,
+    onClick,
+    label,
+    color,
+}: {
+    active: boolean;
+    onClick: () => void;
+    label: string;
+    color?: string;
+}) {
+    return (
+        <button
+            type="button"
+            onClick={onClick}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                active
+                    ? 'border-[#0A2463] bg-[#0A2463] text-white'
+                    : 'border-border bg-white text-[#0A2463] hover:border-[#0A2463]/40'
+            }`}
+        >
+            {color && (
+                <span
+                    className="h-2.5 w-2.5 rounded-full border border-white/80 shadow-sm"
+                    style={{ background: color }}
+                />
+            )}
+            {label}
+        </button>
     );
 }

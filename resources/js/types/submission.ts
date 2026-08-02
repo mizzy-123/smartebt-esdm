@@ -34,6 +34,7 @@ export interface SubmissionListItem {
     id: number;
     entry_type?: EntryTypeValue | null;
     entryTypeLabel?: string;
+    berbadan_hukum?: boolean;
     category: SubmissionCategoryValue | null;
     categoryLabel: string;
     status: SubmissionStatusValue;
@@ -53,6 +54,7 @@ export interface SubmissionDetail {
     id: number;
     entry_type: EntryTypeValue;
     entryTypeLabel: string;
+    berbadan_hukum?: boolean;
     category: SubmissionCategoryValue | null;
     categoryLabel: string;
     kapasitasUnit?: string | null;
@@ -110,8 +112,12 @@ export interface MapPoint {
     id: number;
     entry_type?: EntryTypeValue | null;
     entryTypeLabel?: string;
+    berbadan_hukum?: boolean;
     category: SubmissionCategoryValue | null;
     categoryLabel: string;
+    desa?: string | null;
+    kecamatan?: string | null;
+    kabupaten?: string | null;
     deskripsi: string | null;
     latitude: number;
     longitude: number;

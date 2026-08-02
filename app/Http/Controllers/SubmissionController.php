@@ -99,7 +99,8 @@ class SubmissionController extends Controller
             'submission' => SubmissionPresenter::toArray($submission),
             'fields' => SubmissionFieldRegistry::fieldsFor(
                 $submission->category,
-                $submission->entry_type
+                $submission->entry_type,
+                $submission->isBerbadanHukum()
             ),
         ]);
     }
@@ -117,7 +118,11 @@ class SubmissionController extends Controller
 
             return Inertia::render('user/submissions/edit-ebt', [
                 'submission' => SubmissionPresenter::toArray($submission),
-                'fields' => SubmissionFieldRegistry::fieldsFor($submission->category, $submission->entry_type),
+                'fields' => SubmissionFieldRegistry::fieldsFor(
+                    $submission->category,
+                    $submission->entry_type,
+                    $submission->isBerbadanHukum()
+                ),
                 'rejectedFields' => $submission->rejectedFieldKeys(),
                 'categories' => collect($categoryCases)->map(fn (SubmissionCategory $category) => [
                     'value' => $category->value,
@@ -132,7 +137,11 @@ class SubmissionController extends Controller
 
         return Inertia::render('user/submissions/edit', [
             'submission' => SubmissionPresenter::toArray($submission),
-            'fields' => SubmissionFieldRegistry::fieldsFor($submission->category, $submission->entry_type),
+            'fields' => SubmissionFieldRegistry::fieldsFor(
+                $submission->category,
+                $submission->entry_type,
+                $submission->isBerbadanHukum()
+            ),
             'rejectedFields' => $submission->rejectedFieldKeys(),
         ]);
     }
@@ -187,7 +196,12 @@ class SubmissionController extends Controller
                 'latitude' => $data['latitude'] ?? null,
                 'longitude' => $data['longitude'] ?? null,
                 'deskripsi_titik' => $data['deskripsi_titik'] ?? null,
-                'field_reviews' => SubmissionFieldRegistry::initializeReviews($category, $entryType),
+                'berbadan_hukum' => false,
+                'field_reviews' => SubmissionFieldRegistry::initializeReviews(
+                    $category,
+                    $entryType,
+                    berbadanHukum: false
+                ),
             ]);
 
             if ($request->hasFile('foto_kondisi')) {
@@ -224,8 +238,13 @@ class SubmissionController extends Controller
             $submission = Submission::create([
                 ...collect($baseData)->except(self::BASE_FILE_FIELDS)->all(),
                 'user_id' => $request->user()->id,
-                'entry_type' => EntryType::Pengajuan,
-                'field_reviews' => SubmissionFieldRegistry::initializeReviews($category, EntryType::Pengajuan),
+                'entry_type' => EntryType::Potensi,
+                'berbadan_hukum' => true,
+                'field_reviews' => SubmissionFieldRegistry::initializeReviews(
+                    $category,
+                    EntryType::Potensi,
+                    berbadanHukum: true
+                ),
             ]);
 
             foreach (self::BASE_FILE_FIELDS as $field) {
@@ -245,7 +264,7 @@ class SubmissionController extends Controller
 
         return redirect()
             ->route('submissions.show', $submission)
-            ->with('success', 'Pengajuan berhasil dikirim. Tim kami akan meninjau dokumen Anda.');
+            ->with('success', 'Potensi berbadan hukum berhasil dikirim. Tim kami akan meninjau dokumen Anda.');
     }
 
     private function updateEbtEntry(UpdateEbtEntryRequest $request, Submission $submission): RedirectResponse
@@ -287,7 +306,8 @@ class SubmissionController extends Controller
 
             $payload['field_reviews'] = SubmissionFieldRegistry::initializeReviews(
                 $category,
-                $submission->entry_type
+                $submission->entry_type,
+                $submission->isBerbadanHukum()
             );
 
             if ($wasVerified) {
@@ -314,7 +334,8 @@ class SubmissionController extends Controller
             ? $rejectedKeys
             : array_keys(SubmissionFieldRegistry::fieldsFor(
                 $submission->category,
-                $submission->entry_type
+                $submission->entry_type,
+                $submission->isBerbadanHukum()
             ));
 
         $reviews = $submission->field_reviews ?? [];

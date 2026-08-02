@@ -29,7 +29,9 @@ function FieldStatusBadge({ status }: { status: string }) {
 
 export default function SubmissionsShow({ submission, fields }: ShowProps) {
     const reviews: FieldReviews = submission.field_reviews ?? {};
-    const isEbtSimple = submission.entry_type === 'potensi' || submission.entry_type === 'terbangun';
+    const isEbtSimple =
+        submission.entry_type === 'terbangun' ||
+        (submission.entry_type === 'potensi' && !submission.berbadan_hukum);
 
     setLayoutProps({
         breadcrumbs: [
@@ -45,7 +47,7 @@ export default function SubmissionsShow({ submission, fields }: ShowProps) {
                     <div>
                         <div className="mb-2 flex flex-wrap items-center gap-2">
                             <h1 className="text-2xl font-bold text-foreground">
-                                {isEbtSimple ? submission.entryTypeLabel : submission.categoryLabel}
+                                {submission.entryTypeLabel}
                             </h1>
                             {submission.status === 'sudah_intervensi' ? (
                                 <Badge className="bg-green-100 text-green-800 hover:bg-green-100">

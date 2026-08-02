@@ -40,14 +40,21 @@ class LandingController extends Controller
         $points = Submission::where('status', 'sudah_intervensi')
             ->whereNotNull('latitude')
             ->whereNotNull('longitude')
-            ->get(['id', 'entry_type', 'category', 'lokasi', 'deskripsi_titik', 'latitude', 'longitude', 'bauran_energi', 'kapasitas'])
+            ->get([
+                'id', 'entry_type', 'berbadan_hukum', 'category', 'lokasi', 'desa', 'kecamatan', 'kabupaten',
+                'deskripsi_titik', 'latitude', 'longitude', 'bauran_energi', 'kapasitas',
+            ])
             ->map(fn ($s) => [
                 'id' => $s->id,
                 'entry_type' => $s->entry_type?->value,
-                'entryTypeLabel' => $s->entry_type?->label(),
+                'entryTypeLabel' => $s->entryTypeLabel(),
+                'berbadan_hukum' => $s->isBerbadanHukum(),
                 'category' => $s->category?->value,
                 'categoryLabel' => $s->category?->label()
                     ?? ($s->entry_type?->value === 'potensi' ? 'Potensi Lokal EBT' : '-'),
+                'desa' => $s->desa,
+                'kecamatan' => $s->kecamatan,
+                'kabupaten' => $s->kabupaten,
                 'deskripsi' => $s->deskripsi_titik ?? $s->lokasi,
                 'latitude' => (float) $s->latitude,
                 'longitude' => (float) $s->longitude,

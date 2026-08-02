@@ -236,6 +236,9 @@ test('map data only includes verified submissions with coordinates', function ()
         'category' => 'plts',
         'status' => SubmissionStatus::SudahIntervensi,
         'lokasi' => 'Sudah verified',
+        'kabupaten' => 'KAB. SEMARANG',
+        'kecamatan' => 'Ungaran Barat',
+        'desa' => 'Lerep',
         'latitude' => -7.2,
         'longitude' => 110.2,
         'bauran_energi' => 1.23,
@@ -249,8 +252,46 @@ test('map data only includes verified submissions with coordinates', function ()
             'id' => $verified->id,
             'entry_type' => 'terbangun',
             'category' => 'plts',
+            'kabupaten' => 'KAB. SEMARANG',
         ])
         ->assertJsonMissing(['id' => $pending->id]);
+});
+
+test('buat pengajuan form stores as potensi berbadan hukum', function () {
+    $user = User::factory()->create();
+    $file = Illuminate\Http\UploadedFile::fake()->create('dokumen.pdf', 100, 'application/pdf');
+
+    $this->actingAs($user)
+        ->post(route('submissions.store'), [
+            'category' => 'peternakan_ebt',
+            'nama_pemohon' => 'Yayasan Contoh',
+            'nomor_identitas' => '1234567890123456',
+            'alamat_organisasi' => 'Alamat organisasi',
+            'nama_ketua' => 'Ketua',
+            'surat_permohonan_proposal_path' => $file,
+            'dokumen_kepengurusan_path' => $file,
+            'dokumen_sk_kemenkumham_path' => $file,
+            'surat_keterangan_desa_path' => $file,
+            'latitude' => -7.25,
+            'longitude' => 110.43,
+            'deskripsi_titik' => 'Titik uji',
+            'jenis_teknologi' => 'digester_biogas',
+            'kapasitas_kandang_m2' => 100,
+            'jenis_ternak' => 'Sapi',
+            'jenis_usaha' => 'Penggemukan',
+            'jumlah_ternak' => 10,
+            'ketersediaan_lahan' => 'Ada',
+            'komitmen_pengelolaan' => 'Bersedia',
+        ])
+        ->assertRedirect();
+
+    $submission = Submission::query()->where('user_id', $user->id)->latest('id')->first();
+
+    expect($submission)->not->toBeNull()
+        ->and($submission->entry_type)->toBe(EntryType::Potensi)
+        ->and($submission->berbadan_hukum)->toBeTrue()
+        ->and($submission->entryTypeLabel())->toBe('Potensi Berbadan Hukum')
+        ->and($submission->isEbtSimpleEntry())->toBeFalse();
 });
 
 test('user can view own submission but not others', function () {
@@ -259,7 +300,8 @@ test('user can view own submission but not others', function () {
 
     $submission = Submission::create([
         'user_id' => $owner->id,
-        'entry_type' => EntryType::Pengajuan,
+        'entry_type' => EntryType::Potensi,
+        'berbadan_hukum' => true,
         'category' => 'peternakan_ebt',
         'status' => 'belum_intervensi',
         'nama_pemohon' => 'Pemohon A',
@@ -269,7 +311,11 @@ test('user can view own submission but not others', function () {
         'latitude' => -6.2,
         'longitude' => 106.8,
         'deskripsi_titik' => 'Titik uji',
-        'field_reviews' => SubmissionFieldRegistry::initializeReviews('peternakan_ebt', EntryType::Pengajuan),
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews(
+            'peternakan_ebt',
+            EntryType::Potensi,
+            berbadanHukum: true
+        ),
     ]);
 
     $this->actingAs($owner)

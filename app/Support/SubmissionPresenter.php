@@ -19,7 +19,8 @@ class SubmissionPresenter
         $data = [
             'id' => $submission->id,
             'entry_type' => $entryType->value,
-            'entryTypeLabel' => $entryType->label(),
+            'entryTypeLabel' => $submission->entryTypeLabel(),
+            'berbadan_hukum' => $submission->isBerbadanHukum(),
             'category' => $submission->category?->value,
             'categoryLabel' => $submission->category?->label()
                 ?? ($entryType === EntryType::Potensi ? 'Potensi Lokal EBT' : '-'),

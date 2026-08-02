@@ -22,7 +22,8 @@ class UserDashboardController extends Controller
         $data = $submissions->map(fn ($s) => [
             'id' => $s->id,
             'entry_type' => $s->entry_type?->value,
-            'entryTypeLabel' => $s->entry_type?->label() ?? 'Pengajuan',
+            'entryTypeLabel' => $s->entryTypeLabel(),
+            'berbadan_hukum' => $s->isBerbadanHukum(),
             'category' => $s->category?->value,
             'categoryLabel' => $s->category?->label() ?? 'Potensi Lokal EBT',
             'status' => $s->status->value,

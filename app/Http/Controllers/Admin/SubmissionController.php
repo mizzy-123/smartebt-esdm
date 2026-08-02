@@ -32,7 +32,15 @@ class SubmissionController extends Controller
         }
 
         if ($request->filled('entry_type')) {
-            $query->where('entry_type', $request->entry_type);
+            if ($request->entry_type === 'potensi_berbadan_hukum') {
+                $query->where('entry_type', 'potensi')->where('berbadan_hukum', true);
+            } elseif ($request->entry_type === 'potensi') {
+                $query->where('entry_type', 'potensi')->where(function ($q) {
+                    $q->where('berbadan_hukum', false)->orWhereNull('berbadan_hukum');
+                });
+            } else {
+                $query->where('entry_type', $request->entry_type);
+            }
         }
 
         if ($request->filled('search')) {
@@ -51,7 +59,8 @@ class SubmissionController extends Controller
             'submissions' => $submissions->through(fn ($s) => [
                 'id' => $s->id,
                 'entry_type' => $s->entry_type?->value,
-                'entryTypeLabel' => $s->entry_type?->label() ?? 'Pengajuan',
+                'entryTypeLabel' => $s->entryTypeLabel(),
+                'berbadan_hukum' => $s->isBerbadanHukum(),
                 'category' => $s->category?->value,
                 'categoryLabel' => $s->category?->label() ?? 'Potensi Lokal EBT',
                 'status' => $s->status->value,
@@ -76,7 +85,8 @@ class SubmissionController extends Controller
             'submission' => SubmissionPresenter::toArray($submission, includeUser: true),
             'fields' => SubmissionFieldRegistry::fieldsFor(
                 $submission->category,
-                $submission->entry_type
+                $submission->entry_type,
+                $submission->isBerbadanHukum()
             ),
         ]);
     }
@@ -93,7 +103,8 @@ class SubmissionController extends Controller
         if (! SubmissionFieldRegistry::isValidFieldKey(
             $submission->category,
             $fieldKey,
-            $submission->entry_type
+            $submission->entry_type,
+            $submission->isBerbadanHukum()
         )) {
             return back()->withErrors(['field_key' => 'Field tidak valid untuk data ini.']);
         }

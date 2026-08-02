@@ -76,13 +76,22 @@ export default function PublicMap({ points, height = '480px' }: PublicMapProps) 
                 const label = escapeHtml(point.categoryLabel);
                 const entryLabel = escapeHtml(
                     point.entry_type === 'potensi'
-                        ? 'Potensi (Belum Terbangun)'
+                        ? (point.berbadan_hukum
+                            ? 'Potensi Berbadan Hukum'
+                            : 'Potensi (Belum Terbangun)')
                         : point.entry_type === 'terbangun'
                           ? 'Infrastruktur Terbangun'
                           : (point.entryTypeLabel ?? 'Pengajuan'),
                 );
                 const description = escapeHtml(point.deskripsi ?? 'Tidak ada deskripsi.');
+                const wilayah = [point.desa, point.kecamatan, point.kabupaten]
+                    .filter((part): part is string => Boolean(part && part.trim()))
+                    .join(', ');
                 const metaParts: string[] = [];
+
+                if (wilayah) {
+                    metaParts.push(wilayah);
+                }
 
                 if (point.kapasitas != null) {
                     metaParts.push(`Kapasitas: ${point.kapasitas}`);

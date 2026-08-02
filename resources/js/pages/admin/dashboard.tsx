@@ -25,7 +25,7 @@ export default function AdminDashboard({ stats, perKategori, perKategoriBelum }:
                     <Link href={create.url()}>
                         <Button className="gap-2 bg-primary shadow-sm hover:bg-primary/90">
                             <Plus className="h-4 w-4" />
-                            Buat Pengajuan
+                            Potensi Berbadan Hukum
                         </Button>
                     </Link>
                     <Link href={createPotensi.url()}>

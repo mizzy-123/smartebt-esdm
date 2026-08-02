@@ -23,7 +23,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  */
 #[Fillable([
-    'user_id', 'entry_type', 'category', 'status',
+    'user_id', 'entry_type', 'berbadan_hukum', 'category', 'status',
     'lokasi', 'desa', 'kecamatan', 'kabupaten',
     'nama_pengelola', 'kontak_person', 'no_wa', 'foto_kondisi_path',
     'nama_pemilik', 'penanggung_jawab', 'kapasitas',
@@ -40,6 +40,7 @@ class Submission extends Model
     {
         return [
             'entry_type' => EntryType::class,
+            'berbadan_hukum' => 'boolean',
             'category' => SubmissionCategory::class,
             'status' => SubmissionStatus::class,
             'kesediaan_ganti_kwh_pascabayar' => 'boolean',
@@ -108,9 +109,28 @@ class Submission extends Model
             ?? ('Data #'.$this->id);
     }
 
+    public function isBerbadanHukum(): bool
+    {
+        return (bool) $this->berbadan_hukum
+            || $this->entry_type === EntryType::Pengajuan;
+    }
+
     public function isEbtSimpleEntry(): bool
     {
-        return in_array($this->entry_type, [EntryType::Potensi, EntryType::Terbangun], true);
+        if ($this->entry_type === EntryType::Terbangun) {
+            return true;
+        }
+
+        return $this->entry_type === EntryType::Potensi && ! $this->isBerbadanHukum();
+    }
+
+    public function entryTypeLabel(): string
+    {
+        if ($this->isBerbadanHukum()) {
+            return 'Potensi Berbadan Hukum';
+        }
+
+        return $this->entry_type?->label() ?? 'Pengajuan';
     }
 
     public function hasRejectedFields(): bool

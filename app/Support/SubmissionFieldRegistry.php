@@ -129,13 +129,14 @@ class SubmissionFieldRegistry
      */
     public static function fieldsFor(
         SubmissionCategory|string|null $category,
-        EntryType|string|null $entryType = null
+        EntryType|string|null $entryType = null,
+        bool $berbadanHukum = false
     ): array {
         $type = $entryType instanceof EntryType
             ? $entryType
             : ($entryType ? EntryType::tryFrom($entryType) : null);
 
-        if ($type === EntryType::Potensi) {
+        if ($type === EntryType::Potensi && ! $berbadanHukum) {
             return self::$potensiFields;
         }
 
@@ -143,6 +144,7 @@ class SubmissionFieldRegistry
             return self::$terbangunFields;
         }
 
+        // Potensi berbadan hukum / legacy pengajuan: form lengkap per kategori.
         $cat = $category instanceof SubmissionCategory
             ? $category->value
             : ($category ?? '');
@@ -160,10 +162,11 @@ class SubmissionFieldRegistry
      */
     public static function initializeReviews(
         SubmissionCategory|string|null $category,
-        EntryType|string|null $entryType = null
+        EntryType|string|null $entryType = null,
+        bool $berbadanHukum = false
     ): array {
         $reviews = [];
-        foreach (array_keys(self::fieldsFor($category, $entryType)) as $key) {
+        foreach (array_keys(self::fieldsFor($category, $entryType, $berbadanHukum)) as $key) {
             $reviews[$key] = [
                 'status' => FieldReviewStatus::Pending->value,
                 'reason' => null,
@@ -176,8 +179,9 @@ class SubmissionFieldRegistry
     public static function isValidFieldKey(
         SubmissionCategory|string|null $category,
         string $fieldKey,
-        EntryType|string|null $entryType = null
+        EntryType|string|null $entryType = null,
+        bool $berbadanHukum = false
     ): bool {
-        return array_key_exists($fieldKey, self::fieldsFor($category, $entryType));
+        return array_key_exists($fieldKey, self::fieldsFor($category, $entryType, $berbadanHukum));
     }
 }

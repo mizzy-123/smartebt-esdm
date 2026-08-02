@@ -24,7 +24,7 @@ export function AppSidebar() {
 
     const inputNav: NavItem[] = [
         {
-            title: 'Buat Pengajuan',
+            title: 'Potensi Berbadan Hukum',
             href: create.url(),
             icon: PlusCircle,
         },
