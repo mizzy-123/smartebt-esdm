@@ -10,10 +10,14 @@ interface PublicMapProps {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-    peternakan_ebt: '#1B8B41',
-    plts_rooftop: '#0A2463',
-    plts_perikanan: '#0077b6',
+    biogas: '#1B8B41',
+    plts: '#0A2463',
     pats: '#FDB813',
+    pltmh: '#0EA5E9',
+    pltb: '#64748B',
+    peternakan_ebt: '#8B5E3C',
+    plts_rooftop: '#3B82F6',
+    plts_perikanan: '#0077b6',
 };
 
 function escapeHtml(value: string): string {
@@ -60,7 +64,7 @@ export default function PublicMap({ points, height = '480px' }: PublicMapProps) 
             }).addTo(map);
 
             points.forEach((point) => {
-                const color = CATEGORY_COLORS[point.category] ?? '#0A2463';
+                const color = CATEGORY_COLORS[point.category ?? ''] ?? '#0A2463';
                 const icon = L.divIcon({
                     html: `<div style="background:${color};width:14px;height:14px;border-radius:50%;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)"></div>`,
                     className: 'ebt-map-marker',

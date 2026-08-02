@@ -1,0 +1,56 @@
+<?php
+
+use App\Models\Provinsi;
+use App\Models\User;
+use App\Models\Wilayah;
+use Illuminate\Support\Facades\DB;
+
+test('authenticated user can fetch cascading wilayah options for jawa tengah', function () {
+    $wilayah = Wilayah::query()->create(['nama' => 'Test Wilayah']);
+
+    DB::table('provinsi')->insert([
+        'provinsi_id' => Provinsi::JAWA_TENGAH,
+        'nama' => 'JAWA TENGAH',
+    ]);
+
+    DB::table('kabupaten')->insert([
+        'kabupaten_id' => 3301,
+        'provinsi_id' => Provinsi::JAWA_TENGAH,
+        'nama' => 'KAB. CILACAP',
+        'wilayah_id' => $wilayah->wilayah_id,
+    ]);
+
+    DB::table('kecamatan')->insert([
+        'kecamatan_id' => 330101,
+        'kabupaten_id' => 3301,
+        'nama' => 'Kedungreja',
+    ]);
+
+    DB::table('kelurahan')->insert([
+        'kelurahan_id' => 3301012001,
+        'kecamatan_id' => 330101,
+        'nama' => 'Tambakreja',
+        'wilayah_id' => $wilayah->wilayah_id,
+    ]);
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->getJson(route('wilayah.kabupaten'))
+        ->assertOk()
+        ->assertJsonFragment(['id' => 3301, 'nama' => 'KAB. CILACAP']);
+
+    $this->actingAs($user)
+        ->getJson(route('wilayah.kecamatan', ['kabupaten_id' => 3301]))
+        ->assertOk()
+        ->assertJsonFragment(['id' => 330101, 'nama' => 'Kedungreja']);
+
+    $this->actingAs($user)
+        ->getJson(route('wilayah.kelurahan', ['kecamatan_id' => 330101]))
+        ->assertOk()
+        ->assertJsonFragment(['id' => 3301012001, 'nama' => 'Tambakreja']);
+});
+
+test('wilayah endpoints require authentication', function () {
+    $this->getJson(route('wilayah.kabupaten'))->assertUnauthorized();
+});

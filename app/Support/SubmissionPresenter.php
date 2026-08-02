@@ -2,7 +2,7 @@
 
 namespace App\Support;
 
-use App\Enums\SubmissionCategory;
+use App\Enums\EntryType;
 use App\Models\Submission;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,19 +13,35 @@ class SubmissionPresenter
      */
     public static function toArray(Submission $submission, bool $includeUser = false): array
     {
-        $detail = match ($submission->category) {
-            SubmissionCategory::PeternakanEbt => $submission->peternakan,
-            SubmissionCategory::PltsRooftop => $submission->pltsRooftop,
-            SubmissionCategory::PltsPerikanan => $submission->pltsPerikanan,
-            SubmissionCategory::Pats => $submission->pats,
-        };
+        $detail = $submission->legacyDetail();
+        $entryType = $submission->entry_type ?? EntryType::Pengajuan;
 
         $data = [
             'id' => $submission->id,
-            'category' => $submission->category->value,
-            'categoryLabel' => $submission->category->label(),
+            'entry_type' => $entryType->value,
+            'entryTypeLabel' => $entryType->label(),
+            'category' => $submission->category?->value,
+            'categoryLabel' => $submission->category?->label()
+                ?? ($entryType === EntryType::Potensi ? 'Potensi Lokal EBT' : '-'),
+            'kapasitasUnit' => $submission->category?->kapasitasUnit(),
             'status' => $submission->status->value,
             'statusLabel' => $submission->status->label(),
+            'lokasi' => $submission->lokasi,
+            'desa' => $submission->desa,
+            'kecamatan' => $submission->kecamatan,
+            'kabupaten' => $submission->kabupaten,
+            'nama_pengelola' => $submission->nama_pengelola,
+            'kontak_person' => $submission->kontak_person,
+            'no_wa' => $submission->no_wa,
+            'foto_kondisi_path' => self::fileUrl($submission->foto_kondisi_path),
+            'nama_pemilik' => $submission->nama_pemilik,
+            'penanggung_jawab' => $submission->penanggung_jawab,
+            'kapasitas' => $submission->kapasitas !== null ? (float) $submission->kapasitas : null,
+            'sumber_pendanaan' => $submission->sumber_pendanaan,
+            'sumber_pendanaan_detail' => $submission->sumber_pendanaan_detail,
+            'tahun_pembangunan' => $submission->tahun_pembangunan,
+            'bauran_energi' => $submission->bauran_energi !== null ? (float) $submission->bauran_energi : null,
+            'display_name' => $submission->displayName(),
             'nama_pemohon' => $submission->nama_pemohon,
             'nomor_identitas' => $submission->nomor_identitas,
             'alamat_organisasi' => $submission->alamat_organisasi,

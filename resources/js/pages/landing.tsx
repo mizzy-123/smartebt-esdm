@@ -10,23 +10,55 @@ interface LandingProps {
     stats: {
         total: number;
         sudah_intervensi: number;
+        potensi?: number;
+        terbangun?: number;
         per_kategori: Record<string, number>;
     };
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
+    biogas: 'Biogas',
+    plts: 'PLTS',
+    pats: 'Pompa Air (PATS)',
+    pltmh: 'PLTMH',
+    pltb: 'PLTB',
     peternakan_ebt: 'Peternakan EBT',
     plts_rooftop: 'PLTS Rooftop',
     plts_perikanan: 'PLTS Perikanan',
-    pats: 'Pompa Air (PATS)',
 };
 
 const CATEGORY_ICONS: Record<string, string> = {
+    biogas: '🔥',
+    plts: '☀️',
+    pats: '💧',
+    pltmh: '🌊',
+    pltb: '💨',
     peternakan_ebt: '🐄',
     plts_rooftop: '🏠',
     plts_perikanan: '🐟',
-    pats: '💧',
 };
+
+const CATEGORY_COLORS: Record<string, string> = {
+    biogas: '#1B8B41',
+    plts: '#0A2463',
+    pats: '#FDB813',
+    pltmh: '#0EA5E9',
+    pltb: '#64748B',
+    peternakan_ebt: '#8B5E3C',
+    plts_rooftop: '#3B82F6',
+    plts_perikanan: '#0077b6',
+};
+
+const MAP_LEGEND_CATEGORIES = [
+    'peternakan_ebt',
+    'plts_rooftop',
+    'plts_perikanan',
+    'biogas',
+    'plts',
+    'pats',
+    'pltmh',
+    'pltb',
+] as const;
 
 export default function Landing({ downloads, stats }: LandingProps) {
     return (
@@ -78,15 +110,15 @@ export default function Landing({ downloads, stats }: LandingProps) {
                         </span>
                     </h1>
                     <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-blue-100">
-                        SMART-EBT adalah sistem digital untuk mengelola pengajuan bantuan program transisi EBT dari masyarakat
-                        dan organisasi ke pemerintah — dengan verifikasi berjenjang yang transparan.
+                        SMART EBT menampilkan informasi Potensi Infrastruktur EBT yang belum terbangun maupun yang sudah
+                        terbangun/existing — lengkap dengan pengajuan bantuan dan verifikasi berjenjang.
                     </p>
                     <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                         <Link
                             href="/register"
                             className="group flex items-center gap-2 rounded-xl bg-[#FDB813] px-8 py-3.5 font-bold text-[#0A2463] shadow-lg transition hover:bg-[#fec937] hover:shadow-xl"
                         >
-                            Ajukan Sekarang
+                            Input Potensi EBT
                             <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                         </Link>
                         <Link
@@ -105,42 +137,110 @@ export default function Landing({ downloads, stats }: LandingProps) {
                     <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
                         <div className="text-center">
                             <div className="text-3xl font-bold text-[#FDB813]">{stats.total}</div>
-                            <div className="mt-1 text-sm text-blue-200">Total Pengajuan</div>
+                            <div className="mt-1 text-sm text-blue-200">Total Data</div>
                         </div>
                         <div className="text-center">
                             <div className="text-3xl font-bold text-[#28A745]">{stats.sudah_intervensi}</div>
                             <div className="mt-1 text-sm text-blue-200">Terverifikasi</div>
                         </div>
-                        {Object.entries(stats.per_kategori ?? {}).slice(0, 2).map(([cat, count]) => (
-                            <div key={cat} className="text-center">
-                                <div className="text-3xl font-bold text-white">{count as number}</div>
-                                <div className="mt-1 text-sm text-blue-200">{CATEGORY_LABELS[cat] ?? cat}</div>
-                            </div>
-                        ))}
+                        <div className="text-center">
+                            <div className="text-3xl font-bold text-white">{stats.potensi ?? 0}</div>
+                            <div className="mt-1 text-sm text-blue-200">Info Potensi</div>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-3xl font-bold text-white">{stats.terbangun ?? 0}</div>
+                            <div className="mt-1 text-sm text-blue-200">Terbangun</div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* ── Program Categories ── */}
+            {/* ── Input Types ── */}
             <section className="mx-auto max-w-7xl px-6 py-20">
                 <div className="mb-12 text-center">
                     <h2 className="mb-3 text-3xl font-bold text-[#0A2463]">
-                        Rencana Potensi Lokal Energi Baru Terbarukan
+                        Tiga Jenis Input Data EBT
                     </h2>
-                    <p className="text-muted-foreground">4 kategori program yang dapat diajukan oleh masyarakat dan organisasi</p>
+                    <p className="text-muted-foreground">
+                        Pengajuan bantuan, info potensi lokal, dan infrastruktur yang sudah terbangun
+                    </p>
                 </div>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="mb-14 grid grid-cols-1 gap-6 lg:grid-cols-3">
                     {[
-                        { cat: 'peternakan_ebt', desc: 'Digester Biogas, PLTS, BSG untuk kebutuhan peternakan Anda' },
+                        {
+                            title: 'Buat Pengajuan',
+                            desc: 'Form lengkap bantuan program EBT untuk masyarakat dan organisasi, dengan dokumen pendukung.',
+                        },
+                        {
+                            title: 'Info Potensi Lokal EBT',
+                            desc: 'Input ringkas lokasi potensi yang belum terbangun: pengelola, kontak, koordinat, dan foto kondisi.',
+                        },
+                        {
+                            title: 'Infrastruktur Terbangun',
+                            desc: 'Data existing Biogas, PLTS, dan PATS — kapasitas terpasang dengan perhitungan bauran energi otomatis.',
+                        },
+                    ].map((item) => (
+                        <div
+                            key={item.title}
+                            className="rounded-2xl border border-border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                        >
+                            <h3 className="mb-2 font-bold text-[#0A2463]">{item.title}</h3>
+                            <p className="text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="mb-8 text-center">
+                    <h3 className="mb-2 text-xl font-bold text-[#0A2463]">Kategori Buat Pengajuan</h3>
+                    <p className="text-sm text-muted-foreground">Program bantuan yang dapat diajukan melalui menu Buat Pengajuan</p>
+                </div>
+                <div className="mb-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    {[
+                        { cat: 'peternakan_ebt', desc: 'Digester Biogas, PLTS, atau BSG untuk kebutuhan peternakan' },
                         { cat: 'plts_rooftop', desc: 'Panel surya atap untuk bangunan permanen & sementara' },
                         { cat: 'plts_perikanan', desc: 'Panel surya atap untuk fasilitas perikanan budidaya' },
                         { cat: 'pats', desc: 'Pompa air berbasis tenaga surya untuk irigasi & pertanian' },
                     ].map(({ cat, desc }) => (
                         <div
-                            key={cat}
+                            key={`pengajuan-${cat}`}
                             className="group rounded-2xl border border-border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                         >
-                            <div className="mb-4 text-4xl">{CATEGORY_ICONS[cat]}</div>
+                            <div className="mb-3 flex items-center gap-2">
+                                <span className="text-3xl">{CATEGORY_ICONS[cat]}</span>
+                                <span
+                                    className="h-2.5 w-2.5 rounded-full border border-white shadow-sm"
+                                    style={{ background: CATEGORY_COLORS[cat] }}
+                                    title="Warna marker di peta"
+                                />
+                            </div>
+                            <h3 className="mb-2 font-bold text-[#0A2463]">{CATEGORY_LABELS[cat]}</h3>
+                            <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="mb-8 text-center">
+                    <h3 className="mb-2 text-xl font-bold text-[#0A2463]">Kategori Infrastruktur Terbangun</h3>
+                    <p className="text-sm text-muted-foreground">Jenis teknologi existing beserta rumus bauran energi</p>
+                </div>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                    {[
+                        { cat: 'biogas', desc: 'Digester / biogas terbangun — bauran dihitung dari total kapasitas terpasang' },
+                        { cat: 'plts', desc: 'PLTS terbangun — bauran dihitung otomatis dari kapasitas kWp' },
+                        { cat: 'pats', desc: 'Pompa air tenaga surya — bauran dihitung dari kapasitas PK' },
+                    ].map(({ cat, desc }) => (
+                        <div
+                            key={`terbangun-${cat}`}
+                            className="group rounded-2xl border border-border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                        >
+                            <div className="mb-3 flex items-center gap-2">
+                                <span className="text-3xl">{CATEGORY_ICONS[cat]}</span>
+                                <span
+                                    className="h-2.5 w-2.5 rounded-full border border-white shadow-sm"
+                                    style={{ background: CATEGORY_COLORS[cat] }}
+                                    title="Warna marker di peta"
+                                />
+                            </div>
                             <h3 className="mb-2 font-bold text-[#0A2463]">{CATEGORY_LABELS[cat]}</h3>
                             <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
                         </div>
@@ -156,18 +256,19 @@ export default function Landing({ downloads, stats }: LandingProps) {
                             <MapPin className="h-5 w-5" />
                             <span className="font-semibold text-sm uppercase tracking-wide">Peta Sebaran</span>
                         </div>
-                        <h2 className="mb-3 text-3xl font-bold text-[#0A2463]">Titik Potensi EBT di Indonesia</h2>
-                        <p className="text-muted-foreground">Lokasi pengajuan yang telah diverifikasi dan disetujui</p>
+                        <h2 className="mb-3 text-3xl font-bold text-[#0A2463]">Titik Potensi EBT di Jawa Tengah</h2>
+                        <p className="text-muted-foreground">Lokasi yang telah diverifikasi admin dan disetujui</p>
                     </div>
 
                     {/* Legend */}
-                    <div className="mb-4 flex flex-wrap justify-center gap-4">
-                        {Object.entries(CATEGORY_LABELS).map(([cat, label]) => (
+                    <div className="mb-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
+                        {MAP_LEGEND_CATEGORIES.map((cat) => (
                             <div key={cat} className="flex items-center gap-1.5">
-                                <div className="h-3 w-3 rounded-full border-2 border-white shadow-sm" style={{
-                                    background: { peternakan_ebt: '#1B8B41', plts_rooftop: '#0A2463', plts_perikanan: '#0077b6', pats: '#FDB813' }[cat as string] ?? '#666'
-                                }} />
-                                <span className="text-xs text-muted-foreground">{label}</span>
+                                <div
+                                    className="h-3 w-3 rounded-full border-2 border-white shadow-sm"
+                                    style={{ background: CATEGORY_COLORS[cat] }}
+                                />
+                                <span className="text-xs text-muted-foreground">{CATEGORY_LABELS[cat]}</span>
                             </div>
                         ))}
                     </div>
@@ -187,7 +288,7 @@ export default function Landing({ downloads, stats }: LandingProps) {
                             <span className="font-semibold text-sm uppercase tracking-wide">Dokumen</span>
                         </div>
                         <h2 className="mb-3 text-3xl font-bold text-[#0A2463]">Pusat Unduhan</h2>
-                        <p className="text-muted-foreground">Template dan formulir yang diperlukan untuk pengajuan</p>
+                        <p className="text-muted-foreground">Template dan dokumen pendukung input data EBT</p>
                     </div>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {downloads.map((doc) => (
@@ -215,15 +316,15 @@ export default function Landing({ downloads, stats }: LandingProps) {
             {/* ── CTA Footer ── */}
             <section className="bg-gradient-to-r from-[#0A2463] to-[#1B8B41] py-20 text-white">
                 <div className="mx-auto max-w-4xl px-6 text-center">
-                    <h2 className="mb-4 text-3xl font-bold">Siap Mengajukan Bantuan EBT?</h2>
+                    <h2 className="mb-4 text-3xl font-bold">Siap Input Data EBT?</h2>
                     <p className="mb-8 text-blue-100">
-                        Daftarkan diri Anda dan ajukan permohonan bantuan program Energi Baru Terbarukan secara online.
+                        Daftar akun untuk mengisi pengajuan, info potensi lokal, atau infrastruktur terbangun secara online.
                     </p>
                     <Link
                         href="/register"
                         className="group inline-flex items-center gap-2 rounded-xl bg-[#FDB813] px-10 py-4 font-bold text-[#0A2463] shadow-lg transition hover:bg-[#fec937] hover:shadow-xl"
                     >
-                        Mulai Pengajuan
+                        Mulai Input Data
                         <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
                     </Link>
                 </div>
@@ -288,7 +389,7 @@ function MapDataLoader() {
                 <MapPin className="h-8 w-8 text-muted-foreground/60" />
                 <p className="text-sm font-medium text-[#0A2463]">Belum ada titik yang diverifikasi</p>
                 <p className="max-w-sm text-xs text-muted-foreground">
-                    Lokasi pengajuan yang sudah disetujui akan muncul di peta ini.
+                    Lokasi yang sudah diverifikasi admin akan muncul di peta ini.
                 </p>
             </div>
         );

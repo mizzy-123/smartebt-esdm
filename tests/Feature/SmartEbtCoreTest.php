@@ -1,7 +1,10 @@
 <?php
 
+use App\Enums\EntryType;
+use App\Enums\SubmissionStatus;
 use App\Models\Submission;
 use App\Models\User;
+use App\Support\BauranEnergiCalculator;
 use App\Support\SubmissionFieldRegistry;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -58,12 +61,122 @@ test('admin can access admin dashboard', function () {
         ->assertInertia(fn (Assert $page) => $page->component('admin/dashboard'));
 });
 
+test('create form keeps pengajuan and adds potensi terbangun types', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get(route('submissions.create'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->component('user/submissions/create'));
+
+    $this->actingAs($user)
+        ->get(route('submissions.potensi.create'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('user/submissions/create-ebt')
+            ->where('entryType', 'potensi')
+            ->has('categories', 5)
+            ->where('categories.0.value', 'biogas')
+            ->where('categories.1.value', 'plts')
+            ->where('categories.2.value', 'pats')
+            ->where('categories.3.value', 'pltmh')
+            ->where('categories.4.value', 'pltb'));
+
+    $this->actingAs($user)
+        ->get(route('submissions.terbangun.create'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('user/submissions/create-ebt')
+            ->where('entryType', 'terbangun'));
+});
+
+test('user can store potensi with minimal fields', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('submissions.store'), [
+            'entry_type' => 'potensi',
+            'category' => 'pltmh',
+            'lokasi' => 'Desa Contoh',
+        ])
+        ->assertRedirect();
+
+    $this->assertDatabaseHas('submissions', [
+        'user_id' => $user->id,
+        'entry_type' => 'potensi',
+        'category' => 'pltmh',
+        'lokasi' => 'Desa Contoh',
+    ]);
+});
+
+test('admin can store terbangun plts with auto bauran energi', function () {
+    $admin = User::factory()->admin()->create();
+    $kapasitas = 10;
+    $expected = BauranEnergiCalculator::calculate('plts', $kapasitas);
+
+    $this->actingAs($admin)
+        ->post(route('submissions.store'), [
+            'entry_type' => 'terbangun',
+            'category' => 'plts',
+            'nama_pemilik' => 'Pemilik PLTS',
+            'lokasi' => 'Kabupaten Contoh',
+            'kapasitas' => $kapasitas,
+            'latitude' => -7.0,
+            'longitude' => 110.4,
+        ])
+        ->assertRedirect();
+
+    $submission = Submission::query()->where('user_id', $admin->id)->latest('id')->first();
+
+    expect($submission)->not->toBeNull()
+        ->and($submission->entry_type)->toBe(EntryType::Terbangun)
+        ->and($submission->category->value)->toBe('plts')
+        ->and((float) $submission->bauran_energi)->toBe($expected);
+});
+
+test('map data only includes verified submissions with coordinates', function () {
+    $user = User::factory()->create();
+
+    $pending = Submission::create([
+        'user_id' => $user->id,
+        'entry_type' => 'potensi',
+        'status' => SubmissionStatus::BelumIntervensi,
+        'lokasi' => 'Belum verified',
+        'latitude' => -7.1,
+        'longitude' => 110.1,
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews(null, 'potensi'),
+    ]);
+
+    $verified = Submission::create([
+        'user_id' => $user->id,
+        'entry_type' => 'terbangun',
+        'category' => 'plts',
+        'status' => SubmissionStatus::SudahIntervensi,
+        'lokasi' => 'Sudah verified',
+        'latitude' => -7.2,
+        'longitude' => 110.2,
+        'bauran_energi' => 1.23,
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews('plts', 'terbangun'),
+    ]);
+
+    $this->getJson(route('map-data'))
+        ->assertOk()
+        ->assertJsonCount(1)
+        ->assertJsonFragment([
+            'id' => $verified->id,
+            'entry_type' => 'terbangun',
+            'category' => 'plts',
+        ])
+        ->assertJsonMissing(['id' => $pending->id]);
+});
+
 test('user can view own submission but not others', function () {
     $owner = User::factory()->create();
     $other = User::factory()->create();
 
     $submission = Submission::create([
         'user_id' => $owner->id,
+        'entry_type' => EntryType::Pengajuan,
         'category' => 'peternakan_ebt',
         'status' => 'belum_intervensi',
         'nama_pemohon' => 'Pemohon A',
@@ -73,7 +186,7 @@ test('user can view own submission but not others', function () {
         'latitude' => -6.2,
         'longitude' => 106.8,
         'deskripsi_titik' => 'Titik uji',
-        'field_reviews' => SubmissionFieldRegistry::initializeReviews('peternakan_ebt'),
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews('peternakan_ebt', EntryType::Pengajuan),
     ]);
 
     $this->actingAs($owner)
@@ -102,4 +215,15 @@ test('registration always creates user role', function () {
         'role' => 'user',
         'username' => $username,
     ]);
+});
+
+test('bauran energi formulas match specification', function () {
+    expect(BauranEnergiCalculator::calculate('biogas', 100))
+        ->toBe(round(0.9 * ((100 * 0.7 * 35) * 0.0063), 6));
+
+    expect(BauranEnergiCalculator::calculate('plts', 10))
+        ->toBe(round(((10 * 0.2 * (8760 / 1000)) / (0.13 * 0.613 * 1000)) * 0.9, 6));
+
+    expect(BauranEnergiCalculator::calculate('pats', 5))
+        ->toBe(round((((5 * 760) * 0.2 * (8760 / 1000)) / (0.13 * 0.613 * 1000)) * 0.9, 6));
 });

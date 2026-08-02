@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\EntryType;
+use App\Enums\FieldReviewStatus;
 use App\Enums\SubmissionCategory;
 use App\Enums\SubmissionStatus;
-use App\Enums\FieldReviewStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,26 +16,18 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $user_id
- * @property SubmissionCategory $category
+ * @property EntryType|null $entry_type
+ * @property SubmissionCategory|null $category
  * @property SubmissionStatus $status
- * @property string $nama_pemohon
- * @property string $nomor_identitas
- * @property string $alamat_organisasi
- * @property string $nama_ketua
- * @property string|null $surat_permohonan_proposal_path
- * @property string|null $dokumen_kepengurusan_path
- * @property string|null $dokumen_sk_kemenkumham_path
- * @property string|null $surat_keterangan_desa_path
- * @property bool|null $kesediaan_ganti_kwh_pascabayar
- * @property float|null $latitude
- * @property float|null $longitude
- * @property string|null $deskripsi_titik
- * @property array|null $field_reviews
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
 #[Fillable([
-    'user_id', 'category', 'status',
+    'user_id', 'entry_type', 'category', 'status',
+    'lokasi', 'desa', 'kecamatan', 'kabupaten',
+    'nama_pengelola', 'kontak_person', 'no_wa', 'foto_kondisi_path',
+    'nama_pemilik', 'penanggung_jawab', 'kapasitas',
+    'sumber_pendanaan', 'sumber_pendanaan_detail', 'tahun_pembangunan', 'bauran_energi',
     'nama_pemohon', 'nomor_identitas', 'alamat_organisasi', 'nama_ketua',
     'surat_permohonan_proposal_path', 'dokumen_kepengurusan_path',
     'dokumen_sk_kemenkumham_path', 'surat_keterangan_desa_path',
@@ -46,12 +39,16 @@ class Submission extends Model
     protected function casts(): array
     {
         return [
-            'category'                       => SubmissionCategory::class,
-            'status'                         => SubmissionStatus::class,
+            'entry_type' => EntryType::class,
+            'category' => SubmissionCategory::class,
+            'status' => SubmissionStatus::class,
             'kesediaan_ganti_kwh_pascabayar' => 'boolean',
-            'latitude'                        => 'decimal:7',
-            'longitude'                       => 'decimal:7',
-            'field_reviews'                   => 'array',
+            'kapasitas' => 'decimal:2',
+            'bauran_energi' => 'decimal:6',
+            'tahun_pembangunan' => 'integer',
+            'latitude' => 'decimal:7',
+            'longitude' => 'decimal:7',
+            'field_reviews' => 'array',
         ];
     }
 
@@ -85,48 +82,69 @@ class Submission extends Model
         return $this->hasOne(SubmissionPats::class);
     }
 
-    /** Get the detail relation for this submission's category. */
-    public function detail(): HasOne
+    public function legacyDetail(): mixed
     {
-        return match($this->category) {
-            SubmissionCategory::PeternakanEbt  => $this->peternakan(),
-            SubmissionCategory::PltsRooftop    => $this->pltsRooftop(),
-            SubmissionCategory::PltsPerikanan  => $this->pltsPerikanan(),
-            SubmissionCategory::Pats           => $this->pats(),
+        return match ($this->category) {
+            SubmissionCategory::PeternakanEbt => $this->peternakan,
+            SubmissionCategory::PltsRooftop => $this->pltsRooftop,
+            SubmissionCategory::PltsPerikanan => $this->pltsPerikanan,
+            SubmissionCategory::Pats => $this->entry_type === EntryType::Terbangun ? null : $this->pats,
+            default => null,
         };
     }
 
-    /** Check if any field in field_reviews has status 'rejected'. */
+    /** @deprecated Use legacyDetail() — kept for older call sites. */
+    public function getDetailAttribute(): mixed
+    {
+        return $this->legacyDetail();
+    }
+
+    public function displayName(): string
+    {
+        return $this->nama_pengelola
+            ?? $this->nama_pemilik
+            ?? $this->nama_pemohon
+            ?? $this->lokasi
+            ?? ('Data #'.$this->id);
+    }
+
+    public function isEbtSimpleEntry(): bool
+    {
+        return in_array($this->entry_type, [EntryType::Potensi, EntryType::Terbangun], true);
+    }
+
     public function hasRejectedFields(): bool
     {
-        $reviews = $this->field_reviews ?? [];
-        foreach ($reviews as $review) {
+        foreach ($this->field_reviews ?? [] as $review) {
             if (($review['status'] ?? '') === FieldReviewStatus::Rejected->value) {
                 return true;
             }
         }
+
         return false;
     }
 
-    /** Get all rejected field keys. */
     public function rejectedFieldKeys(): array
     {
-        $reviews = $this->field_reviews ?? [];
-        return array_keys(array_filter($reviews, fn($r) => ($r['status'] ?? '') === FieldReviewStatus::Rejected->value));
+        return array_keys(array_filter(
+            $this->field_reviews ?? [],
+            fn ($r) => ($r['status'] ?? '') === FieldReviewStatus::Rejected->value
+        ));
     }
 
-    /** Check if all fields are approved. */
     public function allFieldsApproved(): bool
     {
         $reviews = $this->field_reviews ?? [];
-        if (empty($reviews)) {
+        if ($reviews === []) {
             return false;
         }
+
         foreach ($reviews as $review) {
             if (($review['status'] ?? '') !== FieldReviewStatus::Approved->value) {
                 return false;
             }
         }
+
         return true;
     }
 }

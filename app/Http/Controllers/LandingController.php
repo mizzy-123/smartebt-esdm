@@ -18,9 +18,12 @@ class LandingController extends Controller
             ->get(['id', 'title', 'description', 'original_name', 'created_at']);
 
         $stats = [
-            'total'            => Submission::count(),
+            'total' => Submission::count(),
             'sudah_intervensi' => Submission::where('status', 'sudah_intervensi')->count(),
-            'per_kategori'     => Submission::where('status', 'sudah_intervensi')
+            'potensi' => Submission::where('entry_type', 'potensi')->count(),
+            'terbangun' => Submission::where('entry_type', 'terbangun')->count(),
+            'per_kategori' => Submission::where('status', 'sudah_intervensi')
+                ->whereNotNull('category')
                 ->selectRaw('category, COUNT(*) as total')
                 ->groupBy('category')
                 ->pluck('total', 'category'),
@@ -28,28 +31,28 @@ class LandingController extends Controller
 
         return Inertia::render('landing', [
             'downloads' => $downloads,
-            'stats'     => $stats,
+            'stats' => $stats,
         ]);
     }
 
-    /**
-     * JSON endpoint: EBT points that are approved and have valid coordinates.
-     * Only returns safe public fields (no personal data).
-     */
     public function mapData(): JsonResponse
     {
         $points = Submission::where('status', 'sudah_intervensi')
             ->whereNotNull('latitude')
             ->whereNotNull('longitude')
-            ->select(['id', 'category', 'deskripsi_titik', 'latitude', 'longitude'])
-            ->get()
+            ->get(['id', 'entry_type', 'category', 'lokasi', 'deskripsi_titik', 'latitude', 'longitude', 'bauran_energi', 'kapasitas'])
             ->map(fn ($s) => [
-                'id'             => $s->id,
-                'category'       => $s->category->value,
-                'categoryLabel'  => $s->category->label(),
-                'deskripsi'      => $s->deskripsi_titik,
-                'latitude'       => (float) $s->latitude,
-                'longitude'      => (float) $s->longitude,
+                'id' => $s->id,
+                'entry_type' => $s->entry_type?->value,
+                'entryTypeLabel' => $s->entry_type?->label(),
+                'category' => $s->category?->value,
+                'categoryLabel' => $s->category?->label()
+                    ?? ($s->entry_type?->value === 'potensi' ? 'Potensi Lokal EBT' : '-'),
+                'deskripsi' => $s->deskripsi_titik ?? $s->lokasi,
+                'latitude' => (float) $s->latitude,
+                'longitude' => (float) $s->longitude,
+                'bauran_energi' => $s->bauran_energi !== null ? (float) $s->bauran_energi : null,
+                'kapasitas' => $s->kapasitas !== null ? (float) $s->kapasitas : null,
             ]);
 
         return response()->json($points);

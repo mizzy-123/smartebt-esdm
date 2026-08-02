@@ -1,8 +1,11 @@
 import type { SubmissionListItem } from '@/types/submission';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { create } from '@/routes/submissions';
+import { create as createPotensi } from '@/routes/submissions/potensi';
+import { create as createTerbangun } from '@/routes/submissions/terbangun';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { AlertCircle, CheckCircle, Clock, FileText, Plus } from 'lucide-react';
+import { AlertCircle, Building2, CheckCircle, Clock, FileText, Leaf, Plus } from 'lucide-react';
 
 interface DashboardProps {
     submissions: SubmissionListItem[];
@@ -16,21 +19,35 @@ export default function Dashboard({ submissions }: DashboardProps) {
             <Head title="Dashboard" />
             <div className="p-6 lg:p-8">
                 {/* Header */}
-                <div className="mb-8 flex items-start justify-between gap-4">
+                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div>
                         <h1 className="text-2xl font-bold text-foreground">
                             Selamat datang, {auth.user.name}
                         </h1>
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Kelola pengajuan bantuan EBT Anda di sini
+                            Kelola pengajuan, potensi lokal, dan infrastruktur terbangun Anda
                         </p>
                     </div>
-                    <Link href="/submissions/create">
-                        <Button className="gap-2 bg-primary hover:bg-primary/90 shadow-sm">
-                            <Plus className="h-4 w-4" />
-                            Buat Pengajuan
-                        </Button>
-                    </Link>
+                    <div className="flex flex-wrap gap-2">
+                        <Link href={create.url()}>
+                            <Button className="gap-2 bg-primary shadow-sm hover:bg-primary/90">
+                                <Plus className="h-4 w-4" />
+                                Buat Pengajuan
+                            </Button>
+                        </Link>
+                        <Link href={createPotensi.url()}>
+                            <Button variant="outline" className="gap-2">
+                                <Leaf className="h-4 w-4" />
+                                Info Potensi
+                            </Button>
+                        </Link>
+                        <Link href={createTerbangun.url()}>
+                            <Button variant="outline" className="gap-2">
+                                <Building2 className="h-4 w-4" />
+                                Terbangun
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Stats row */}
@@ -82,7 +99,7 @@ export default function Dashboard({ submissions }: DashboardProps) {
                         <p className="mb-6 max-w-sm text-sm text-muted-foreground">
                             Mulai ajukan bantuan program EBT untuk organisasi atau usaha Anda.
                         </p>
-                        <Link href="/submissions/create">
+                        <Link href={create.url()}>
                             <Button className="gap-2 bg-primary">
                                 <Plus className="h-4 w-4" />
                                 Buat Pengajuan Pertama
@@ -98,8 +115,9 @@ export default function Dashboard({ submissions }: DashboardProps) {
                             <table className="w-full text-sm">
                                 <thead>
                                     <tr className="border-b border-border bg-muted/50">
+                                        <th className="px-6 py-3 text-left font-medium text-muted-foreground">Jenis</th>
                                         <th className="px-6 py-3 text-left font-medium text-muted-foreground">Kategori</th>
-                                        <th className="px-6 py-3 text-left font-medium text-muted-foreground">Nama Pemohon</th>
+                                        <th className="px-6 py-3 text-left font-medium text-muted-foreground">Nama / Lokasi</th>
                                         <th className="px-6 py-3 text-left font-medium text-muted-foreground">Status</th>
                                         <th className="px-6 py-3 text-left font-medium text-muted-foreground">Tanggal</th>
                                         <th className="px-6 py-3 text-right font-medium text-muted-foreground">Aksi</th>
@@ -108,10 +126,15 @@ export default function Dashboard({ submissions }: DashboardProps) {
                                 <tbody className="divide-y divide-border">
                                     {submissions.map((submission) => (
                                         <tr key={submission.id} className="transition hover:bg-muted/30">
+                                            <td className="px-6 py-4 text-muted-foreground text-xs">
+                                                {submission.entryTypeLabel ?? 'Pengajuan'}
+                                            </td>
                                             <td className="px-6 py-4">
                                                 <span className="font-medium text-foreground">{submission.categoryLabel}</span>
                                             </td>
-                                            <td className="px-6 py-4 text-muted-foreground">{submission.nama_pemohon}</td>
+                                            <td className="px-6 py-4 text-muted-foreground">
+                                                {submission.display_name ?? submission.nama_pemohon}
+                                            </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-2">
                                                     {submission.status === 'sudah_intervensi' ? (

@@ -1,8 +1,18 @@
 // Submission TypeScript types for SMART-EBT
 
-export type SubmissionCategoryValue = 'peternakan_ebt' | 'plts_rooftop' | 'plts_perikanan' | 'pats';
-export type SubmissionStatusValue   = 'belum_intervensi' | 'sudah_intervensi';
-export type FieldReviewStatusValue  = 'pending' | 'approved' | 'rejected';
+export type EntryTypeValue = 'pengajuan' | 'potensi' | 'terbangun';
+export type SubmissionCategoryValue =
+    | 'peternakan_ebt'
+    | 'plts_rooftop'
+    | 'plts_perikanan'
+    | 'pats'
+    | 'biogas'
+    | 'plts'
+    | 'pltmh'
+    | 'pltb';
+export type SubmissionStatusValue = 'belum_intervensi' | 'sudah_intervensi';
+export type FieldReviewStatusValue = 'pending' | 'approved' | 'rejected';
+export type SumberPendanaanValue = 'pemerintah' | 'mandiri' | 'kerjasama';
 
 export interface FieldReview {
     status: FieldReviewStatusValue;
@@ -22,11 +32,14 @@ export interface SubmissionFile {
 
 export interface SubmissionListItem {
     id: number;
-    category: SubmissionCategoryValue;
+    entry_type?: EntryTypeValue | null;
+    entryTypeLabel?: string;
+    category: SubmissionCategoryValue | null;
     categoryLabel: string;
     status: SubmissionStatusValue;
     statusLabel: string;
     nama_pemohon: string;
+    display_name?: string;
     hasRejected: boolean;
     created_at: string;
     user?: {
@@ -37,14 +50,33 @@ export interface SubmissionListItem {
 
 export interface SubmissionDetail {
     id: number;
-    category: SubmissionCategoryValue;
+    entry_type: EntryTypeValue;
+    entryTypeLabel: string;
+    category: SubmissionCategoryValue | null;
     categoryLabel: string;
+    kapasitasUnit?: string | null;
     status: SubmissionStatusValue;
     statusLabel: string;
-    nama_pemohon: string;
-    nomor_identitas: string;
-    alamat_organisasi: string;
-    nama_ketua: string;
+    lokasi?: string | null;
+    desa?: string | null;
+    kecamatan?: string | null;
+    kabupaten?: string | null;
+    nama_pengelola?: string | null;
+    kontak_person?: string | null;
+    no_wa?: string | null;
+    foto_kondisi_path?: string | null;
+    nama_pemilik?: string | null;
+    penanggung_jawab?: string | null;
+    kapasitas?: number | null;
+    sumber_pendanaan?: SumberPendanaanValue | null;
+    sumber_pendanaan_detail?: string | null;
+    tahun_pembangunan?: number | null;
+    bauran_energi?: number | null;
+    display_name?: string;
+    nama_pemohon: string | null;
+    nomor_identitas: string | null;
+    alamat_organisasi: string | null;
+    nama_ketua: string | null;
     surat_permohonan_proposal_path: string | null;
     dokumen_kepengurusan_path: string | null;
     dokumen_sk_kemenkumham_path: string | null;
@@ -68,17 +100,22 @@ export interface SubmissionDetail {
 export interface CategoryOption {
     value: SubmissionCategoryValue;
     label: string;
-    description: string;
-    icon: string;
+    description?: string;
+    icon?: string;
+    kapasitasUnit?: string;
 }
 
 export interface MapPoint {
     id: number;
-    category: SubmissionCategoryValue;
+    entry_type?: EntryTypeValue | null;
+    entryTypeLabel?: string;
+    category: SubmissionCategoryValue | null;
     categoryLabel: string;
     deskripsi: string | null;
     latitude: number;
     longitude: number;
+    bauran_energi?: number | null;
+    kapasitas?: number | null;
 }
 
 export interface Download {
@@ -99,7 +136,7 @@ export interface AdminStats {
 }
 
 export interface ChartCategory {
-    category: SubmissionCategoryValue;
+    category: SubmissionCategoryValue | null;
     label: string;
     total: number;
 }

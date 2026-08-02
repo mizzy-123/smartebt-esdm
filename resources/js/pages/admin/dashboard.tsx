@@ -1,6 +1,11 @@
 import type { AdminStats, ChartCategory } from '@/types/submission';
 import StatChart from '@/components/admin/stat-chart';
-import { CheckCircle, Clock, FileText, TrendingUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { create } from '@/routes/submissions';
+import { create as createPotensi } from '@/routes/submissions/potensi';
+import { create as createTerbangun } from '@/routes/submissions/terbangun';
+import { Link } from '@inertiajs/react';
+import { Building2, CheckCircle, Clock, FileText, Leaf, Plus, TrendingUp } from 'lucide-react';
 
 interface AdminDashboardProps {
     stats: AdminStats;
@@ -11,9 +16,31 @@ interface AdminDashboardProps {
 export default function AdminDashboard({ stats, perKategori, perKategoriBelum }: AdminDashboardProps) {
     return (
         <div className="p-6 lg:p-8">
-            <div className="mb-8">
-                <h1 className="text-2xl font-bold text-foreground">Dashboard Admin</h1>
-                <p className="mt-1 text-sm text-muted-foreground">Ringkasan pengajuan bantuan EBT</p>
+            <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold text-foreground">Dashboard Admin</h1>
+                    <p className="mt-1 text-sm text-muted-foreground">Ringkasan pengajuan, potensi, dan infrastruktur EBT</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                    <Link href={create.url()}>
+                        <Button className="gap-2 bg-primary shadow-sm hover:bg-primary/90">
+                            <Plus className="h-4 w-4" />
+                            Buat Pengajuan
+                        </Button>
+                    </Link>
+                    <Link href={createPotensi.url()}>
+                        <Button variant="outline" className="gap-2">
+                            <Leaf className="h-4 w-4" />
+                            Info Potensi
+                        </Button>
+                    </Link>
+                    <Link href={createTerbangun.url()}>
+                        <Button variant="outline" className="gap-2">
+                            <Building2 className="h-4 w-4" />
+                            Terbangun
+                        </Button>
+                    </Link>
+                </div>
             </div>
 
             {/* Stats Cards */}

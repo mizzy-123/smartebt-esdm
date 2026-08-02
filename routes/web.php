@@ -5,6 +5,7 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\WilayahController;
 use Illuminate\Support\Facades\Route;
 
 // ─── Public Routes ───────────────────────────────────────────────────────────
@@ -15,6 +16,17 @@ Route::get('/downloads/{download}', [DownloadController::class, 'download'])->na
 // ─── User Auth Routes ─────────────────────────────────────────────────────────
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('wilayah')->name('wilayah.')->group(function () {
+        Route::get('/kabupaten', [WilayahController::class, 'kabupaten'])->name('kabupaten');
+        Route::get('/kecamatan', [WilayahController::class, 'kecamatan'])->name('kecamatan');
+        Route::get('/kelurahan', [WilayahController::class, 'kelurahan'])->name('kelurahan');
+    });
+
+    Route::get('/submissions/potensi/create', [SubmissionController::class, 'createPotensi'])
+        ->name('submissions.potensi.create');
+    Route::get('/submissions/terbangun/create', [SubmissionController::class, 'createTerbangun'])
+        ->name('submissions.terbangun.create');
 
     Route::resource('submissions', SubmissionController::class)
         ->except(['index', 'destroy']);
