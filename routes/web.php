@@ -40,6 +40,7 @@ Route::middleware(['auth', 'can:admin'])
     ->name('admin.')
     ->group(function () {
         Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/bauran-energi', [Admin\BauranEnergiController::class, 'index'])->name('bauran-energi.index');
 
         // Submissions
         Route::get('/submissions', [Admin\SubmissionController::class, 'index'])->name('submissions.index');

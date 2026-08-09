@@ -95,7 +95,18 @@ export default function SubmissionsShow({ submission, fields }: ShowProps) {
                                 ['No. WhatsApp', submission.no_wa],
                                 ['Kapasitas', submission.kapasitas != null ? `${submission.kapasitas} ${submission.kapasitasUnit ?? ''}` : null],
                                 ['Bauran Energi', submission.bauran_energi != null ? submission.bauran_energi.toLocaleString('id-ID', { maximumFractionDigits: 6 }) : null],
-                                ['Sumber Pendanaan', submission.sumber_pendanaan],
+                                [
+                                    'Sumber Pendanaan',
+                                    submission.sumber_pendanaan === 'pemerintah' && submission.sumber_pendanaan_detail
+                                        ? `Pemerintah (${submission.sumber_pendanaan_detail})`
+                                        : submission.sumber_pendanaan === 'mandiri'
+                                          ? 'Mandiri (Perusahaan/Pihak ke-3)'
+                                          : submission.sumber_pendanaan === 'kerjasama'
+                                            ? (submission.sumber_pendanaan_detail
+                                                ? `Kerjasama — ${submission.sumber_pendanaan_detail}`
+                                                : 'Kerjasama')
+                                            : submission.sumber_pendanaan,
+                                ],
                                 ['Tahun Pembangunan', submission.tahun_pembangunan],
                             ].filter(([, v]) => v != null && v !== '').map(([label, value]) => (
                                 <div key={String(label)} className="grid gap-1 px-6 py-3 sm:grid-cols-3">

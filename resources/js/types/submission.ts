@@ -147,3 +147,10 @@ export interface ChartCategory {
     label: string;
     total: number;
 }
+
+export interface BauranEnergiItem {
+    category: SubmissionCategoryValue;
+    label: string;
+    jumlah: number;
+    total_bauran: number;
+}

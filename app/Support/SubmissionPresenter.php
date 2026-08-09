@@ -82,7 +82,8 @@ class SubmissionPresenter
     }
 
     /**
-     * Public-safe payload for map detail pages (no personal/contact data).
+     * Public-safe payload for map detail pages.
+     * Excludes NIK, phone, email, and submitter account data.
      *
      * @return array<string, mixed>
      */
@@ -103,10 +104,15 @@ class SubmissionPresenter
             'desa' => $submission->desa,
             'kecamatan' => $submission->kecamatan,
             'kabupaten' => $submission->kabupaten,
+            'nama_perusahaan_pemrakarsa' => $submission->nama_pemohon
+                ?: $submission->nama_pemilik,
+            'nama_pengelola' => $submission->nama_pengelola,
+            'kontak_person' => $submission->kontak_person,
             'deskripsi_titik' => $submission->deskripsi_titik,
             'kapasitas' => $submission->kapasitas !== null ? (float) $submission->kapasitas : null,
             'bauran_energi' => $submission->bauran_energi !== null ? (float) $submission->bauran_energi : null,
             'sumber_pendanaan' => $submission->sumber_pendanaan,
+            'sumber_pendanaan_detail' => $submission->sumber_pendanaan_detail,
             'tahun_pembangunan' => $submission->tahun_pembangunan,
             'latitude' => $submission->latitude !== null ? (float) $submission->latitude : null,
             'longitude' => $submission->longitude !== null ? (float) $submission->longitude : null,

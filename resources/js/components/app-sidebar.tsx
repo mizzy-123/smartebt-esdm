@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { Building2, ClipboardList, FileText, FolderDown, LayoutGrid, Leaf, PlusCircle } from 'lucide-react';
+import { Building2, ClipboardList, FileText, Flame, FolderDown, LayoutGrid, Leaf, PlusCircle } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -12,6 +12,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { index as bauranEnergiIndex } from '@/routes/admin/bauran-energi';
 import { create } from '@/routes/submissions';
 import { create as createPotensi } from '@/routes/submissions/potensi';
 import { create as createTerbangun } from '@/routes/submissions/terbangun';
@@ -57,6 +58,11 @@ export function AppSidebar() {
                   title: 'Verifikasi Data',
                   href: '/admin/submissions',
                   icon: FileText,
+              },
+              {
+                  title: 'Bauran Energi',
+                  href: bauranEnergiIndex.url(),
+                  icon: Flame,
               },
               {
                   title: 'Kelola Unduhan',

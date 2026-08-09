@@ -36,7 +36,7 @@ class SubmissionFieldRegistry
         'kapasitas' => 'Kapasitas',
         'bauran_energi' => 'Bauran Energi',
         'sumber_pendanaan' => 'Sumber Pendanaan',
-        'sumber_pendanaan_detail' => 'Detail Sumber Pendanaan',
+        'sumber_pendanaan_detail' => 'Detail Sumber Pendanaan (APBD/APBN / Kerjasama)',
         'tahun_pembangunan' => 'Tahun Pembangunan',
         'foto_kondisi_path' => 'Foto Kondisi Saat Ini',
         'deskripsi_titik' => 'Deskripsi Titik Lokasi',

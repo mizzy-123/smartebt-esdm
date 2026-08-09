@@ -1,6 +1,7 @@
 import { router, setLayoutProps, useForm } from '@inertiajs/react';
 import { AlertCircle, Loader2, MapPin, Upload } from 'lucide-react';
 import { lazy, Suspense } from 'react';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -305,9 +306,13 @@ export default function SubmissionsEditEbt({
                                 <Label>Sumber Pendanaan</Label>
                                 <Select
                                     value={data.sumber_pendanaan || undefined}
-                                    onValueChange={(v) =>
-                                        setData('sumber_pendanaan', v)
-                                    }
+                                    onValueChange={(v) => {
+                                        setData({
+                                            ...data,
+                                            sumber_pendanaan: v,
+                                            sumber_pendanaan_detail: '',
+                                        });
+                                    }}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder="Pilih sumber" />
@@ -340,6 +345,30 @@ export default function SubmissionsEditEbt({
                                 />
                             </div>
                         </div>
+
+                        {data.sumber_pendanaan === 'pemerintah' && (
+                            <div className="space-y-1.5">
+                                <Label>Jenis Anggaran Pemerintah</Label>
+                                <Select
+                                    value={
+                                        data.sumber_pendanaan_detail ||
+                                        undefined
+                                    }
+                                    onValueChange={(v) =>
+                                        setData('sumber_pendanaan_detail', v)
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Pilih APBD atau APBN" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="APBD">APBD</SelectItem>
+                                        <SelectItem value="APBN">APBN</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <InputError message={errors.sumber_pendanaan_detail} />
+                            </div>
+                        )}
 
                         {data.sumber_pendanaan === 'kerjasama' && (
                             <div className="space-y-1.5">

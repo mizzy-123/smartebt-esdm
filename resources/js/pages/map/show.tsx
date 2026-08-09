@@ -18,10 +18,14 @@ interface PublicMapPointDetail {
     desa?: string | null;
     kecamatan?: string | null;
     kabupaten?: string | null;
+    nama_perusahaan_pemrakarsa?: string | null;
+    nama_pengelola?: string | null;
+    kontak_person?: string | null;
     deskripsi_titik?: string | null;
     kapasitas?: number | null;
     bauran_energi?: number | null;
     sumber_pendanaan?: SumberPendanaanValue | null;
+    sumber_pendanaan_detail?: string | null;
     tahun_pembangunan?: number | null;
     latitude: number;
     longitude: number;
@@ -42,6 +46,9 @@ export default function MapPointShow({ point }: { point: PublicMapPointDetail })
     const rows: Array<[string, string | number | null | undefined]> = [
         ['Jenis Data', point.entryTypeLabel],
         ['Kategori / Teknologi', point.categoryLabel],
+        ['Nama Perusahaan / Pemrakarsa', point.nama_perusahaan_pemrakarsa],
+        ['Nama Pengelola', point.nama_pengelola],
+        ['Kontak Person', point.kontak_person],
         ['Lokasi', point.lokasi],
         ['Wilayah', wilayah || null],
         ['Deskripsi Titik', point.deskripsi_titik],
@@ -59,9 +66,11 @@ export default function MapPointShow({ point }: { point: PublicMapPointDetail })
         ],
         [
             'Sumber Pendanaan',
-            point.sumber_pendanaan
-                ? (SUMBER_PENDANAAN_LABELS[point.sumber_pendanaan] ?? point.sumber_pendanaan)
-                : null,
+            point.sumber_pendanaan === 'pemerintah' && point.sumber_pendanaan_detail
+                ? `Pemerintah (${point.sumber_pendanaan_detail})`
+                : point.sumber_pendanaan
+                  ? (SUMBER_PENDANAAN_LABELS[point.sumber_pendanaan] ?? point.sumber_pendanaan)
+                  : null,
         ],
         ['Tahun Pembangunan', point.tahun_pembangunan],
         ['Koordinat', `${point.latitude}, ${point.longitude}`],
@@ -124,7 +133,7 @@ export default function MapPointShow({ point }: { point: PublicMapPointDetail })
                         <div className="border-b border-border px-6 py-4">
                             <h2 className="font-semibold text-[#0A2463]">Informasi Umum</h2>
                             <p className="mt-0.5 text-xs text-muted-foreground">
-                                Data publik lokasi. Informasi pribadi dan kontak tidak ditampilkan.
+                                Data publik lokasi. NIK, nomor telepon, email, dan data akun penginput tidak ditampilkan.
                             </p>
                         </div>
                         <dl className="divide-y divide-border text-sm">

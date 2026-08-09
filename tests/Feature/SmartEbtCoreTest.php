@@ -61,6 +61,77 @@ test('admin can access admin dashboard', function () {
         ->assertInertia(fn (Assert $page) => $page->component('admin/dashboard'));
 });
 
+test('admin bauran energi page aggregates terbangun totals per category', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create();
+
+    Submission::create([
+        'user_id' => $user->id,
+        'entry_type' => EntryType::Terbangun,
+        'category' => 'plts',
+        'status' => SubmissionStatus::SudahIntervensi,
+        'lokasi' => 'PLTS A',
+        'kapasitas' => 10,
+        'bauran_energi' => 1.5,
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews('plts', 'terbangun'),
+    ]);
+
+    Submission::create([
+        'user_id' => $user->id,
+        'entry_type' => EntryType::Terbangun,
+        'category' => 'plts',
+        'status' => SubmissionStatus::BelumIntervensi,
+        'lokasi' => 'PLTS B',
+        'kapasitas' => 5,
+        'bauran_energi' => 0.5,
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews('plts', 'terbangun'),
+    ]);
+
+    Submission::create([
+        'user_id' => $user->id,
+        'entry_type' => EntryType::Terbangun,
+        'category' => 'biogas',
+        'status' => SubmissionStatus::SudahIntervensi,
+        'lokasi' => 'Biogas A',
+        'kapasitas' => 20,
+        'bauran_energi' => 2.25,
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews('biogas', 'terbangun'),
+    ]);
+
+    // Potensi should not be included in bauran totals.
+    Submission::create([
+        'user_id' => $user->id,
+        'entry_type' => EntryType::Potensi,
+        'category' => 'plts',
+        'status' => SubmissionStatus::SudahIntervensi,
+        'lokasi' => 'Potensi PLTS',
+        'bauran_energi' => 99,
+        'field_reviews' => SubmissionFieldRegistry::initializeReviews('plts', 'potensi'),
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('admin.bauran-energi.index'))
+        ->assertForbidden();
+
+    $this->actingAs($admin)
+        ->get(route('admin.bauran-energi.index'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('admin/bauran-energi')
+            ->where('totalUnit', 3)
+            ->where('totalBauran', 4.25)
+            ->has('perItem', 3)
+            ->where('perItem.0.category', 'biogas')
+            ->where('perItem.0.total_bauran', 2.25)
+            ->where('perItem.0.jumlah', 1)
+            ->where('perItem.1.category', 'plts')
+            ->where('perItem.1.total_bauran', 2)
+            ->where('perItem.1.jumlah', 2)
+            ->where('perItem.2.category', 'pats')
+            ->where('perItem.2.total_bauran', 0)
+            ->where('perItem.2.jumlah', 0));
+});
+
 test('create form keeps pengajuan and adds potensi terbangun types', function () {
     $user = User::factory()->create();
 
@@ -217,6 +288,57 @@ test('admin can store terbangun plts with auto bauran energi', function () {
         ->and((float) $submission->bauran_energi)->toBe($expected);
 });
 
+test('terbangun pemerintah funding requires APBD or APBN detail', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('submissions.store'), [
+            'entry_type' => 'terbangun',
+            'category' => 'plts',
+            'nama_pemilik' => 'Pemilik PLTS',
+            'lokasi' => 'Kabupaten Contoh',
+            'kapasitas' => 10,
+            'sumber_pendanaan' => 'pemerintah',
+            'latitude' => -7.0,
+            'longitude' => 110.4,
+        ])
+        ->assertSessionHasErrors('sumber_pendanaan_detail');
+
+    $this->actingAs($user)
+        ->post(route('submissions.store'), [
+            'entry_type' => 'terbangun',
+            'category' => 'plts',
+            'nama_pemilik' => 'Pemilik PLTS',
+            'lokasi' => 'Kabupaten Contoh',
+            'kapasitas' => 10,
+            'sumber_pendanaan' => 'pemerintah',
+            'sumber_pendanaan_detail' => 'Dana Desa',
+            'latitude' => -7.0,
+            'longitude' => 110.4,
+        ])
+        ->assertSessionHasErrors('sumber_pendanaan_detail');
+
+    $this->actingAs($user)
+        ->post(route('submissions.store'), [
+            'entry_type' => 'terbangun',
+            'category' => 'plts',
+            'nama_pemilik' => 'Pemilik PLTS',
+            'lokasi' => 'Kabupaten Contoh',
+            'kapasitas' => 10,
+            'sumber_pendanaan' => 'pemerintah',
+            'sumber_pendanaan_detail' => 'APBD',
+            'latitude' => -7.0,
+            'longitude' => 110.4,
+        ])
+        ->assertRedirect();
+
+    $submission = Submission::query()->where('user_id', $user->id)->latest('id')->first();
+
+    expect($submission)->not->toBeNull()
+        ->and($submission->sumber_pendanaan)->toBe('pemerintah')
+        ->and($submission->sumber_pendanaan_detail)->toBe('APBD');
+});
+
 test('public map detail is available for verified submissions with coordinates', function () {
     $user = User::factory()->create([
         'name' => 'Penginput Rahasia',
@@ -264,12 +386,11 @@ test('public map detail is available for verified submissions with coordinates',
             ->where('point.id', $verified->id)
             ->where('point.category', 'plts')
             ->where('point.kabupaten', 'KAB. SEMARANG')
-            ->missing('point.nama_pengelola')
-            ->missing('point.kontak_person')
+            ->where('point.nama_perusahaan_pemrakarsa', 'Yayasan Rahasia')
+            ->where('point.nama_pengelola', 'Budi Rahasia')
+            ->where('point.kontak_person', 'Siti Rahasia')
             ->missing('point.no_wa')
-            ->missing('point.nama_pemilik')
             ->missing('point.penanggung_jawab')
-            ->missing('point.nama_pemohon')
             ->missing('point.nomor_identitas')
             ->missing('point.user')
             ->missing('point.user_id'));

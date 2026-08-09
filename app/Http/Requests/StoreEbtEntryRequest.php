@@ -51,7 +51,16 @@ class StoreEbtEntryRequest extends FormRequest
             'penanggung_jawab' => ['nullable', 'string', 'max:255'],
             'kapasitas' => ['nullable', 'numeric', 'min:0'],
             'sumber_pendanaan' => ['nullable', Rule::in(['pemerintah', 'mandiri', 'kerjasama'])],
-            'sumber_pendanaan_detail' => ['nullable', 'string', 'max:255'],
+            'sumber_pendanaan_detail' => [
+                Rule::requiredIf($this->input('sumber_pendanaan') === 'pemerintah'),
+                'nullable',
+                'string',
+                'max:255',
+                Rule::when(
+                    $this->input('sumber_pendanaan') === 'pemerintah',
+                    [Rule::in(['APBD', 'APBN'])],
+                ),
+            ],
             'tahun_pembangunan' => ['nullable', 'integer', 'min:1990', 'max:'.(date('Y') + 1)],
         ];
     }
@@ -70,6 +79,7 @@ class StoreEbtEntryRequest extends FormRequest
             'penanggung_jawab' => 'Penanggung Jawab',
             'kapasitas' => 'Kapasitas',
             'sumber_pendanaan' => 'Sumber Pendanaan',
+            'sumber_pendanaan_detail' => 'Detail Sumber Pendanaan',
             'tahun_pembangunan' => 'Tahun Pembangunan',
             'latitude' => 'Latitude',
             'longitude' => 'Longitude',
