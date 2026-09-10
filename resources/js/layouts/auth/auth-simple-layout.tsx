@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Zap } from 'lucide-react';
+import AppLogoIcon from '@/components/app-logo-icon';
 import { landing } from '@/routes';
 import type { AuthLayoutProps } from '@/types';
 
@@ -15,12 +15,12 @@ export default function AuthSimpleLayout({
                     <div className="flex flex-col items-center gap-4">
                         <Link
                             href={landing()}
-                            className="flex items-center gap-3 font-medium transition-transform hover:scale-105"
+                            className="flex flex-col items-center gap-3 font-medium transition-transform hover:scale-105"
                         >
-                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FDB813] shadow-lg">
-                                <Zap className="h-7 w-7 text-[#0A2463]" />
+                            <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg sm:h-32 sm:w-32">
+                                <AppLogoIcon className="h-full w-full object-contain p-1" />
                             </div>
-                            <div className="flex flex-col text-white">
+                            <div className="flex flex-col items-center text-white">
                                 <span className="font-bold text-xl tracking-tight leading-tight">SMART-EBT</span>
                                 <span className="text-xs text-blue-200 uppercase tracking-widest font-semibold">ESDM</span>
                             </div>

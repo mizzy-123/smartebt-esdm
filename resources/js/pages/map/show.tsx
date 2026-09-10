@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, ExternalLink, MapPin, Zap } from 'lucide-react';
+import { ArrowLeft, ExternalLink, MapPin } from 'lucide-react';
+import AppLogoIcon from '@/components/app-logo-icon';
 import { lazy, Suspense } from 'react';
 import { landing } from '@/routes';
 import type { EntryTypeValue, SubmissionCategoryValue, SumberPendanaanValue } from '@/types/submission';
@@ -100,8 +101,8 @@ export default function MapPointShow({ point }: { point: PublicMapPointDetail })
             <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0A2463]/95 shadow-lg backdrop-blur-md">
                 <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
                     <Link href={landing()} className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#FDB813]">
-                            <Zap className="h-5 w-5 text-[#0A2463]" />
+                        <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
+                            <AppLogoIcon className="h-10 w-10 object-contain" />
                         </div>
                         <div>
                             <span className="text-lg font-bold tracking-tight text-white">SMART-EBT</span>

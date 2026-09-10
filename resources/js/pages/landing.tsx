@@ -1,7 +1,8 @@
 import type { Download, MapPoint, SubmissionCategoryValue } from '@/types/submission';
 import { Link } from '@inertiajs/react';
-import { ArrowRight, Building2, Download as DownloadIcon, FileText, Leaf, MapPin, PlusCircle, RotateCcw, Zap } from 'lucide-react';
+import { ArrowRight, Building2, Download as DownloadIcon, FileText, Leaf, MapPin, PlusCircle, RotateCcw } from 'lucide-react';
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import AppLogoIcon from '@/components/app-logo-icon';
 
 const PublicMap = lazy(() => import('@/components/map/public-map'));
 
@@ -87,8 +88,8 @@ export default function Landing({ downloads, stats }: LandingProps) {
             <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0A2463]/95 shadow-lg backdrop-blur-md">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
                     <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#FDB813]">
-                            <Zap className="h-5 w-5 text-[#0A2463]" />
+                        <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
+                            <AppLogoIcon className="h-10 w-10 object-contain" />
                         </div>
                         <div>
                             <span className="font-bold text-lg text-white tracking-tight">SMART-EBT</span>
