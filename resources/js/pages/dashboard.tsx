@@ -1,22 +1,32 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { AlertCircle, Building2, CheckCircle, Clock, FileText, Leaf, Pencil, Plus } from 'lucide-react';
+import { AlertCircle, Building2, CheckCircle, Clock, FileText, Leaf, List, Pencil, Plus, RotateCcw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { dashboard } from '@/routes';
 import {
     create,
     edit as editSubmission,
     show as showSubmission,
 } from '@/routes/submissions';
-import { create as createPotensi } from '@/routes/submissions/potensi';
-import { create as createTerbangun } from '@/routes/submissions/terbangun';
 import type { SubmissionListItem } from '@/types/submission';
 
 interface DashboardProps {
     submissions: SubmissionListItem[];
+    filters?: { entry_type?: string | null };
 }
 
-export default function Dashboard({ submissions }: DashboardProps) {
+const LIST_TITLES: Record<string, string> = {
+    potensi: 'Daftar Info Potensi',
+    terbangun: 'Daftar Infrastruktur Terbangun',
+    potensi_berbadan_hukum: 'Daftar Potensi Berbadan Hukum',
+};
+
+export default function Dashboard({ submissions, filters = {} }: DashboardProps) {
     const { auth } = usePage().props as { auth: { user: { name: string } } };
+    const entryTypeFilter = filters.entry_type ?? null;
+    const listTitle = entryTypeFilter
+        ? (LIST_TITLES[entryTypeFilter] ?? 'Daftar Pengajuan')
+        : 'Daftar Pengajuan';
 
     return (
         <>
@@ -39,20 +49,51 @@ export default function Dashboard({ submissions }: DashboardProps) {
                                 Potensi Berbadan Hukum
                             </Button>
                         </Link>
-                        <Link href={createPotensi.url()}>
-                            <Button variant="outline" className="gap-2">
+                        <Link href={dashboard.url({ query: { entry_type: 'potensi' } })}>
+                            <Button
+                                variant={entryTypeFilter === 'potensi' ? 'default' : 'outline'}
+                                className="gap-2"
+                            >
                                 <Leaf className="h-4 w-4" />
                                 Info Potensi
                             </Button>
                         </Link>
-                        <Link href={createTerbangun.url()}>
-                            <Button variant="outline" className="gap-2">
+                        <Link href={dashboard.url({ query: { entry_type: 'terbangun' } })}>
+                            <Button
+                                variant={entryTypeFilter === 'terbangun' ? 'default' : 'outline'}
+                                className="gap-2"
+                            >
                                 <Building2 className="h-4 w-4" />
                                 Terbangun
                             </Button>
                         </Link>
+                        {entryTypeFilter && (
+                            <Link href={dashboard.url()}>
+                                <Button variant="secondary" className="gap-2">
+                                    <RotateCcw className="h-4 w-4" />
+                                    Tampilkan Semua
+                                </Button>
+                            </Link>
+                        )}
                     </div>
                 </div>
+
+                {entryTypeFilter && (
+                    <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3">
+                        <div className="flex items-center gap-2 text-sm text-foreground">
+                            <List className="h-4 w-4 text-primary" />
+                            <span>
+                                Sedang menampilkan: <strong>{listTitle.replace('Daftar ', '')}</strong>
+                            </span>
+                        </div>
+                        <Link href={dashboard.url()}>
+                            <Button size="sm" variant="outline" className="gap-2 bg-white">
+                                <RotateCcw className="h-3.5 w-3.5" />
+                                Kembali ke Default
+                            </Button>
+                        </Link>
+                    </div>
+                )}
 
                 {/* Stats row */}
                 <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -99,21 +140,34 @@ export default function Dashboard({ submissions }: DashboardProps) {
                 {submissions.length === 0 ? (
                     <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-white py-16 text-center">
                         <FileText className="mb-4 h-12 w-12 text-muted-foreground/40" />
-                        <h3 className="mb-2 font-semibold text-foreground">Belum ada pengajuan</h3>
+                        <h3 className="mb-2 font-semibold text-foreground">
+                            {entryTypeFilter ? `Belum ada data ${listTitle.replace('Daftar ', '').toLowerCase()}` : 'Belum ada pengajuan'}
+                        </h3>
                         <p className="mb-6 max-w-sm text-sm text-muted-foreground">
-                            Mulai ajukan bantuan program EBT untuk organisasi atau usaha Anda.
+                            {entryTypeFilter
+                                ? 'Belum ada data untuk filter ini. Anda bisa kembali ke semua pengajuan atau input data baru dari menu samping.'
+                                : 'Mulai ajukan bantuan program EBT untuk organisasi atau usaha Anda.'}
                         </p>
-                        <Link href={create.url()}>
-                            <Button className="gap-2 bg-primary">
-                                <Plus className="h-4 w-4" />
-                                Input Data Pertama
-                            </Button>
-                        </Link>
+                        {entryTypeFilter ? (
+                            <Link href={dashboard.url()}>
+                                <Button variant="outline" className="gap-2">
+                                    <RotateCcw className="h-4 w-4" />
+                                    Kembali ke Default
+                                </Button>
+                            </Link>
+                        ) : (
+                            <Link href={create.url()}>
+                                <Button className="gap-2 bg-primary">
+                                    <Plus className="h-4 w-4" />
+                                    Input Data Pertama
+                                </Button>
+                            </Link>
+                        )}
                     </div>
                 ) : (
                     <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
                         <div className="border-b border-border px-6 py-4">
-                            <h2 className="font-semibold text-foreground">Daftar Pengajuan</h2>
+                            <h2 className="font-semibold text-foreground">{listTitle}</h2>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">

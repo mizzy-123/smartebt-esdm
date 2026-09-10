@@ -1,9 +1,8 @@
 import type { AdminStats, ChartCategory } from '@/types/submission';
 import StatChart from '@/components/admin/stat-chart';
 import { Button } from '@/components/ui/button';
+import { index as adminSubmissionsIndex } from '@/routes/admin/submissions';
 import { create } from '@/routes/submissions';
-import { create as createPotensi } from '@/routes/submissions/potensi';
-import { create as createTerbangun } from '@/routes/submissions/terbangun';
 import { Link } from '@inertiajs/react';
 import { Building2, CheckCircle, Clock, FileText, Leaf, Plus, TrendingUp } from 'lucide-react';
 
@@ -28,13 +27,13 @@ export default function AdminDashboard({ stats, perKategori, perKategoriBelum }:
                             Potensi Berbadan Hukum
                         </Button>
                     </Link>
-                    <Link href={createPotensi.url()}>
+                    <Link href={adminSubmissionsIndex.url({ query: { entry_type: 'potensi' } })}>
                         <Button variant="outline" className="gap-2">
                             <Leaf className="h-4 w-4" />
                             Info Potensi
                         </Button>
                     </Link>
-                    <Link href={createTerbangun.url()}>
+                    <Link href={adminSubmissionsIndex.url({ query: { entry_type: 'terbangun' } })}>
                         <Button variant="outline" className="gap-2">
                             <Building2 className="h-4 w-4" />
                             Terbangun
