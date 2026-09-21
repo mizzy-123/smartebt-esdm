@@ -77,7 +77,7 @@ export default function AdminSubmissionsIndex({ submissions, filters }: AdminSub
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="">Semua Kategori</SelectItem>
-                            <SelectItem value="peternakan_ebt">Peternakan EBT</SelectItem>
+                            <SelectItem value="peternakan_ebt">Biogas</SelectItem>
                             <SelectItem value="plts_rooftop">PLTS Rooftop</SelectItem>
                             <SelectItem value="plts_perikanan">PLTS Perikanan</SelectItem>
                             <SelectItem value="biogas">Biogas</SelectItem>

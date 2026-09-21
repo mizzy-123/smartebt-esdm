@@ -19,7 +19,7 @@ enum SubmissionCategory: string
     public function label(): string
     {
         return match ($this) {
-            self::PeternakanEbt => 'Peternakan EBT',
+            self::PeternakanEbt => 'Biogas',
             self::PltsRooftop => 'PLTS Rooftop',
             self::PltsPerikanan => 'PLTS Perikanan',
             self::Pats => 'Pompa Air Tenaga Surya (PATS)',

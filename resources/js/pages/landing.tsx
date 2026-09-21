@@ -23,7 +23,7 @@ const CATEGORY_LABELS: Record<string, string> = {
     pats: 'Pompa Air (PATS)',
     pltmh: 'PLTMH',
     pltb: 'PLTB',
-    peternakan_ebt: 'Peternakan EBT',
+    peternakan_ebt: 'Biogas',
     plts_rooftop: 'PLTS Rooftop',
     plts_perikanan: 'PLTS Perikanan',
 };

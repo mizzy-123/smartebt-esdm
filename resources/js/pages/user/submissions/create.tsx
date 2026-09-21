@@ -303,7 +303,7 @@ export default function SubmissionsCreate({ categories }: CreateProps) {
                     <div className="space-y-6">
                         <h2 className="text-lg font-semibold">Detail {categories.find(c => c.value === selectedCategory)?.label}</h2>
 
-                        {/* Peternakan EBT */}
+                        {/* Biogas (peternakan_ebt) */}
                         {selectedCategory === 'peternakan_ebt' && (
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <div className="space-y-1.5 sm:col-span-2">
