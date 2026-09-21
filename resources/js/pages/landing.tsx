@@ -342,7 +342,11 @@ export default function Landing({ downloads, stats }: LandingProps) {
 
             {/* ── Footer ── */}
             <footer className="border-t border-[#0A2463]/10 bg-[#0A2463] py-8 text-center text-sm text-blue-300">
-                <p>© {new Date().getFullYear()} SMART-EBT — Kementerian Energi dan Sumber Daya Mineral</p>
+                <p>
+                    © {new Date().getFullYear()} SMART-EBT — Pemerintah Provinsi Jawa Tengah
+                    <br />
+                    Cabang Dinas ESDM Wilayah Semarang Demak
+                </p>
                 <p className="mt-1 text-xs text-blue-400">Sistem Monitoring Aksi Rencana Transisi Energi Baru Terbarukan</p>
             </footer>
         </div>
